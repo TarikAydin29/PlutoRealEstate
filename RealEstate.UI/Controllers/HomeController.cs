@@ -15,6 +15,7 @@ namespace RealEstate.UI.Controllers
 
         public IActionResult Index()
         {
+            string ad = "Tarık";
             return View();
         }
 
