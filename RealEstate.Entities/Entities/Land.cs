@@ -12,5 +12,6 @@ namespace RealEstate.Entities.Entities
         public int Ada { get; set; }
         public int Parsel { get; set; }
         public int Pafta { get; set; }
+        public int MyProperty { get; set; }
     }
 }
