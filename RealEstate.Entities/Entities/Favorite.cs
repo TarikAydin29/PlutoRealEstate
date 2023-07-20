@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Entities.Entities
 {
-    public class Favorite
+    public class Favorite : BaseEntity
     {
-        public Guid ID { get; set; }
-        public int CustomerID { get; set; }
-        public int PropertyID { get; set; }
+
+        public Guid CustomerID { get; set; }
+        public Guid PropertyID { get; set; }
 
         public Customer Customer { get; set; }
-        public BaseProperty BaseProperty { get; set; }
+        public Property Property { get; set; }
     }
 }
