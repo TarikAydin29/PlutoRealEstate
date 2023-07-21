@@ -16,8 +16,9 @@ namespace RealEstate.UI.Controllers
         public IActionResult Index()
         {
             string ad = "Tarık brnach2";
+            string deneme = "deneme";
             return View();
-        } 
+        }
 
         public IActionResult Privacy()
         {
