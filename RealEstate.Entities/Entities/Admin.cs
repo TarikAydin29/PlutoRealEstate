@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Entities.Entities
 {
-    public class Admin: BaseEntity
-    {      
+    public class Admin : BaseEntity
+    {
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
