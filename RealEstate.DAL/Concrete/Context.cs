@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealEstate.DAL.Concrete
 {
-    public class Context
+    public class Context 
     {
     }
 }

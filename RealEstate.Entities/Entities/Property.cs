@@ -24,9 +24,11 @@ namespace RealEstate.Entities.Entities
         public string District { get; set; }
 
 
-        public int PropertyTypeID { get; set; }
+        public int CategoryID { get; set; }
+        public Guid AgentID { get; set; }
 
 
-        public PropertyType PropertyType { get; set; }
+        public Agent Agent { get; set; }
+        public Category  Category { get; set; }
     }
 }

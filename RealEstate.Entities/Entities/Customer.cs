@@ -14,6 +14,7 @@ namespace RealEstate.Entities.Entities
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
-        //Nav Prop
+
+        public List<Favorite> Favorites { get; set; }
     }
 }

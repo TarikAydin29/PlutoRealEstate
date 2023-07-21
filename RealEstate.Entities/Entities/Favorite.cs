@@ -9,7 +9,6 @@ namespace RealEstate.Entities.Entities
 {
     public class Favorite : BaseEntity
     {
-
         public Guid CustomerID { get; set; }
         public Guid PropertyID { get; set; }
 
