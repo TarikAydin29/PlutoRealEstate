@@ -25,4 +25,8 @@
     <ProjectReference Include="..\RealEstate.Entities\RealEstate.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstract\" />
+  </ItemGroup>
+
 </Project>
