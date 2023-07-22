@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Entities.Entities
 {
-    public class Agent :BaseEntity
+    public class Agent : BaseEntity
     {
         public string Name { get; set; }
         public string Surname { get; set; }

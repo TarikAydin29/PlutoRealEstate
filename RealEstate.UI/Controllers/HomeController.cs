@@ -15,15 +15,10 @@ namespace RealEstate.UI.Controllers
 
         public IActionResult Index()
         {
-            string ad = "Tarık brnach2";
-            string deneme = "deneme";
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
