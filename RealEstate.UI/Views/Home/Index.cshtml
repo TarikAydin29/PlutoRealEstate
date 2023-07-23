@@ -3,10 +3,6 @@
     Layout = "~/Views/Shared/_HomePageLayout.cshtml";
 }
 
-
-
-
-
 <!---banner--->
 <div class="slider">
     <div class="callbacks_container">
@@ -353,43 +349,6 @@
         </div>
     </div>
     <!---testimonials--->
-    <div class="testimonials">
-        <div class="container">
-            <h3>testimonial</h3>
-            <span></span>
-            <div id="owl-demo" class="owl-carousel">
-                <div class="item">
-                    <div class="col-md-2 testmonial-img">
-                        <img src="images/t1.png" class="img-responsive" alt="" />
-                    </div>
-                    <div class="col-md-10 testmonial-text">
-                        <p>Lorem ipsum dolor sit amet, offendit volutpat sea ex, at omnium scripta pro, at omnium scripta pro, ei mea oratio malorum forensibus. ei mea oratio malorum forensibus. Sed ei omnes laoreet posidonium ei mea oratio malorum forensibus.</p>
-                        <h4><a href="#">Michael Feng</a></h4>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="item">
-                    <div class="col-md-2 testmonial-img">
-                        <img src="images/t2.png" class="img-responsive" alt="" />
-                    </div>
-                    <div class="col-md-10 testmonial-text">
-                        <p>Lorem ipsum dolor sit amet, offendit volutpat sea ex, at omnium scripta pro, at omnium scripta pro, ei mea oratio malorum forensibus. ei mea oratio malorum forensibus. Sed ei omnes laoreet posidonium ei mea oratio malorum forensibus.</p>
-                        <h4><a href="#">Stacy Barron</a></h4>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="item">
-                    <div class="col-md-2 testmonial-img">
-                        <img src="images/t3.png" class="img-responsive" alt="" />
-                    </div>
-                    <div class="col-md-10 testmonial-text">
-                        <p>Lorem ipsum dolor sit amet, offendit volutpat sea ex, at omnium scripta pro, at omnium scripta pro, ei mea oratio malorum forensibus. ei mea oratio malorum forensibus. Sed ei omnes laoreet posidonium ei mea oratio malorum forensibus.</p>
-                        <h4><a href="#">Johnson </a></h4>
-                    </div>
-                    <div class="clearfix"> </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Component.InvokeAsync("_TestimonialPartial")
     <!---testmonials--->
 </div>
