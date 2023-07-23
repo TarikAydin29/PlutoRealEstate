@@ -13,7 +13,7 @@ namespace RealEstate.UI.Controllers
         public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
         {
             this.signInManager = signInManager;
-            this.userManager = userManager;
+            this.userManager = userManager; 
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginVM vm)

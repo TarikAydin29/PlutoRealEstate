@@ -30,7 +30,7 @@
         </div>
     </div>
     <!--copy-->
-
+                                                                 
     <!--copy-->
 
     <!-- login -->
@@ -47,27 +47,7 @@
 
 
 
-<script>
-    $(document).ready(function () {
-        $('#submit').click(function (e) {
-            e.preventDefault();
 
-            var LoginVM = {
-                Username: $('#Username').val(),
-                Password: $('#Password').val()
-            };
-            console.log(LoginVM)
-            $.ajax({
-                url: '/User/Login',
-                type: 'POST',
-                dataType: 'json',
-                data: JSON.stringify({ Username: $('#Username').val(), Password: $('#Password').val() }),
-                contentType: 'application/json'              
-            });
-
-        });
-    });
-</script>
 
 
 
