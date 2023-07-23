@@ -18,12 +18,7 @@
     <!---footer--->
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/FooterPartial.cshtml")
     <!---footer--->
-
-
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/LoginPartial.cshtml")
- 
-                                                                 
-    <!--copy-->
 
     <!-- login -->
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/LoginPartial.cshtml")
@@ -36,41 +31,5 @@
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<script>
-    $(document).ready(function () {
-        $('#submit').click(function (e) {
-            e.preventDefault();
-
-            var username = $('#Username').val();
-            var password = $('#Password').val();
-
-            $.ajax({
-                url: '/User/Login',
-                type: 'POST',
-                data: { 'username': username, 'password': password },
-                success: function (data) {
-                    
-                },
-                error: function (error) {
-                    
-                }
-            });
-        });
-    });
-</script>*@
 
 
