@@ -11,12 +11,15 @@
                         <div class="login-right">
                             <form>
                                 <h3>Register </h3>
-                                <input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
-                                <input type="text" value="Mobile number" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Mobile number';}" required="">
-                                <input type="text" value="Email id" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email id';}" required="">
-                                <input type="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" required="">
+                                <input type="text" id="Name">
+                                <input type="text" id="Surname">
+                                <input type="text" id="Email">
+                                <input type="text" id="PhoneNumber">
+                                <input type="text" id="KullaniciAdi">
+                                <input type="password" id="Sifre">
+                                <input type="password" id="ConfirmPassword">
 
-                                <input type="submit" value="Register Now">
+                                <input type="submit" value="Register Now" id="bas">
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -27,3 +30,34 @@
         </div>
     </div>
 </div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#bas').click(function (e) {
+            e.preventDefault();            
+
+            var RegisterVM = {
+                Name: $('#Name').val(),
+                Surname: $('#Surname').val(),
+                Email: $('#Email').val(),
+                PhoneNumber: $('#PhoneNumber').val(),
+                Username: $('#Username').val(),
+                Password: $('#Sifre').val(),
+                ConfirmPassword: $('#ConfirmPassword').val()
+            };
+            console.log(RegisterVM)
+            $.ajax({
+                url: '/User/Register',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Name: $('#Name').val(), Surname: $('#Surname').val(), Email: $('#Email').val(), PhoneNumber: $('#PhoneNumber').val(), Username: $('#KullaniciAdi').val(), Password: $('#Sifre').val(), ConfirmPassword: $('#ConfirmPassword').val() }),
+                contentType: 'application/json'
+            });
+
+        });
+    });
+</script>
