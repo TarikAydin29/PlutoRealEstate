@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Models;
-using MailKit.Net.Smtp;
 
 namespace RealEstate.UI.Controllers
 {
@@ -11,11 +12,13 @@ namespace RealEstate.UI.Controllers
     {
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
+        private readonly RoleManager<AppRole> roleManager;
 
-        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
@@ -25,11 +28,13 @@ namespace RealEstate.UI.Controllers
 
             if (result.Succeeded && user.EmailConfirmed == true)
             {
-                return RedirectToAction("Index", "Home");
+                return Json(new { redirectToUrl = Url.Action("Index", "Redirect") });
+
             }
             else if (result.Succeeded && user.EmailConfirmed == false)
             {
-                return RedirectToAction("Index", "ConfirmEmail");
+                return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
+
             }
             return View();
         }
@@ -37,6 +42,7 @@ namespace RealEstate.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterVM vm)
         {
+
             Random rnd = new Random();
             int x = rnd.Next(100000, 1000000);
             if (vm.Password == null || vm.ConfirmPassword == null)
@@ -50,17 +56,21 @@ namespace RealEstate.UI.Controllers
                 Email = vm.Email,
                 UserName = vm.Username,
                 ConfirmCode = x,
-                PhoneNumber=vm.PhoneNumber                
+                PhoneNumber = vm.PhoneNumber
             };
             if (vm.Password == vm.ConfirmPassword)
             {
                 var result = await userManager.CreateAsync(user, vm.Password);
-                await userManager.AddToRoleAsync(user, "Customer");
+
                 if (result.Succeeded)
                 {
                     SendMail(vm, x);
                     TempData["Username"] = user.UserName;
-                    return RedirectToAction("Index", "ConfirmEmail");
+                    var role = await roleManager.Roles.FirstOrDefaultAsync();
+
+                    await userManager.AddToRoleAsync(user, role.ToString());
+
+                    return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
                 else
                 {
@@ -74,7 +84,28 @@ namespace RealEstate.UI.Controllers
             return View();
         }
 
-
+        [HttpGet]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleViewModel createRoleViewModel)
+        {
+            AppRole role = new AppRole()
+            {
+                Name = createRoleViewModel.RoleName
+            };
+            var result = await roleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
+        }
 
 
 
