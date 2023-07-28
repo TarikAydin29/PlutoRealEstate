@@ -21,9 +21,9 @@ namespace RealEstate.BLL.Concrete
         {
             return _propertyDal.InsertAsync(entity);
         }
-        public bool TDelete(Property entity)
+        public void TDelete(Property entity)
         {
-            return _propertyDal.Delete(entity);
+            _propertyDal.Delete(entity);
         }
         public Task<Guid> TUpdateAsync(Property entity)
         {

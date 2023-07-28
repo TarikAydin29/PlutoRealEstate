@@ -21,11 +21,11 @@ namespace RealEstate.DAL.Repositories
             DbSet = _context.Set<T>();
         }
 
-        public bool Delete(T entity)
+        public void Delete(T entity)
         {
-            DbSet.Remove(entity);
-            _context.SaveChanges();
-            return true;
+            entity.IsActive = false;
+            DbSet.Update(entity);
+            _context.SaveChanges();        
         }
 
         public Task<List<T>> GetAllAsync()

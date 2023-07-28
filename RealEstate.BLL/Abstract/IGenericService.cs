@@ -13,7 +13,7 @@ namespace RealEstate.BLL.Abstract
         Task<T> TGetByIdAsync(Guid Id);
         Task<Guid> TUpdateAsync(T entity);
         Task<T> TInsertAsync(T entity);
-        bool TDelete(T entity);
+        void TDelete(T entity);
         Task<int> TSaveAsync();
     }
 }

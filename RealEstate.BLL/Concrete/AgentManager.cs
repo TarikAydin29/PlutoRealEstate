@@ -22,9 +22,9 @@ namespace RealEstate.BLL.Concrete
         {
             return _agentDal.InsertAsync(entity);
         }
-        public bool TDelete(Agent entity)
+        public void TDelete(Agent entity)
         {
-            return _agentDal.Delete(entity);
+             _agentDal.Delete(entity);
         }
         public Task<Guid> TUpdateAsync(Agent entity)
         {

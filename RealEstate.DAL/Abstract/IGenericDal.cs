@@ -13,7 +13,7 @@ namespace RealEstate.DAL.Abstract
         Task<T> GetByIdAsync(Guid Id);
         Task<Guid> UpdateAsync(T entity);
         Task<T> InsertAsync(T entity);
-        bool Delete(T entity);
+        void Delete(T entity);
         Task<int> SaveAsync();
     }
 }

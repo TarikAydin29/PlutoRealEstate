@@ -22,9 +22,9 @@ namespace RealEstate.BLL.Concrete
         {
             return _customerDal.InsertAsync(entity);
         }
-        public bool TDelete(Customer entity)
+        public void TDelete(Customer entity)
         {
-            return (_customerDal.Delete(entity));
+             _customerDal.Delete(entity);
         }
         public Task<Guid> TUpdateAsync(Customer entity)
         {
