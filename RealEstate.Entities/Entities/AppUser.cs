@@ -12,7 +12,7 @@ namespace RealEstate.Entities.Entities
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public int? ConfirmCode { get; set; }
     }
 }

@@ -16,6 +16,11 @@ namespace RealEstate.DAL.Concrete
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<AppUser>().Property(user => user.Id).ValueGeneratedOnAdd();
+        }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
