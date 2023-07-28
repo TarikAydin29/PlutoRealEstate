@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Oueries\**" />
+    <EmbeddedResource Remove="Oueries\**" />
+    <None Remove="Oueries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="MediatR" Version="11.0.0" />
@@ -26,11 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Property\Delete\" />
-    <Folder Include="Commands\Property\Update\" />
-    <Folder Include="Oueries\Property\GetAll\" />
-    <Folder Include="Oueries\Property\GetById\" />
-    <Folder Include="Oueries\Property\" />
+    <ProjectReference Include="..\RealEstate.Core\RealEstate.Core.csproj" />
+    <ProjectReference Include="..\RealEstate.DAL\RealEstate.DAL.csproj" />
+    <ProjectReference Include="..\RealEstate.Entities\RealEstate.Entities.csproj" />
   </ItemGroup>
 
 </Project>
