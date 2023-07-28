@@ -1,8 +1,13 @@
 ﻿using RealEstate.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RealEstate.DAL.Abstract
 {
-    public interface IBaseRepository<T> where T : BaseEntity
+    public interface IGenericDal<T> where T : BaseEntity
     {
         Task<List<T>> GetAllAsync();
         Task<T> GetByIdAsync(Guid Id);
