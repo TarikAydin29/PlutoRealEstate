@@ -11,15 +11,15 @@
                         <div class="login-right">
                             <form>
                                 <h3>Register </h3>
-                                <input type="text" id="Name">
-                                <input type="text" id="Surname">
-                                <input type="text" id="Email">
-                                <input type="text" id="PhoneNumber">
-                                <input type="text" id="KullaniciAdi">
-                                <input type="password" id="Sifre">
-                                <input type="password" id="ConfirmPassword">
-
-                                <input type="submit" value="Register Now" id="bas">
+                                <input type="text" id="Name" placeholder="Ad">
+                                <input type="text" id="Surname" placeholder="Soyad">
+                                <input type="text" id="Email" placeholder="Mail">
+                                <input type="text" id="PhoneNumber" placeholder="Telefon">
+                                <input type="text" id="KullaniciAdi" placeholder="Kullanıcı Adı">
+                                <input type="password" id="Sifre" placeholder="Şifre">
+                                <input type="password" id="ConfirmPassword" placeholder="Şifre Tekrarı">
+                                
+                                <input type="submit" value="Kayıt Ol" id="bas">
                             </form>
                         </div>
                         <div class="clearfix"></div>
@@ -55,7 +55,10 @@
                 type: 'POST',
                 dataType: 'json',
                 data: JSON.stringify({ Name: $('#Name').val(), Surname: $('#Surname').val(), Email: $('#Email').val(), PhoneNumber: $('#PhoneNumber').val(), Username: $('#KullaniciAdi').val(), Password: $('#Sifre').val(), ConfirmPassword: $('#ConfirmPassword').val() }),
-                contentType: 'application/json'
+                contentType: 'application/json',
+               success: function (response) {
+                window.location.href = response.redirectToUrl;
+            }
             });
 
         });

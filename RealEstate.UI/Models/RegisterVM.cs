@@ -14,6 +14,6 @@ namespace RealEstate.UI.Models
         public string Username { get; set; }
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Şifreler uyuşmuyor.")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; }  
     }
 }

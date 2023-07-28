@@ -46,7 +46,10 @@
                 type: 'POST',
                 dataType: 'json',
                 data: JSON.stringify({ Username: $('#Username').val(), Password: $('#Password').val() }),
-                contentType: 'application/json'
+                contentType: 'application/json',
+                success: function (response) {
+                window.location.href = response.redirectToUrl;
+            }
             });
 
         });
