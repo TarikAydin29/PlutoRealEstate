@@ -1,20 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RealEstate.Core.Entities;
 using RealEstate.DAL.Abstract;
+using RealEstate.DAL.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealEstate.DAL.Concrete
+namespace RealEstate.DAL.Repositories
 {
-    public class BaseRepository<T, IContext> : IBaseRepository<T> where T: BaseEntity
+    public class GenericRepository<T> : IGenericDal<T> where T : BaseEntity
     {
         private readonly Context _context;
         protected readonly DbSet<T> DbSet;
 
-        public BaseRepository(Context context)
+        public GenericRepository(Context context)
         {
             _context = context;
             DbSet = _context.Set<T>();
@@ -55,5 +56,6 @@ namespace RealEstate.DAL.Concrete
             await _context.SaveChangesAsync();
             return entity.Id;
         }
+
     }
 }
