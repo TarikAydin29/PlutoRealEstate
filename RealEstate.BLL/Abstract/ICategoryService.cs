@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RealEstate.DAL.Abstract
+namespace RealEstate.BLL.Abstract
 {
-    public interface IPropertyDal : IGenericDal<Property>
+    public interface ICategoryService : IGenericService<Category>
     {
     }
-   
 
 }
