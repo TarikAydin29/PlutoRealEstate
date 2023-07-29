@@ -2,7 +2,7 @@
 
 namespace RealEstate.UI.Areas.AgentArea.Controllers
 {
-    public class DefaultController : Controller
+    public class DefaultController : AgentBaseController
     {
         public IActionResult Index()
         {

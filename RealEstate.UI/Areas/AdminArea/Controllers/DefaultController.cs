@@ -2,7 +2,7 @@
 
 namespace RealEstate.UI.Areas.AdminArea.Controllers
 {
-    public class DefaultController : Controller
+    public class DefaultController : AdminBaseController
     {
         public IActionResult Index()
         {
