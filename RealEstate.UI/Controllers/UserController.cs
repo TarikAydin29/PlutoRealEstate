@@ -67,9 +67,7 @@ namespace RealEstate.UI.Controllers
                     SendMail(vm, x);
                     TempData["Username"] = user.UserName;
                     var role = await roleManager.Roles.FirstOrDefaultAsync();
-
                     await userManager.AddToRoleAsync(user, role.ToString());
-
                     return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
                 else

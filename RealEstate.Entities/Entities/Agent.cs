@@ -17,6 +17,6 @@ namespace RealEstate.Entities.Entities
 
 
 
-        public List<Property> Properties { get; set; }
+        public List<Property>? Properties { get; set; }
     }
 }

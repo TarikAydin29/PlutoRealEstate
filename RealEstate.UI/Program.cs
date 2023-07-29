@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RealEstate.BLL.Abstract;
+using RealEstate.BLL.Concrete;
+using RealEstate.DAL.Abstract;
 using RealEstate.DAL.Concrete;
+using RealEstate.DAL.EntityFramework;
 using RealEstate.Entities.Entities;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +15,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
-
-
-
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
+
+
+builder.Services.AddScoped<IAgentService, AgentManager>();
+builder.Services.AddScoped<IAgentDal,EfAgentDal>();
 
 var app = builder.Build();
 
