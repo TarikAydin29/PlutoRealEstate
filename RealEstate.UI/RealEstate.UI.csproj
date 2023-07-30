@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RealEstate.BLL\RealEstate.BLL.csproj" />
     <ProjectReference Include="..\RealEstate.DAL\RealEstate.DAL.csproj" />
     <ProjectReference Include="..\RealEstate.Entities\RealEstate.Entities.csproj" />
   </ItemGroup>
