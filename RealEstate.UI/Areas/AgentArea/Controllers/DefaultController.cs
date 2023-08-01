@@ -6,7 +6,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index","Property","Agent");
         }
     }
 }

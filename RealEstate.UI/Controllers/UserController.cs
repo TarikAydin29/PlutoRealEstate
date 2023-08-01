@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using AutoMapper;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,14 @@ namespace RealEstate.UI.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly IMapper mapper;
 
-        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.mapper = mapper;
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
@@ -28,6 +31,7 @@ namespace RealEstate.UI.Controllers
 
             if (result.Succeeded && user.EmailConfirmed == true)
             {
+                HttpContext.Session.SetString("email", user.Email);
                 return Json(new { redirectToUrl = Url.Action("Index", "Redirect") });
 
             }
@@ -42,7 +46,6 @@ namespace RealEstate.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterVM vm)
         {
-
             Random rnd = new Random();
             int x = rnd.Next(100000, 1000000);
             if (vm.Password == null || vm.ConfirmPassword == null)
@@ -58,6 +61,8 @@ namespace RealEstate.UI.Controllers
                 ConfirmCode = x,
                 PhoneNumber = vm.PhoneNumber
             };
+            AppUser mappedUser = mapper.Map<AppUser>(vm);
+            mappedUser.ConfirmCode = x;
             if (vm.Password == vm.ConfirmPassword)
             {
                 var result = await userManager.CreateAsync(user, vm.Password);
@@ -67,7 +72,7 @@ namespace RealEstate.UI.Controllers
                     SendMail(vm, x);
                     TempData["Username"] = user.UserName;
                     var role = await roleManager.Roles.FirstOrDefaultAsync();
-                    await userManager.AddToRoleAsync(user, role.ToString());
+                    await userManager.AddToRoleAsync(user, "Customer");
                     return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
                 else
@@ -77,7 +82,6 @@ namespace RealEstate.UI.Controllers
                         ModelState.AddModelError("", item.Description);
                     }
                 }
-
             }
             return View();
         }

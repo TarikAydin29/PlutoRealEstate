@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace RealEstate.Entities.Entities
 {
-    public class PropertyStatus 
+    public class PropertyStatus : BaseEntity
     {
-       public int PropertyStatusID { get; set; }
+        public int PropertyStatusID { get; set; }
         public string Status { get; set; }
     }
 }

@@ -22,6 +22,9 @@ namespace RealEstate.DAL.Concrete
             builder.Entity<AppUser>().Property(user => user.Id).ValueGeneratedOnAdd();
         }
         public DbSet<Property> Properties { get; set; }
+        public DbSet<Agent> Agents { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<PropertyStatus> PropertyStatuses { get; set; }

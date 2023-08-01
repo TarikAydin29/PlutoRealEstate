@@ -17,6 +17,7 @@ builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.C
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddSession();
 
 
 
@@ -45,6 +46,7 @@ app.MapControllerRoute(name: "default",
 					   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapDefaultControllerRoute();
+app.UseSession();
 
 app.Run();
 

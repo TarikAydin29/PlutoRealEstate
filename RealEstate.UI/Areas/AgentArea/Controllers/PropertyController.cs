@@ -1,24 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
-namespace RealEstate.UI.Controllers
+namespace RealEstate.UI.Areas.AgentArea.Controllers
 {
-    public class PropertyController : Controller
+    public class PropertyController : AgentBaseController
     {
-        private readonly IPropertyService _propertyService;
 
-        public PropertyController(IPropertyService propertyService)
+        private readonly IPropertyService _propertyService;
+        private readonly UserManager<AppUser> userManager;
+        private readonly IAgentService agentService;
+        private readonly IMapper mapper;
+
+        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService,IMapper mapper)
         {
             _propertyService = propertyService;
+            this.userManager = userManager;
+            this.agentService = agentService;
+            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<Property> properties = await _propertyService.TGetAllAsync();
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await userManager.FindByEmailAsync(userMail);
+            var agent = agentService.TGetByEmail(user.Email);
+            List<Property> properties = _propertyService.TGetByAgentIdList(agent.Id).ToList();
             return View(properties);
         }
 
@@ -101,5 +111,8 @@ namespace RealEstate.UI.Controllers
             _propertyService.TDelete(property);
             return RedirectToAction("Index");
         }
+
+
+
     }
 }

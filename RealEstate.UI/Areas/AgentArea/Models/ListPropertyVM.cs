@@ -1,9 +1,11 @@
-﻿using RealEstate.Core.Entities;
-
-namespace RealEstate.Entities.Entities
+﻿namespace RealEstate.UI.Areas.AgentArea.Models
 {
-    public class Property : BaseEntity
+    public class ListPropertyVM
     {
+        public Guid Id { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public Guid PropertyNo { get; set; }
         public decimal Price { get; set; }
         public decimal Area { get; set; }
@@ -22,10 +24,5 @@ namespace RealEstate.Entities.Entities
         public int CategoryID { get; set; }
         public Guid AgentID { get; set; }
         public int PropertyStatusID { get; set; }
-
-
-        public Agent Agent { get; set; }
-        public Category  Category { get; set; }
-        public PropertyStatus PropertyStatus { get; set; }
     }
 }

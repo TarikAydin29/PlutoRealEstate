@@ -12,8 +12,17 @@ namespace RealEstate.DAL.EntityFramework
 {
     public class EfPropertyDal : GenericRepository<Property>, IPropertyDal
     {
+        private readonly Context context;
+
         public EfPropertyDal(Context context) : base(context)
         {
+            this.context = context;
+        }
+
+        public IEnumerable<Property> GetByAgentIdList(Guid id)
+        {
+            var values = context.Properties.ToList().Where(x => x.AgentID == id);
+            return values;
         }
     }
 }
