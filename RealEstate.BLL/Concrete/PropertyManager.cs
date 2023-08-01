@@ -42,5 +42,10 @@ namespace RealEstate.BLL.Concrete
         {
             return (_propertyDal.SaveAsync());
         }
+
+        public IEnumerable<Property> TGetByAgentIdList(Guid id)
+        {
+            return _propertyDal.GetByAgentIdList(id);
+        }
     }
 }

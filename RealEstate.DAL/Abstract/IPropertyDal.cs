@@ -9,7 +9,9 @@ namespace RealEstate.DAL.Abstract
 {
     public interface IPropertyDal : IGenericDal<Property>
     {
+        IEnumerable<Property> GetByAgentIdList(Guid id);
+
     }
-   
+
 
 }

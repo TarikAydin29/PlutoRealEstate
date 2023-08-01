@@ -45,5 +45,9 @@ namespace RealEstate.BLL.Concrete
             return (_agentDal.SaveAsync());
         }
 
+        public Agent TGetByEmail(string email)
+        {
+            return _agentDal.GetByEmail(email);
+        }
     }
 }

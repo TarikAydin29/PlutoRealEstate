@@ -2,7 +2,7 @@
 {
     public class CreateRoleViewModel
     {
-        public string RoleName { get; set; }
+        public string Name { get; set; }
 
     }
 }

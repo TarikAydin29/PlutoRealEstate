@@ -9,38 +9,41 @@ using System.Threading.Tasks;
 
 namespace RealEstate.BLL.Concrete
 {
-    public class PropertyStatusManager : IPropertyService
+    public class PropertyStatusManager : IPropertyStatusService
     {
-        private readonly IPropertyDal _propertyDal;
+        private readonly IPropertyStatusDal propertyStatusDal;
 
-        public PropertyStatusManager(IPropertyDal propertyDal)
+        public PropertyStatusManager(IPropertyStatusDal propertyStatusDal)
         {
-            _propertyDal = propertyDal;
+
+            this.propertyStatusDal = propertyStatusDal;
         }
-        public Task<Property> TInsertAsync(Property entity)
+        public Task<PropertyStatus> TInsertAsync(PropertyStatus entity)
         {
-            return _propertyDal.InsertAsync(entity);
+            return propertyStatusDal.InsertAsync(entity);
         }
-        public void TDelete(Property entity)
+        public void TDelete(PropertyStatus entity)
         {
-             _propertyDal.Delete(entity);
+            propertyStatusDal.Delete(entity);
         }
-        public Task<Guid> TUpdateAsync(Property entity)
+        public Task<Guid> TUpdateAsync(PropertyStatus entity)
         {
-            return _propertyDal.UpdateAsync(entity);
+            return propertyStatusDal.UpdateAsync(entity);
         }
-        public Task<List<Property>> TGetAllAsync()
+        public Task<List<PropertyStatus>> TGetAllAsync()
         {
-            return _propertyDal.GetAllAsync();
+            return propertyStatusDal.GetAllAsync();
         }
 
-        public Task<Property> TGetByIdAsync(Guid Id)
+        public Task<PropertyStatus> TGetByIdAsync(Guid Id)
         {
-            return _propertyDal.GetByIdAsync(Id);
+            return propertyStatusDal.GetByIdAsync(Id);
         }
         public Task<int> TSaveAsync()
         {
-            return (_propertyDal.SaveAsync());
+            return propertyStatusDal.SaveAsync();
         }
+
+
     }
 }
