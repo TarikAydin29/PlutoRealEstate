@@ -26,7 +26,7 @@ namespace RealEstate.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
         {
-            var result = await signInManager.PasswordSignInAsync(vm.Username, vm.Password, true, fal);
+            var result = await signInManager.PasswordSignInAsync(vm.Username, vm.Password, true, false);
             var user = await userManager.FindByNameAsync(vm.Username);
 
             if (result.Succeeded && user.EmailConfirmed == true)
