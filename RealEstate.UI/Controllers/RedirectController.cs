@@ -12,7 +12,7 @@ namespace RealEstate.UI.Controllers
             if (User.Identity!.IsAuthenticated)
             {              
                 var role = User.FindFirstValue(ClaimTypes.Role);
-                return Redirect($"/{role}/Default");
+                return Redirect($"/{role}/Default/Index");
             }
             return View();
         }
