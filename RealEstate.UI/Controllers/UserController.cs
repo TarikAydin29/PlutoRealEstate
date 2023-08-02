@@ -26,7 +26,7 @@ namespace RealEstate.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
         {
-            var result = await signInManager.PasswordSignInAsync(vm.Username, vm.Password, true, true);
+            var result = await signInManager.PasswordSignInAsync(vm.Username, vm.Password, true, fal);
             var user = await userManager.FindByNameAsync(vm.Username);
 
             if (result.Succeeded && user.EmailConfirmed == true)
@@ -71,7 +71,6 @@ namespace RealEstate.UI.Controllers
                 {
                     SendMail(vm, x);
                     TempData["Username"] = user.UserName;
-                    var role = await roleManager.Roles.FirstOrDefaultAsync();
                     await userManager.AddToRoleAsync(user, "Customer");
                     return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
@@ -96,7 +95,7 @@ namespace RealEstate.UI.Controllers
         {
             AppRole role = new AppRole()
             {
-                Name = createRoleViewModel.RoleName
+                Name = createRoleViewModel.Name
             };
             var result = await roleManager.CreateAsync(role);
             if (result.Succeeded)
