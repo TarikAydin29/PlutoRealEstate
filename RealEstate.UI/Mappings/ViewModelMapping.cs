@@ -12,6 +12,7 @@ namespace RealEstate.UI.Mappings
         {
             CreateMap<CreateAgentVM, Agent>().ReverseMap();
             CreateMap<RegisterVM, AppUser>().ReverseMap();
+            CreateMap<Agent, GettAllAgentViewModel>().ReverseMap();
 
 
 

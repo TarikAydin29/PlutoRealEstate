@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
 using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
@@ -18,7 +16,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public AgentController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAgentService agentService, IMapper mapper,IWebHostEnvironment webHostEnvironment)
+        public AgentController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IAgentService agentService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -31,18 +29,13 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             return View();
         }
 
-
-
-
-
-
         [HttpGet]
         public IActionResult CreateAgent()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAgent(CreateAgentVM vm,IFormFile image)
+        public async Task<IActionResult> CreateAgent(CreateAgentVM vm, IFormFile image)
         {
             ResimKontrolleri(image);
             AppUser user = new AppUser()
@@ -65,7 +58,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
                     vm.ImageUrl = user.ImageUrl;
                     var agent = mapper.Map<Agent>(vm);
                     await agentService.TInsertAsync(agent);
-                    return RedirectToAction("Index", "Default","AdminArea");
+                    return RedirectToAction("Index", "Default", "AdminArea");
                 }
                 else
                 {
@@ -79,13 +72,25 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllAgents()
+        {
+            var agents = await agentService.TGetAllAsync();
+            var agentViewModels = mapper.Map<List<GettAllAgentViewModel>>(agents);
+            return View(agentViewModels);
+        }
 
+        public IActionResult DeleteAgent(Guid id)
+        {
+            var agent = agentService.TGetByIdAsync(id).Result;
 
-
-
-
-
-
+            if (agent == null)
+            {
+                return NotFound();
+            }
+            agentService.TDelete(agent);
+            return RedirectToAction("Index");
+        }
 
         private string ResimYukle(IFormFile image)
         {
