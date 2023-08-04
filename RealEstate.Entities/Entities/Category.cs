@@ -5,7 +5,7 @@ namespace RealEstate.Entities.Entities
     public class Category : BaseEntity
     {
           
-        public int CategoryID { get; set; }
+      
         public string Name { get; set; }
 
 

@@ -12,8 +12,8 @@ using RealEstate.DAL.Concrete;
 namespace RealEstate.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230723144440_guid_generate")]
-    partial class guid_generate
+    [Migration("20230803211341_propertytitle")]
+    partial class propertytitle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,6 +127,46 @@ namespace RealEstate.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RealEstate.Entities.Entities.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+                });
+
             modelBuilder.Entity("RealEstate.Entities.Entities.Agent", b =>
                 {
                     b.Property<Guid>("Id")
@@ -164,7 +204,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agent");
+                    b.ToTable("Agents");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.AppRole", b =>
@@ -278,17 +318,24 @@ namespace RealEstate.DAL.Migrations
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Category", b =>
                 {
-                    b.Property<int>("CategoryID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"), 1L, 1);
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CategoryID");
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });
@@ -326,7 +373,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Favorite", b =>
@@ -359,6 +406,52 @@ namespace RealEstate.DAL.Migrations
                     b.ToTable("Favorites");
                 });
 
+            modelBuilder.Entity("RealEstate.Entities.Entities.ilce", b =>
+                {
+                    b.Property<int>("ilce_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ilce_id"), 1L, 1);
+
+                    b.Property<int>("ilce_key")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ilce_sehirkey")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ilce_title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ilce_id");
+
+                    b.ToTable("ilce");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.mahalle", b =>
+                {
+                    b.Property<int>("mahalle_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("mahalle_id"), 1L, 1);
+
+                    b.Property<int>("mahalle_ilcekey")
+                        .HasColumnType("int");
+
+                    b.Property<int>("mahalle_key")
+                        .HasColumnType("int");
+
+                    b.Property<string>("mahalle_title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("mahalle_id");
+
+                    b.ToTable("mahalle");
+                });
+
             modelBuilder.Entity("RealEstate.Entities.Entities.Property", b =>
                 {
                     b.Property<Guid>("Id")
@@ -380,8 +473,8 @@ namespace RealEstate.DAL.Migrations
                     b.Property<int>("BedroomCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CategoryID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -421,6 +514,13 @@ namespace RealEstate.DAL.Migrations
                     b.Property<Guid>("PropertyNo")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("PropertyStatusID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PropertyTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -430,24 +530,73 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasIndex("CategoryID");
 
+                    b.HasIndex("PropertyStatusID");
+
                     b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.PropertyStatus", b =>
                 {
-                    b.Property<int>("PropertyStatusID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyStatusID"), 1L, 1);
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PropertyStatusID");
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("PropertyStatuses");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.sehir", b =>
+                {
+                    b.Property<int>("sehir_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("sehir_id"), 1L, 1);
+
+                    b.Property<int>("sehir_key")
+                        .HasColumnType("int");
+
+                    b.Property<string>("sehir_title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("sehir_id");
+
+                    b.ToTable("sehir");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.sokak_cadde", b =>
+                {
+                    b.Property<int>("sokak_cadde_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("sokak_cadde_id"), 1L, 1);
+
+                    b.Property<int>("sokak_cadde_mahallekey")
+                        .HasColumnType("int");
+
+                    b.Property<string>("sokak_cadde_title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("sokak_cadde_id");
+
+                    b.ToTable("sokak_cadde");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -534,9 +683,17 @@ namespace RealEstate.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RealEstate.Entities.Entities.PropertyStatus", "PropertyStatus")
+                        .WithMany()
+                        .HasForeignKey("PropertyStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Agent");
 
                     b.Navigation("Category");
+
+                    b.Navigation("PropertyStatus");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Agent", b =>

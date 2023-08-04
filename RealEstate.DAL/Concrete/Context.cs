@@ -28,5 +28,9 @@ namespace RealEstate.DAL.Concrete
         public DbSet<Category> Categories { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<PropertyStatus> PropertyStatuses { get; set; }
+        public DbSet<sehir> sehir { get; set; }
+        public DbSet<mahalle> mahalle { get; set; }
+        public DbSet<sokak_cadde> sokak_cadde { get; set; }
+        public DbSet<ilce> ilce { get; set; }
     }
 }

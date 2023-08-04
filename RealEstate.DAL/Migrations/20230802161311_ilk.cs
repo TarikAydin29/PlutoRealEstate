@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RealEstate.DAL.Migrations
 {
-    public partial class create_DB : Migration
+    public partial class ilk : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Agent",
+                name: "Admins",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -25,7 +25,26 @@ namespace RealEstate.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Agent", x => x.Id);
+                    table.PrimaryKey("PK_Admins", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Agents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,7 +69,7 @@ namespace RealEstate.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConfirmCode = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -75,17 +94,19 @@ namespace RealEstate.DAL.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.CategoryID);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -99,20 +120,80 @@ namespace RealEstate.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.Id);
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ilce",
+                columns: table => new
+                {
+                    ilce_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ilce_title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ilce_key = table.Column<int>(type: "int", nullable: false),
+                    ilce_sehirkey = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ilce", x => x.ilce_id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "mahalle",
+                columns: table => new
+                {
+                    mahalle_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    mahalle_title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    mahalle_key = table.Column<int>(type: "int", nullable: false),
+                    mahalle_sehirkey = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_mahalle", x => x.mahalle_id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "PropertyStatuses",
                 columns: table => new
                 {
-                    PropertyStatusID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyStatuses", x => x.PropertyStatusID);
+                    table.PrimaryKey("PK_PropertyStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sehir",
+                columns: table => new
+                {
+                    sehir_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sehir_title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    sehir_key = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sehir", x => x.sehir_id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sokak_cadde",
+                columns: table => new
+                {
+                    sokak_cadde_id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sokak_cadde_title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    sokak_cadde_mahallekey = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sokak_cadde", x => x.sokak_cadde_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,8 +320,9 @@ namespace RealEstate.DAL.Migrations
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     County = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     District = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryID = table.Column<int>(type: "int", nullable: false),
+                    CategoryID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AgentID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PropertyStatusID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -249,16 +331,22 @@ namespace RealEstate.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Properties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Properties_Agent_AgentID",
+                        name: "FK_Properties_Agents_AgentID",
                         column: x => x.AgentID,
-                        principalTable: "Agent",
+                        principalTable: "Agents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Properties_Categories_CategoryID",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
-                        principalColumn: "CategoryID",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Properties_PropertyStatuses_PropertyStatusID",
+                        column: x => x.PropertyStatusID,
+                        principalTable: "PropertyStatuses",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -277,9 +365,9 @@ namespace RealEstate.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Favorites", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Favorites_Customer_CustomerID",
+                        name: "FK_Favorites_Customers_CustomerID",
                         column: x => x.CustomerID,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -348,10 +436,18 @@ namespace RealEstate.DAL.Migrations
                 name: "IX_Properties_CategoryID",
                 table: "Properties",
                 column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_PropertyStatusID",
+                table: "Properties",
+                column: "PropertyStatusID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admins");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -371,7 +467,16 @@ namespace RealEstate.DAL.Migrations
                 name: "Favorites");
 
             migrationBuilder.DropTable(
-                name: "PropertyStatuses");
+                name: "ilce");
+
+            migrationBuilder.DropTable(
+                name: "mahalle");
+
+            migrationBuilder.DropTable(
+                name: "sehir");
+
+            migrationBuilder.DropTable(
+                name: "sokak_cadde");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -380,16 +485,19 @@ namespace RealEstate.DAL.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Properties");
 
             migrationBuilder.DropTable(
-                name: "Agent");
+                name: "Agents");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "PropertyStatuses");
         }
     }
 }

@@ -1,0 +1,127 @@
+﻿@model CreatePropertyVM
+@{
+    ViewData["Title"] = "İlan Ekleme Sayfası";
+    Layout = "~/Areas/AgentArea/Views/Shared/_AgentLayout.cshtml";
+    //Layout = null;
+}
+
+
+
+
+
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label asp-for="PropertyTitle">İlan Başlığı</label>
+        <input asp-for="PropertyTitle" class="form-control" />
+        <span asp-validation-for="PropertyTitle" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Price</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Price</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Area">Price</label>
+        <input asp-for="Area" class="form-control" />
+        <span asp-validation-for="Area" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BedroomCount">Area</label>
+        <input asp-for="BedroomCount" class="form-control" />
+        <span asp-validation-for="BedroomCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BathCount">Area</label>
+        <input asp-for="BathCount" class="form-control" />
+        <span asp-validation-for="BathCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="BalconyCount">Area</label>
+        <input asp-for="BalconyCount" class="form-control" />
+        <span asp-validation-for="BalconyCount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Floor">Area</label>
+        <input asp-for="Floor" class="form-control" />
+        <span asp-validation-for="Floor" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Dues">Area</label>
+        <input asp-for="Dues" class="form-control" />
+        <span asp-validation-for="Dues" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" asp-for="IsInSite">
+        <label class="form-check-label" asp-for="IsInSite">
+            Site İçinde
+        </label>
+    </div>
+    <div class="form-group">
+        <select asp-for="City" asp-items="ViewBag.sehir" class="form-select" id="sehir">
+            <option value="">Şehir Seçiniz</option>
+        </select>
+        <select asp-for="County" id="ilce">
+            <option value="">İlçe Seçiniz</option>
+        </select>
+        <select id="mahalle" asp-for="District">
+            <option value="">Mahalle Seçiniz</option>
+        </select>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label asp-for="CategoryID">Category</label>
+        <select asp-for="CategoryID" asp-items="ViewBag.CategoryID" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AgentID">Agent</label>
+        <select asp-for="AgentID" asp-items="ViewBag.AgentID" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PropertyStatusID">Property Status</label>
+        <select asp-for="PropertyStatusID" asp-items="ViewBag.PropertyStatusID" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#sehir").change(function () {
+                var sehirKey = $(this).val();
+                $.getJSON(`../Property/GetIlce?sehirKey=${sehirKey}`, function (data) {
+                    var items = "";
+                    $.each(data, function (i, ilce) {
+                        items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
+                    });
+                    $("#ilce").html(items);
+                });
+            });
+
+            $("#ilce").change(function () {
+                var ilceKey = $(this).val();
+                $.getJSON(`../Property/GetMahalle?ilceKey=${ilceKey}`, function (data) {
+                    var items = "";
+                    $.each(data, function (i, mahalle) {
+                        items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
+                    });
+                    $("#mahalle").html(items);
+                });
+            });
+        });
+    </script>
+    }
