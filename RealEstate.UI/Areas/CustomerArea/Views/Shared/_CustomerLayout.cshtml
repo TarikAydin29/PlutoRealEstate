@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE HTML>
+
+<html>
+
+@* @await Component.InvokeAsync("_CustomerNavbarPartial") *@
+@await Html.PartialAsync("/Views/_HomePageLayoutPartial/HeadPartial.cshtml")
+
+<body>
+
+    <!---header--->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/HeaderPartial.cshtml")
+    <!---header--->
+    <!---banner--->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/BannerPartial.cshtml")
+    <!---banner--->
+    @RenderBody();
+
+    <!---footer--->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/FooterPartial.cshtml")
+    <!---footer--->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/LoginPartial.cshtml")
+
+    <!-- login -->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/LoginPartial.cshtml")
+    <!-- //login -->
+    <!-- Register -->
+    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/RegisterPartial.cshtml")
+    <!-- //Register -->
+
+</body>
+</html>
+
+
+
+
