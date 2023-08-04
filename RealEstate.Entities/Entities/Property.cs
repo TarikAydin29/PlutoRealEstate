@@ -5,6 +5,7 @@ namespace RealEstate.Entities.Entities
     public class Property : BaseEntity
     {
         public Guid PropertyNo { get; set; }
+        public string PropertyTitle { get; set; }
         public decimal Price { get; set; }
         public decimal Area { get; set; }
         public string Description { get; set; }
@@ -19,9 +20,9 @@ namespace RealEstate.Entities.Entities
         public string District { get; set; }
 
 
-        public int CategoryID { get; set; }
+        public Guid CategoryID { get; set; }
         public Guid AgentID { get; set; }
-        public int PropertyStatusID { get; set; }
+        public Guid PropertyStatusID { get; set; }
 
 
         public Agent Agent { get; set; }

@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using RealEstate.BLL.Abstract;
+using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
 using System.Security.Claims;
 
@@ -14,13 +17,15 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly IAgentService agentService;
         private readonly IMapper mapper;
+        private readonly Context context;
 
-        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService,IMapper mapper)
+        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context)
         {
             _propertyService = propertyService;
             this.userManager = userManager;
             this.agentService = agentService;
             this.mapper = mapper;
+            this.context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -42,9 +47,29 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
 
             return View(property);
         }
+        [HttpGet]
+        public JsonResult GetIlce(int sehirKey)
+        {
+            var ilce = context.ilce
+                .Where(i => i.ilce_sehirkey == sehirKey)
+                .Select(i => new { i.ilce_key, i.ilce_title })
+                .ToList();
+            return Json(ilce);
+        }
+        [HttpGet]
+        public JsonResult GetMahalle(int ilceKey)
+        {
+            var mahalle = context.mahalle
+                .Where(i => i.mahalle_ilcekey == ilceKey)
+                .Select(i => new { i.mahalle_key, i.mahalle_title })
+                .ToList();
+            return Json(mahalle);
+        }
 
         public IActionResult Create()
         {
+            var cities = context.sehir.ToList();
+            ViewBag.sehir = new SelectList(cities, "sehir_key", "sehir_title");
             return View();
         }
 

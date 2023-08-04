@@ -3,6 +3,7 @@
     public class CreatePropertyVM
     {
         public Guid PropertyNo { get; set; }
+        public string PropertyTitle { get; set; }
         public decimal Price { get; set; }
         public decimal Area { get; set; }
         public string Description { get; set; }

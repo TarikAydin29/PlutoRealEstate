@@ -25,6 +25,9 @@ builder.Services.AddSession();
 builder.Services.AddScoped<IAgentService, AgentManager>();
 builder.Services.AddScoped<IAgentDal,EfAgentDal>();
 
+builder.Services.AddScoped<IPropertyService, PropertyManager>();
+builder.Services.AddScoped<IPropertyDal, EfPropertyDal>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +44,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(name: "default",
 					   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
