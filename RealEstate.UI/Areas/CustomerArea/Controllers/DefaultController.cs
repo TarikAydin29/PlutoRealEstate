@@ -2,11 +2,11 @@
 
 namespace RealEstate.UI.Areas.CustomerArea.Controllers
 {
-    public class DefaultController : Controller
-    {
-        public IActionResult Index()
-        {
-            return View();
-        }
-    }
+	public class DefaultController : CustomerBaseController
+	{
+		public IActionResult Index()
+		{
+			return View();
+		}
+	}
 }
