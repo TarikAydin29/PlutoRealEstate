@@ -2,6 +2,8 @@
 {
     public class CreatePropertyVM
     {
+        public bool IsActive => true;
+        public DateTime? CreatedDate => DateTime.Now;
         public Guid PropertyNo { get; set; }
         public string PropertyTitle { get; set; }
         public decimal Price { get; set; }
@@ -16,6 +18,7 @@
         public string City { get; set; }
         public string County { get; set; }
         public string District { get; set; }
+        public string? ImageUrl { get; set; }
 
 
         public int CategoryID { get; set; }

@@ -1,11 +1,15 @@
-﻿@model CreatePropertyVM
+﻿@model UpdatePropertyVM
+
 @{
-    ViewData["Title"] = "İlan Ekleme Sayfası";
+    ViewData["Title"] = "Update";
     Layout = "~/Areas/AgentArea/Views/Shared/_AgentLayout.cshtml";
-    //Layout = null;
 }
 
-<form asp-action="Create" enctype="multipart/form-data" method="post">
+
+
+<form asp-action="Update" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+
     <div class="form-group">
         <label asp-for="PropertyTitle">İlan Başlığı</label>
         <input asp-for="PropertyTitle" class="form-control" />
@@ -52,10 +56,21 @@
         <input asp-for="Dues" class="form-control" />
         <span asp-validation-for="Dues" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="ImageUrl" class="control-label"></label>
-        <input type="file" name="image" asp-for="ImageUrl" class="form-control" />
+        <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 50%; height:250px;width:250px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)" />
+        <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;" asp-for="ImageUrl"></p>
+        <p>
+            <label for="file" style="border-radius: 25px; margin-top: 5%" class="btn palette-Orange bg btn-lg w-100">
+                <a>
+                    <i class="zmdi zmdi-camera c-white"></i>
+                    <span class="c-white">İlan Resmini Güncelle</span>
+                </a>
+            </label>
+        </p>
     </div>
+
+
     <div class="form-check">
         <input class="form-check-input" asp-for="IsInSite">
         <label class="form-check-label" asp-for="IsInSite">
@@ -88,7 +103,12 @@
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-
+<script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
 
 @section Scripts {
     <script>
@@ -117,3 +137,4 @@
         });
     </script>
     }
+

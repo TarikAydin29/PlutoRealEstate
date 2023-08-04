@@ -28,6 +28,12 @@ builder.Services.AddScoped<IAgentDal,EfAgentDal>();
 builder.Services.AddScoped<IPropertyService, PropertyManager>();
 builder.Services.AddScoped<IPropertyDal, EfPropertyDal>();
 
+builder.Services.AddScoped<ICategoryService, CategoryManager>();
+builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
+
+builder.Services.AddScoped<IPropertyStatusService, PropertyStatusManager>();
+builder.Services.AddScoped<IPropertyStatusDal, EfPropertyStatusDal>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
