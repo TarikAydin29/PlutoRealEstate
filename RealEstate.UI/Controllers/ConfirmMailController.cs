@@ -27,7 +27,7 @@ namespace RealEstate.UI.Controllers
             {
                 user.EmailConfirmed = true;
                 await userManager.UpdateAsync(user);
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }

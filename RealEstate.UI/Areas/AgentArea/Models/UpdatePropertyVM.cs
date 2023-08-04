@@ -1,9 +1,10 @@
-﻿using RealEstate.Core.Entities;
-
-namespace RealEstate.Entities.Entities
+﻿namespace RealEstate.UI.Areas.AgentArea.Models
 {
-    public class Property : BaseEntity
+    public class UpdatePropertyVM
     {
+        public Guid Id { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? UpdatedDate => DateTime.Now;
         public Guid PropertyNo { get; set; }
         public string PropertyTitle { get; set; }
         public decimal Price { get; set; }
@@ -20,13 +21,9 @@ namespace RealEstate.Entities.Entities
         public string District { get; set; }
         public string? ImageUrl { get; set; }
 
+
         public Guid CategoryID { get; set; }
         public Guid AgentID { get; set; }
         public Guid PropertyStatusID { get; set; }
-
-
-        public Agent Agent { get; set; }
-        public Category  Category { get; set; }
-        public PropertyStatus PropertyStatus { get; set; }
     }
 }
