@@ -1,0 +1,13 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
+@model CreatePropertyStatusVM
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Create</h1>
+
+<form asp-action="Create" method="post">
+    <input asp-for="Status" class="form-control" />
+    <button type="submit" class="btn btn-primary">Status Oluştur</button>
+</form>

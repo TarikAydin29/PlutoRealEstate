@@ -1,0 +1,14 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
+@model CreateCategoryViewModel
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>CreateCategory</h1>
+
+<form asp-action="CreateCategory" method="post">
+            <input asp-for="Name" class="form-control" />
+    <button type="submit" class="btn btn-primary">Kategori Oluştur</button>
+
+</form>

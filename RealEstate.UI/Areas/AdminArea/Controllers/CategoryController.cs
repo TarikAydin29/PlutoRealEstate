@@ -7,7 +7,7 @@ using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
 
 namespace RealEstate.UI.Areas.AdminArea.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : AdminBaseController
     {
         private readonly IMapper _mapper;
         private ICategoryService _categoryService;

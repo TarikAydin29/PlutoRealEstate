@@ -7,7 +7,7 @@ using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
 
 namespace RealEstate.UI.Areas.AdminArea.Controllers
 {
-    public class PropertyStatusController : Controller
+    public class PropertyStatusController : AdminBaseController
     {
         private readonly IMapper _mapper;
         private IPropertyStatusService _propertyStatusService;
@@ -22,6 +22,18 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
         {
             return View();
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task< IActionResult> Create(CreatePropertyStatusVM vm)
+        {
+            var mappedStatus = _mapper.Map<PropertyStatus>(vm);
+            await _propertyStatusService.TInsertAsync(mappedStatus);
+            return RedirectToAction("Index");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllPropertyStatus()

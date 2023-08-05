@@ -13,8 +13,8 @@ namespace RealEstate.UI.ViewComponents.Default
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var properties = propertyService.TGetAllAsync();
-            return View(properties);
+            //var properties = propertyService.TGetAllAsync();
+            return View();
         }
     }
 }
