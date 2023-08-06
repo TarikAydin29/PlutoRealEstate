@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,8 +24,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         private readonly Context context;
         private readonly ICategoryService categoryService;
         private readonly IPropertyStatusService propertyStatusService;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService)
+        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IWebHostEnvironment webHostEnvironment)
         {
             _propertyService = propertyService;
             this.userManager = userManager;
@@ -33,6 +35,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             this.context = context;
             this.categoryService = categoryService;
             this.propertyStatusService = propertyStatusService;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -68,7 +71,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePropertyVM vm)
+        public async Task<IActionResult> Create(CreatePropertyVM vm,IFormFile image)
         {
             var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
             var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
@@ -76,7 +79,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             vm.City = city.sehir_title;
             vm.County = county.ilce_title;
             vm.District = district.mahalle_title;
-
+            vm.ImageUrl = ResimYukle(image);
             var userMail = User.FindFirstValue(ClaimTypes.Email);
 
             var agent = agentService.TGetByEmail(userMail);
@@ -158,5 +161,19 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return Json(mahalle);
         }
 
+
+        private string ResimYukle(IFormFile image)
+        {
+            string ext = Path.GetExtension(image.FileName);
+            string resimAd = Guid.NewGuid() + ext;
+            string dosyaYolu = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Uploads", resimAd);
+            using (var stream = new FileStream(dosyaYolu, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+            return resimAd;
+        }
+
+    
     }
 }
