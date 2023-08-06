@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RealEstate.BLL.Abstract;
@@ -15,12 +16,14 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly Context _context;
         private readonly IPropertyService _propertyService;
         private readonly IMapper _mapper;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper)
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager)
         {
             _context = context;
             _propertyService = propertyService;
             _mapper = mapper;
+            _signInManager = signInManager;
         }
 
 
@@ -72,6 +75,11 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             return View(property);
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
     }
 }
