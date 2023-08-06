@@ -39,7 +39,6 @@
     <Folder Include="Areas\AgentArea\Data\" />
     <Folder Include="Areas\AgentArea\Models\" />
     <Folder Include="Areas\CustomerArea\Data\" />
-    <Folder Include="Areas\CustomerArea\Models\" />
     <Folder Include="wwwroot\Images\Uploads\" />
   </ItemGroup>
 
