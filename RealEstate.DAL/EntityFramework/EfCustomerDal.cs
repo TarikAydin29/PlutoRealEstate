@@ -7,8 +7,12 @@ namespace RealEstate.DAL.EntityFramework
 {
     public class EfCustomerDal : GenericRepository<Customer>, ICustomerDal
     {
+        private readonly Context _context;
+
         public EfCustomerDal(Context context) : base(context)
         {
+            _context = context;
         }
+ 
     }
 }
