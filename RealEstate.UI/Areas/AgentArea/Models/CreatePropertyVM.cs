@@ -4,7 +4,7 @@
     {
         public bool IsActive => true;
         public DateTime? CreatedDate => DateTime.Now;
-        public Guid PropertyNo { get; set; }
+        public Guid PropertyNo => Guid.NewGuid();
         public string PropertyTitle { get; set; }
         public decimal Price { get; set; }
         public decimal Area { get; set; }
@@ -21,8 +21,8 @@
         public string? ImageUrl { get; set; }
 
 
-        public int CategoryID { get; set; }
+        public Guid CategoryID { get; set; }
         public Guid AgentID { get; set; }
-        public int PropertyStatusID { get; set; }
+        public Guid PropertyStatusID { get; set; }
     }
 }
