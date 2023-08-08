@@ -28,7 +28,7 @@ namespace RealEstate.BLL.Concrete
         }
         public Task<Guid> TUpdateAsync(Agent entity)
         {
-            return _agentDal.UpdateAsync(entity);
+            return  _agentDal.UpdateAsync(entity);
         }
 
         public Task<List<Agent>> TGetAllAsync()

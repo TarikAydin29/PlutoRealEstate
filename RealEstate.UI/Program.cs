@@ -34,6 +34,9 @@ builder.Services.AddScoped<ICategoryDal, EfCategoryDal>();
 builder.Services.AddScoped<IPropertyStatusService, PropertyStatusManager>();
 builder.Services.AddScoped<IPropertyStatusDal, EfPropertyStatusDal>();
 
+builder.Services.AddScoped<IPropertyPhotoService, PropertyPhotoManager>();
+builder.Services.AddScoped<IPropertyPhotoDAL, EFPropertyPhotoDAL>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

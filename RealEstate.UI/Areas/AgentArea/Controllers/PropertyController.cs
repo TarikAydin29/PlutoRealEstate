@@ -7,10 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
-using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using System.Security.Claims;
-using System.Xml.Linq;
 
 namespace RealEstate.UI.Areas.AgentArea.Controllers
 {
@@ -25,8 +23,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         private readonly ICategoryService categoryService;
         private readonly IPropertyStatusService propertyStatusService;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IPropertyPhotoService propertyPhotoService;
 
-        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IWebHostEnvironment webHostEnvironment)
+        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IWebHostEnvironment webHostEnvironment, IPropertyPhotoService propertyPhotoService)
         {
             _propertyService = propertyService;
             this.userManager = userManager;
@@ -36,6 +35,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             this.categoryService = categoryService;
             this.propertyStatusService = propertyStatusService;
             this.webHostEnvironment = webHostEnvironment;
+            this.propertyPhotoService = propertyPhotoService;
         }
 
         public async Task<IActionResult> Index()
@@ -43,8 +43,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             var userMail = User.FindFirstValue(ClaimTypes.Email);
             var user = await userManager.FindByEmailAsync(userMail);
             var agent = agentService.TGetByEmail(user.Email);
-            List<Property> properties = _propertyService.TGetByAgentIdList(agent.Id).ToList();
-            return View(properties);
+            List<Property> properties = _propertyService.TGetByAgentIdList(agent.Id).Where(x => x.IsActive == true).ToList();
+            var mappedProps = mapper.Map<List<ListPropertyVM>>(properties);
+            return View(mappedProps);
         }
 
         public async Task<IActionResult> Details(Guid id)
@@ -70,8 +71,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return View();
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePropertyVM vm,IFormFile image)
+        public async Task<IActionResult> Create(CreatePropertyVM vm, IFormFile image, List<IFormFile> images)
         {
             var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
             var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
@@ -89,6 +91,18 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             if (ModelState.IsValid)
             {
                 await _propertyService.TInsertAsync(property);
+
+                foreach (var file in images)
+                {
+                    var photoPath = ResimYukle(file);
+                    var photo = new PropertyPhoto
+                    {
+                        PhotoPath = photoPath,
+                        PropertyId = property.Id,
+                        IsActive = true
+                    };
+                    await propertyPhotoService.TInsertAsync(photo);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -112,12 +126,43 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
                 return NotFound();
             }
             var vm = mapper.Map<UpdatePropertyVM>(property);
+            HttpContext.Session.SetString("image", vm.ImageUrl);
+
+            List<PropertyPhoto> imgs = propertyPhotoService.TGetByPropertyIdList(id).ToList();
+            foreach (var item in imgs)
+            {
+                vm.Photos.Add(item);
+            }
+
             return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UpdatePropertyVM vm)
+        public async Task<IActionResult> Update(UpdatePropertyVM vm,IFormFile image, List<IFormFile> images)
         {
+            if (image == null)
+            {
+                vm.ImageUrl = HttpContext.Session.GetString("image");
+            }
+            else
+            {
+                vm.ImageUrl = ResimYukle(image);
+            }
+
+            if (images != null)
+            {
+                foreach (var file in images)
+                {
+                    var photoPath = ResimYukle(file);
+                    var photo = new PropertyPhoto
+                    {
+                        PhotoPath = photoPath,
+                        PropertyId = vm.Id,
+                        IsActive = true
+                    };
+                    await propertyPhotoService.TInsertAsync(photo);
+                }
+            }
 
             var property = mapper.Map<Property>(vm);
             if (ModelState.IsValid)
@@ -132,12 +177,14 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             Property property = await _propertyService.TGetByIdAsync(id);
+            property.IsActive = false;
+            await _propertyService.TUpdateAsync(property);
             if (property == null)
             {
                 return NotFound();
             }
 
-            return View(property);
+            return RedirectToAction("Index");
         }
 
 
@@ -174,6 +221,48 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return resimAd;
         }
 
-    
+
+        [HttpPost]
+        public async Task<JsonResult> DeletePhoto(Guid id)
+        {
+            var photo = propertyPhotoService.TGetByIdAsync(id);
+            if (photo != null)
+            {
+                var yoluSil = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Uploads", photo.Result.PhotoPath);
+                if (System.IO.File.Exists(yoluSil))
+                {
+                    System.IO.File.Delete(yoluSil);
+                }
+                propertyPhotoService.TDelete(photo.Result);
+            }
+            return Json(Ok());
+        }
+        public async Task<IActionResult> UploadPhotos([FromRoute] List<IFormFile> files, [FromRoute] Guid realEstateId)
+        {
+            string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Uploads");
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    var photo = new PropertyPhoto
+                    {
+                        PhotoPath = "/Images/Uploads/" + uniqueFileName,
+                        PropertyId = realEstateId
+                    };
+
+                    await propertyPhotoService.TInsertAsync(photo);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

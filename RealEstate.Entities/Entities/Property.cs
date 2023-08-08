@@ -26,7 +26,9 @@ namespace RealEstate.Entities.Entities
 
 
         public Agent Agent { get; set; }
-        public Category  Category { get; set; }
+        public Category Category { get; set; }
         public PropertyStatus PropertyStatus { get; set; }
+
+        public List<PropertyPhoto>? PropertyPhotos { get; set; }
     }
 }

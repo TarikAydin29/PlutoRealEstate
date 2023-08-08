@@ -86,12 +86,7 @@ namespace RealEstate.UI.Controllers
             }
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> LogOut()
-        {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
+       
 
         [HttpGet]
         public IActionResult CreateRole()

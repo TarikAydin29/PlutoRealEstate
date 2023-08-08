@@ -501,7 +501,6 @@ namespace RealEstate.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -535,6 +534,35 @@ namespace RealEstate.DAL.Migrations
                     b.HasIndex("PropertyStatusID");
 
                     b.ToTable("Properties");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.PropertyPhoto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhotoPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("PropertyPhotos");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.PropertyStatus", b =>
@@ -698,6 +726,17 @@ namespace RealEstate.DAL.Migrations
                     b.Navigation("PropertyStatus");
                 });
 
+            modelBuilder.Entity("RealEstate.Entities.Entities.PropertyPhoto", b =>
+                {
+                    b.HasOne("RealEstate.Entities.Entities.Property", "Property")
+                        .WithMany("PropertyPhotos")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+                });
+
             modelBuilder.Entity("RealEstate.Entities.Entities.Agent", b =>
                 {
                     b.Navigation("Properties");
@@ -711,6 +750,11 @@ namespace RealEstate.DAL.Migrations
             modelBuilder.Entity("RealEstate.Entities.Entities.Customer", b =>
                 {
                     b.Navigation("Favorites");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Property", b =>
+                {
+                    b.Navigation("PropertyPhotos");
                 });
 #pragma warning restore 612, 618
         }

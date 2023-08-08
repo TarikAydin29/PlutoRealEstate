@@ -4,6 +4,7 @@ using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
 using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
 using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
+using RealEstate.UI.Areas.AgentArea.Models.AgentVM;
 using RealEstate.UI.Models;
 
 namespace RealEstate.UI.Mappings
@@ -15,6 +16,8 @@ namespace RealEstate.UI.Mappings
             CreateMap<CreateAgentVM, Agent>().ReverseMap();
             CreateMap<RegisterVM, AppUser>().ReverseMap();
             CreateMap<Agent, GettAllAgentViewModel>().ReverseMap();
+            CreateMap<Agent, UpdateAgentVM>().ReverseMap();
+            CreateMap<AppUser, UpdateAgentVM>().ReverseMap();
 
             CreateMap<CreateCategoryViewModel, Category>().ReverseMap();
             CreateMap<Category, GettAllCategoryViewModel>().ReverseMap();
@@ -24,6 +27,7 @@ namespace RealEstate.UI.Mappings
 
             CreateMap<ListPropertyVM, Property>().ReverseMap();
             CreateMap<CreatePropertyVM, Property>().ReverseMap();
+            CreateMap<UpdatePropertyVM, Property>().ReverseMap();
         }
     }
 }

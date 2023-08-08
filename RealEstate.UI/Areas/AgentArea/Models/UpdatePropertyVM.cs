@@ -1,7 +1,13 @@
-﻿namespace RealEstate.UI.Areas.AgentArea.Models
+﻿using RealEstate.Entities.Entities;
+
+namespace RealEstate.UI.Areas.AgentArea.Models
 {
     public class UpdatePropertyVM
     {
+        public UpdatePropertyVM()
+        {
+            this.Photos = new List<PropertyPhoto>();
+        }
         public Guid Id { get; set; }
         public bool IsActive { get; set; }
         public DateTime? UpdatedDate => DateTime.Now;
@@ -20,6 +26,7 @@
         public string County { get; set; }
         public string District { get; set; }
         public string? ImageUrl { get; set; }
+        public List<PropertyPhoto> Photos { get; set; }
 
 
         public Guid CategoryID { get; set; }
