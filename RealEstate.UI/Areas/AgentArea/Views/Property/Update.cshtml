@@ -58,7 +58,7 @@
     </div>
 
     <div class="form-group">
-        <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 50%; height:250px;width:250px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)" />
+        <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 10%; height:150px;width:150px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)" />
         <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;" asp-for="ImageUrl"></p>
         <p>
             <label for="file" style="border-radius: 25px; margin-top: 5%" class="btn palette-Orange bg btn-lg w-100">
@@ -71,6 +71,21 @@
     </div>
 
 
+    <div class="form-group row">
+        @foreach (var item in Model.Photos)
+        {
+            <div class="col-3">
+                <div class="col-3 mb-2" data-id="@item.Id">
+                    <input type="hidden" class="photoID" value="@item.Id" />
+                    <img style="border-radius: 10%; height:150px;" src="~/Images/Uploads/@item.PhotoPath" />
+                </div>
+                <button class="form-control delete-photo btn btn-outline-danger">Delete</button>
+            </div>
+        }
+    </div>
+
+
+
     <div class="form-check">
         <input class="form-check-input" asp-for="IsInSite">
         <label class="form-check-label" asp-for="IsInSite">
@@ -78,17 +93,16 @@
         </label>
     </div>
     <div class="form-group">
-        <select asp-for="City" asp-items="ViewBag.sehir" class="form-select" id="sehir">
+        <select asp-for="City" asp-items="ViewBag.sehir" class="form-select my-4" id="sehir">
             <option value="">Şehir Seçiniz</option>
         </select>
-        <select asp-for="County" id="ilce">
+        <select asp-for="County" class="form-select my-4" id="ilce">
             <option value="">İlçe Seçiniz</option>
         </select>
-        <select id="mahalle" asp-for="District">
+        <select id="mahalle" class="form-select my-4" asp-for="District">
             <option value="">Mahalle Seçiniz</option>
         </select>
     </div>
-
 
     <div class="mb-3">
         <select asp-for="CategoryID" asp-items="@ViewBag.category" class="form-select">
@@ -115,7 +129,8 @@
         $(document).ready(function () {
             $("#sehir").change(function () {
                 var sehirKey = $(this).val();
-                $.getJSON(`../Property/GetIlce?sehirKey=${sehirKey}`, function (data) {
+                console.log("deneme")
+                $.getJSON(`../GetIlce?sehirKey=${sehirKey}`, function (data) {
                     var items = "";
                     $.each(data, function (i, ilce) {
                         items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
@@ -126,7 +141,7 @@
 
             $("#ilce").change(function () {
                 var ilceKey = $(this).val();
-                $.getJSON(`../Property/GetMahalle?ilceKey=${ilceKey}`, function (data) {
+                $.getJSON(`../GetMahalle?ilceKey=${ilceKey}`, function (data) {
                     var items = "";
                     $.each(data, function (i, mahalle) {
                         items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
@@ -135,6 +150,47 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.delete-photo').click(function (e) {
+                e.preventDefault();
+
+                var id = $(this).closest('.col-3').find('.photoID').val();
+
+                $.ajax({
+                    url: '../DeletePhoto/' + id,
+                    type: 'POST',
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+
+
+                //$(document).ready(function () {
+                //    $('.delete-photo').click(function (e) {
+                //        e.preventDefault();
+
+                //        var idVM = {
+                //            id: $(this).closest('.col-3').find('.photoID').val()
+                //        };
+                //        console.log(idVM)
+
+                //        $.ajax({
+                //            url: '../DeletePhoto',
+                //            type: 'POST',
+                //            dataType: 'json',
+                //            data: JSON.stringify(id: $(this).closest('.col-3').find('.photoID').val()),
+                //            contentType: 'application/json',
+                //            success: function (response) {
+                //                //window.location.href = response.redirectToUrl;
+                //            }
+                //        });
+                //    });
+                //});
     </script>
     }
 

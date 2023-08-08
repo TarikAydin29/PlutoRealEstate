@@ -32,5 +32,6 @@ namespace RealEstate.DAL.Concrete
         public DbSet<mahalle> mahalle { get; set; }
         public DbSet<sokak_cadde> sokak_cadde { get; set; }
         public DbSet<ilce> ilce { get; set; }
+        public DbSet<PropertyPhoto> PropertyPhotos { get; set; }
     }
 }

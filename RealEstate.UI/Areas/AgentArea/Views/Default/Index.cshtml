@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Property>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/AgentArea/Views/Shared/_AgentLayout.cshtml";
@@ -25,8 +25,8 @@
                     </div>
                     <div class="counter_no">
                         <div>
-                            <p class="total_no">2500</p>
-                            <p class="head_couter">Welcome</p>
+                            <p class="total_no">Aktif İlan Sayısı</p>
+                            <p class="head_couter">@ViewBag.activePropCount</p>
                         </div>
                     </div>
                 </div>
@@ -40,8 +40,8 @@
                     </div>
                     <div class="counter_no">
                         <div>
-                            <p class="total_no">123.50</p>
-                            <p class="head_couter">Average Time</p>
+                            <p class="total_no">Pasif İlan Sayısı</p>
+                            <p class="head_couter">@ViewBag.inactivePropCount</p>
                         </div>
                     </div>
                 </div>
@@ -54,50 +54,29 @@
                 <div class="dash_blog">
                     <div class="dash_blog_inner">
                         <div class="dash_head">
-                            <h3><span><i class="fa fa-comments-o"></i> Updates</span><span class="plus_green_bt"><a href="#">+</a></span></h3>
+                            <h3><span><i class="fa fa-comments-o"></i>Aktif İlanlarım</span></h3>
                         </div>
-                        <div class="list_cont">
-                            <p>User confirmation</p>
-                        </div>
-                        <div class="msg_list_main">
+                        <div class="msg_list_main mt-2">
                             <ul class="msg_list">
-                                <li>
-                                    <span><img src="images/layout_img/msg2.png" class="img-responsive" alt="#" /></span>
-                                    <span>
-                                        <span class="name_user">Herman Beck</span>
-                                        <span class="msg_user">Sed ut perspiciatis unde omnis.</span>
-                                        <span class="time_ago">12 min ago</span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span><img src="images/layout_img/msg3.png" class="img-responsive" alt="#" /></span>
-                                    <span>
-                                        <span class="name_user">John Smith</span>
-                                        <span class="msg_user">On the other hand, we denounce.</span>
-                                        <span class="time_ago">12 min ago</span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span><img src="images/layout_img/msg2.png" class="img-responsive" alt="#" /></span>
-                                    <span>
-                                        <span class="name_user">John Smith</span>
-                                        <span class="msg_user">Sed ut perspiciatis unde omnis.</span>
-                                        <span class="time_ago">12 min ago</span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span><img src="images/layout_img/msg3.png" class="img-responsive" alt="#" /></span>
-                                    <span>
-                                        <span class="name_user">John Smith</span>
-                                        <span class="msg_user">On the other hand, we denounce.</span>
-                                        <span class="time_ago">12 min ago</span>
-                                    </span>
-                                </li>
+                                @{
+                                    if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            <li>
+                                                <span><img src="/Images/Uploads/@item.ImageUrl" class="img-responsive" alt="#" style="width:60px;height:60px;border-radius:50%" /></span>
+                                                <span>
+                                                    <span class="name_user">@item.PropertyTitle</span>
+                                                    <span class="msg_user">@item.City - @item.County - @item.District</span>
+                                                    <span class="time_ago">@item.Price</span>
+                                                </span>
+                                            </li>
+                                        }
+                                    }
+                                }
+
                             </ul>
-                        </div>
-                        <div class="read_more">
-                            <div class="center"><a class="main_bt read_bt" href="#">Read More</a></div>
-                        </div>
+                        </div>                       
                     </div>
                 </div>
             </div>

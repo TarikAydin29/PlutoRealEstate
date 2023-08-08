@@ -23,9 +23,8 @@ namespace RealEstate.DAL.Repositories
 
         public void Delete(T entity)
         {
-            entity.IsActive = false;
-            DbSet.Update(entity);
-            _context.SaveChanges();        
+            DbSet.Remove(entity);
+            _context.SaveChanges();
         }
 
         public Task<List<T>> GetAllAsync()
