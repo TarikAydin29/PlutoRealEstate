@@ -16,14 +16,17 @@ namespace RealEstate.UI.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly ILogger<UserController> _logger;
         private readonly IMapper mapper;
 
-        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IMapper mapper)
+        public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
+            IMapper mapper, ILogger<UserController> logger)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
+            _logger= logger ;
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
