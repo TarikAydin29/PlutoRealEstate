@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RealEstate.BLL.Abstract;
 using RealEstate.BLL.Concrete;
@@ -6,9 +5,19 @@ using RealEstate.DAL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.DAL.EntityFramework;
 using RealEstate.Entities.Entities;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .WriteTo.Console()
+  .WriteTo.Debug(Serilog.Events.LogEventLevel.Information)
+  .WriteTo.File("logs/log.txt")
+  .Enrich.FromLogContext()
+  .CreateLogger();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

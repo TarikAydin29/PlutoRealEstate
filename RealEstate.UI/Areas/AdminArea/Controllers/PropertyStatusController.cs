@@ -42,5 +42,53 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             var propertyViewModels = _mapper.Map<List<GettAllPropertyStatusViewModel>>(property);
             return View(propertyViewModels);
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var propertyStatus = await _propertyStatusService.TGetByIdAsync(id);
+            if (propertyStatus == null)
+            {
+                
+                return NotFound();
+            }
+            _propertyStatusService.TDelete(propertyStatus);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdatePropetyStatus(Guid id)
+        {
+            var propertyStatus = await _propertyStatusService.TGetByIdAsync(id);
+            if (propertyStatus == null)
+            {
+                return NotFound();
+            }
+            var viewModel = _mapper.Map<UpdatePropertyStatusVM>(propertyStatus);
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePropetyStatus(Guid id, UpdatePropertyStatusVM viewModel)
+        {
+            if (id != viewModel.Id)
+            {
+               
+                return BadRequest();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var existingPropertyStatus = await _propertyStatusService.TGetByIdAsync(id);
+                if (existingPropertyStatus == null)
+                {
+                    return NotFound();
+                }
+                existingPropertyStatus.Status = viewModel.Status;
+                await _propertyStatusService.TUpdateAsync(existingPropertyStatus);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(viewModel);
+        }
     }
 }
