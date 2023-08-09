@@ -17,6 +17,8 @@ var logger = new LoggerConfiguration()
   .WriteTo.File("logs/log.txt")
   .Enrich.FromLogContext()
   .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 
 // Add services to the container.
