@@ -16,11 +16,11 @@ namespace RealEstate.UI.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<Controller> _logger;
         private readonly IMapper mapper;
 
         public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
-            IMapper mapper, ILogger<UserController> logger)
+            IMapper mapper, ILogger<Controller> logger)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
