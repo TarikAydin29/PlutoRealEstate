@@ -27,25 +27,6 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         }
 
 
-        [HttpGet]
-        public JsonResult GetIlce(int sehirKey)
-        {
-            var ilce = _context.ilce
-                .Where(i => i.ilce_sehirkey == sehirKey)
-                .Select(i => new { i.ilce_key, i.ilce_title })
-                .ToList();
-            return Json(ilce);
-        }
-        [HttpGet]
-        public JsonResult GetMahalle(int ilceKey)
-        {
-            var mahalle = _context.mahalle
-                .Where(i => i.mahalle_ilcekey == ilceKey)
-                .Select(i => new { i.mahalle_key, i.mahalle_title })
-                .ToList();
-            return Json(mahalle);
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -80,6 +61,29 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { Area = "" });
+        }
+
+
+
+
+
+        [HttpGet]
+        public JsonResult GetIlce(int sehirKey)
+        {
+            var ilce = _context.ilce
+                .Where(i => i.ilce_sehirkey == sehirKey)
+                .Select(i => new { i.ilce_key, i.ilce_title })
+                .ToList();
+            return Json(ilce);
+        }
+        [HttpGet]
+        public JsonResult GetMahalle(int ilceKey)
+        {
+            var mahalle = _context.mahalle
+                .Where(i => i.mahalle_ilcekey == ilceKey)
+                .Select(i => new { i.mahalle_key, i.mahalle_title })
+                .ToList();
+            return Json(mahalle);
         }
     }
 }

@@ -3,9 +3,76 @@
     Layout = "~/Views/Shared/_HomePageLayout.cshtml";
 }
 
+<style>
+    select[disabled] {
+        color: #999; /* Gray text color */
+        background-color: #fff; /* White background */
+        opacity: 0.5; /* Half transparent */
+    }
+</style>
+
+
 <div class="content">
     <!--SearchBar-->
-    @await Component.InvokeAsync("_SearchBarPartial")
+    <div class="place-section">
+        <div class="container">
+            <h2>Hayalinizdeki Mülkü Hemen Bulun</h2>
+            <div class="place-grids">
+                <div class="col-md-3 place-grid">
+                    <select asp-items="ViewBag.sehir" class="sel" id="sehir" autocomplete="off">
+                        <option value="">İl</option>
+                    </select>
+                </div>
+                <div class="col-md-3 place-grid">
+
+                    <select id="ilce" class="sel" disabled>
+                        <option value="">İlçe</option>
+                    </select>
+                </div>
+                <div class="col-md-3 place-grid">
+
+                    <select id="mahalle" class=" sel" disabled>
+                        <option value="">Mahalle</option>
+                    </select>
+                </div>
+                <div class="col-md-3 place-grid">
+                    <select asp-items="ViewBag.cats" class="sel" id="category">
+                        <option value="">Kategori Seçiniz</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="place-grids">
+                <div class="col-md-2 place-grid1">
+                    <select asp-items="ViewBag.stats" class="sel" id="status">
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <select class="sel" id="roomNumber" autocomplete="off">
+                        <option value="0" selected>Oda Sayısı</option>
+                        @for (int i = 1; i < 20; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <input type="number" class="sel" id="minPrice" placeholder="Min TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <input type="number" class="sel" id="maxPrice" placeholder="Max TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+                </div>
+                <div class="col-md-4 search" style="margin-top:12px">
+                    <form action="forrent.html">
+                        <input type="submit" value="Ara" style="border-radius:10px">
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+
     <!--SearchBar-->
     <!--Promotion-->
     @await Component.InvokeAsync("_PromotionPartial")
@@ -17,3 +84,105 @@
     @await Component.InvokeAsync("_TestimonialPartial")
     <!---testmonials--->
 </div>
+@section Scriptss {
+    <script>
+        $(document).ready(function () {
+            $("#sehir").change(function () {
+                var sehirKey = $(this).val();
+                console.log("Deneme");
+                $.getJSON(`/Home/GetIlce?sehirKey=${sehirKey}`, function (data) {
+                    var items = "";
+                    $.each(data, function (i, ilce) {
+                        items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
+                    });
+                    $("#ilce").html(items);
+                });
+            });
+
+            $("#ilce").change(function () {
+                var ilceKey = $(this).val();
+                $.getJSON(`/Home/GetMahalle?ilceKey=${ilceKey}`, function (data) {
+                    var items = "";
+                    $.each(data, function (i, mahalle) {
+                        items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
+                    });
+                    $("#mahalle").html(items);
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#ilce').prop('disabled', true);
+            $('#mahalle').prop('disabled', true);
+
+
+            $('#sehir').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#ilce').prop('disabled', false);
+                } else {
+                    $('#ilce').prop('disabled', true);
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+
+            $('#ilce').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#mahalle').prop('disabled', false);
+                } else {
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Your existing JavaScript/jQuery code...
+
+            $('.search form').on('submit', function (e) {
+                e.preventDefault();
+
+                var sehir = $('#sehir').val();
+                var ilce = $('#ilce').val();
+                var mahalle = $('#mahalle').val();
+                var category = $('#category').val();
+                var status = $('#status').val();
+                var roomNumber = $('#roomNumber').val();
+                var minPrice = $('#minPrice').val();
+                var maxPrice = $('#maxPrice').val();
+
+                var data = {
+                    sehir: sehir,
+                    ilce: ilce,
+                    mahalle: mahalle,
+                    category: category,
+                    status: status,
+                    roomNumber: roomNumber,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice
+                };
+                console.log(data)
+                $.ajax({
+                    url: '/YourController/YourAction',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        // Handle the response from the server
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        // Handle errors
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    }
