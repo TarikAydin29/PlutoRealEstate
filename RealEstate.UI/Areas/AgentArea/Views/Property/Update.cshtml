@@ -9,6 +9,10 @@
 
 <form asp-action="Update" enctype="multipart/form-data" method="post">
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="PropertyNo" />
+    <input type="hidden" asp-for="AgentID" />
+    <input type="hidden" asp-for="CreatedDate" />
+    <input type="hidden" asp-for="IsActive" />
 
     <div class="form-group">
         <label asp-for="PropertyTitle">İlan Başlığı</label>
@@ -125,7 +129,65 @@
 </script>
 
 @section Scripts {
+
     <script>
+
+
+        $(document).ready(function () {
+         
+            var preselectedCity = "@Model.City";
+            if (preselectedCity) {
+                $("#sehir").val(preselectedCity);  
+                loadCounties(preselectedCity, "@Model.County");
+            }
+
+            $("#sehir").change(function () {
+                loadCounties($(this).val());
+            });
+
+            $("#ilce").change(function () {
+                loadDistricts($(this).val());
+            });
+        });
+
+        function loadCounties(cityKey, preselectedCounty) {
+            $.getJSON(`../GetIlce?sehirKey=${cityKey}`, function (data) {
+                var items = "<option value=''>İlçe Seçiniz</option>";
+
+                $.each(data, function (i, ilce) {
+                    var isSelected = ilce.ilce_key == preselectedCounty ? "selected" : "";
+                    items += `<option value="${ilce.ilce_key}" ${isSelected}>${ilce.ilce_title}</option>`;
+                });
+
+                $("#ilce").html(items);
+
+                if (preselectedCounty) {
+                 
+                    loadDistricts(preselectedCounty, "@Model.District");
+                }
+            });
+        }
+
+        function loadDistricts(countyKey, preselectedDistrict) {
+            $.getJSON(`../GetMahalle?ilceKey=${countyKey}`, function (data) {
+                var items = "<option value=''>Mahalle Seçiniz</option>";
+
+                $.each(data, function (i, mahalle) {
+                    var isSelected = mahalle.mahalle_key == preselectedDistrict ? "selected" : "";
+                    items += `<option value="${mahalle.mahalle_key}" ${isSelected}>${mahalle.mahalle_title}</option>`;
+                });
+
+                $("#mahalle").html(items);
+            });
+        }
+
+    </script>
+
+
+
+
+
+   @* <script>
         $(document).ready(function () {
             $("#sehir").change(function () {
                 var sehirKey = $(this).val();
@@ -150,7 +212,7 @@
                 });
             });
         });
-    </script>
+    </script>*@
 
     <script>
         $(document).ready(function () {
@@ -170,27 +232,27 @@
         });
 
 
-                //$(document).ready(function () {
-                //    $('.delete-photo').click(function (e) {
-                //        e.preventDefault();
+                                //$(document).ready(function () {
+                                //    $('.delete-photo').click(function (e) {
+                                //        e.preventDefault();
 
-                //        var idVM = {
-                //            id: $(this).closest('.col-3').find('.photoID').val()
-                //        };
-                //        console.log(idVM)
+                                //        var idVM = {
+                                //            id: $(this).closest('.col-3').find('.photoID').val()
+                                //        };
+                                //        console.log(idVM)
 
-                //        $.ajax({
-                //            url: '../DeletePhoto',
-                //            type: 'POST',
-                //            dataType: 'json',
-                //            data: JSON.stringify(id: $(this).closest('.col-3').find('.photoID').val()),
-                //            contentType: 'application/json',
-                //            success: function (response) {
-                //                //window.location.href = response.redirectToUrl;
-                //            }
-                //        });
-                //    });
-                //});
+                                //        $.ajax({
+                                //            url: '../DeletePhoto',
+                                //            type: 'POST',
+                                //            dataType: 'json',
+                                //            data: JSON.stringify(id: $(this).closest('.col-3').find('.photoID').val()),
+                                //            contentType: 'application/json',
+                                //            success: function (response) {
+                                //                //window.location.href = response.redirectToUrl;
+                                //            }
+                                //        });
+                                //    });
+                                //});
     </script>
     }
 

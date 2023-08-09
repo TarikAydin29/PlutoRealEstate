@@ -75,12 +75,8 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreatePropertyVM vm, IFormFile image, List<IFormFile> images)
         {
-            var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
-            var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
-            var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
-            vm.City = city.sehir_title;
-            vm.County = county.ilce_title;
-            vm.District = district.mahalle_title;
+            KeyToTitleCreate(vm);
+
             vm.ImageUrl = ResimYukle(image);
             var userMail = User.FindFirstValue(ClaimTypes.Email);
 
@@ -109,6 +105,8 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return View(property);
         }
 
+       
+
         public async Task<IActionResult> Update(Guid id)
         {
             var cities = context.sehir.ToList();
@@ -128,6 +126,8 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             var vm = mapper.Map<UpdatePropertyVM>(property);
             HttpContext.Session.SetString("image", vm.ImageUrl);
 
+            TitleToKey(vm);
+
             List<PropertyPhoto> imgs = propertyPhotoService.TGetByPropertyIdList(id).ToList();
             foreach (var item in imgs)
             {
@@ -137,8 +137,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return View(vm);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Update(UpdatePropertyVM vm,IFormFile image, List<IFormFile> images)
+        public async Task<IActionResult> Update(UpdatePropertyVM vm,IFormFile? image, List<IFormFile> images)
         {
             if (image == null)
             {
@@ -149,7 +150,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
                 vm.ImageUrl = ResimYukle(image);
             }
 
-            if (images != null)
+            if (images.Count >0)
             {
                 foreach (var file in images)
                 {
@@ -163,7 +164,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
                     await propertyPhotoService.TInsertAsync(photo);
                 }
             }
-
+            KeyToTitleUpdate(vm);
             var property = mapper.Map<Property>(vm);
             if (ModelState.IsValid)
             {
@@ -171,7 +172,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(property);
+            return View(vm);
         }
 
         public async Task<IActionResult> Delete(Guid id)
@@ -220,6 +221,36 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             }
             return resimAd;
         }
+
+        private void TitleToKey(UpdatePropertyVM vm)
+        {
+            var city = context.sehir.FirstOrDefault(x => x.sehir_title == vm.City);
+            var county = context.ilce.FirstOrDefault(x => x.ilce_title == vm.County);
+            var district = context.mahalle.FirstOrDefault(x => x.mahalle_title == vm.District);
+            vm.City = city.sehir_key.ToString();
+            vm.County = county.ilce_key.ToString();
+            vm.District = district.mahalle_key.ToString();
+        }
+        private void KeyToTitleUpdate(UpdatePropertyVM vm)
+        {
+            var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
+            var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
+            var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
+            vm.City = city.sehir_title;
+            vm.County = county.ilce_title;
+            vm.District = district.mahalle_title;
+        }
+
+        private void KeyToTitleCreate(CreatePropertyVM vm)
+        {
+            var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
+            var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
+            var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
+            vm.City = city.sehir_title;
+            vm.County = county.ilce_title;
+            vm.District = district.mahalle_title;
+        }
+
 
 
         [HttpPost]

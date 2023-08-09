@@ -5,9 +5,9 @@
 
 <style>
     select[disabled] {
-        color: #999; /* Gray text color */
-        background-color: #fff; /* White background */
-        opacity: 0.5; /* Half transparent */
+        color: #999; 
+        background-color: #fff; 
+        opacity: 0.5;
     }
 </style>
 
@@ -169,7 +169,7 @@
                 };
                 console.log(data)
                 $.ajax({
-                    url: '/YourController/YourAction',
+                    url: '/Home/SearchFilter',
                     type: 'POST',
                     data: data,
                     success: function (response) {

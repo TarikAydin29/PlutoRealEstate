@@ -10,6 +10,7 @@ namespace RealEstate.UI.Areas.AgentArea.Models
         }
         public Guid Id { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate => DateTime.Now;
         public Guid PropertyNo { get; set; }
         public string PropertyTitle { get; set; }
