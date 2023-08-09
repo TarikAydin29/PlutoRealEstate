@@ -13,13 +13,15 @@ namespace RealEstate.UI.Controllers
         private readonly Context context;
         private readonly ICategoryService categoryService;
         private readonly IPropertyStatusService propertyStatusService;
+        private readonly IPropertyService propertyService;
 
-        public HomeController(ILogger<HomeController> logger, Context context, ICategoryService categoryService,IPropertyStatusService propertyStatusService)
+        public HomeController(ILogger<HomeController> logger, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IPropertyService propertyService)
         {
             _logger = logger;
             this.context = context;
             this.categoryService = categoryService;
             this.propertyStatusService = propertyStatusService;
+            this.propertyService = propertyService;
         }
 
         public async Task<IActionResult> Index()
@@ -32,6 +34,45 @@ namespace RealEstate.UI.Controllers
             ViewBag.stats = new SelectList(propStatuses, "Id", "Status");
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchFilter([FromBody] SearchVM vm)
+        {
+            var props = await propertyService.TGetAllAsync();
+            if (!string.IsNullOrEmpty(vm.sehir))
+            {
+                props = props.Where(x => x.City == vm.sehir).ToList();
+            }
+            if (!string.IsNullOrEmpty(vm.ilce))
+            {
+                props = props.Where(x => x.County == vm.ilce).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(vm.mahalle))
+            {
+                props = props.Where(x => x.District == vm.mahalle).ToList();
+            }
+            if (vm.category != null)
+            {
+                props = props.Where(x => x.CategoryID == vm.category).ToList();
+            }
+            if (vm.status != null)
+            {
+                props = props.Where(x => x.PropertyStatusID == vm.status).ToList();
+            }
+            if (vm.minPrice != null)
+            {
+                props = props.Where(p => p.Price >= vm.minPrice).ToList();
+            }
+            if (vm.maxPrice != null)
+            {
+                props = props.Where(p => p.Price <= vm.maxPrice).ToList();
+            }
+            props = props.Where(p => p.BedroomCount >= vm.roomNumber).ToList();
+
+            return Json(props);
+        }
+
 
 
 
