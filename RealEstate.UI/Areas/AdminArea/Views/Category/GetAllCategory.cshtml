@@ -1,0 +1,23 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
+@model List<GettAllCategoryViewModel>
+@{
+    ViewData["Title"] = "GetAllCategory";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Category List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -34,7 +34,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             {
                 var category = _mapper.Map<Category>(model);
                 await _categoryService.TInsertAsync(category);
-                return RedirectToAction("Index");
+              
             }
             return View(model);
         }

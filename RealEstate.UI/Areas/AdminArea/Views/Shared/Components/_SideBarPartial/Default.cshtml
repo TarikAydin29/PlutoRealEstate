@@ -14,7 +14,6 @@
             <div class="user_profle_side">
                 <div class="user_img"><img class="img-responsive" src="@Model.ImageUrl" alt="#" /></div>
                 <div class="user_info">
-                  @*  <h6>John David</h6>*@
                   <h6>@Model.Name @Model.Surname</h6>
                     <p><span class="online_animation"></span> Online</p>
                 </div>
@@ -24,6 +23,11 @@
     <div class="sidebar_blog_2">
         <h4>General</h4>
         <ul class="list-unstyled components">
+            <li>
+                <a asp-area="AdminArea" asp-controller="Category" asp-action="CreateCategory" aria-expanded="false"><i class="fa fa-diamond purple_color"></i> <span>Kategori Ekle</span></a>
+            </li>
+            <li><a asp-area="AdminArea" asp-controller="Category" asp-action="GetAllCategory"><i class="fa fa-table purple_color2"></i> <span>Kategoriler</span></a></li>
+           @* <li><a asp-area="AdminArea" asp-controller="Category" asp-action="UpdateCategory"><i class="fa fa-table purple_color2"></i> <span>Kategori güncelleme</span></a></li>*@
             <li class="active">
                 <a href="#dashboard" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-dashboard yellow_color"></i> <span>Dashboard</span></a>
                 <ul class="collapse list-unstyled" id="dashboard">

@@ -1,8 +1,85 @@
-﻿
+﻿@using RealEstate.Entities.Entities;
+@model IEnumerable<Property>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="midde_cont">
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2>Dashboard</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row column1">
+            <div class="col-md-6 col-lg-3">
+                <div class="full counter_section margin_bottom_30">
+                    <div class="couter_icon">
+                        <div>
+                            <i class="fa fa-user yellow_color"></i>
+                        </div>
+                    </div>
+                    <div class="counter_no">
+                        <div>
+                            <p class="total_no">Aktif İlan Sayısı</p>
+                            <p class="head_couter">@ViewBag.activePropCount</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="full counter_section margin_bottom_30">
+                    <div class="couter_icon">
+                        <div>
+                            <i class="fa fa-clock-o blue1_color"></i>
+                        </div>
+                    </div>
+                    <div class="counter_no">
+                        <div>
+                            <p class="total_no">Pasif İlan Sayısı</p>
+                            <p class="head_couter">@ViewBag.inactivePropCount</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row column4 graph">
+            <div class="col-md-6">
+                <div class="dash_blog">
+                    <div class="dash_blog_inner">
+                        <div class="dash_head">
+                            <h3><span><i class="fa fa-comments-o"></i>Aktif İlanlarım</span></h3>
+                        </div>
+                        <div class="msg_list_main mt-2">
+                            <ul class="msg_list">
+                                @{
+                                    if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            <li>
+                                                <span><img src="/Images/Uploads/@item.ImageUrl" class="img-responsive" alt="#" style="width:60px;height:60px;border-radius:50%" /></span>
+                                                <span>
+                                                    <span class="name_user">@item.PropertyTitle</span>
+                                                    <span class="msg_user">@item.City - @item.County - @item.District</span>
+                                                    <span class="time_ago">@item.Price</span>
+                                                </span>
+                                            </li>
+                                        }
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
