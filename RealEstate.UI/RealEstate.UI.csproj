@@ -47,7 +47,6 @@
     <Folder Include="Areas\CustomerArea\Models\" />
     <Folder Include="Areas\CustomerArea\Views\Shared\" />
     <Folder Include="logs\" />
-    <Folder Include="wwwroot\Images\Uploads\" />
   </ItemGroup>
 
 </Project>

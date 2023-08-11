@@ -104,6 +104,13 @@ namespace RealEstate.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("1a9e1698-7bef-4bed-9980-29359f19598a"),
+                            RoleId = new Guid("02513711-f86a-414f-9824-bcc69e9b6f2f")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -231,6 +238,29 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("02513711-f86a-414f-9824-bcc69e9b6f2f"),
+                            ConcurrencyStamp = "50bc1353-7149-432c-845e-0d74618c120a",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("ea22c6a5-b26f-4b13-91de-d6b990e9df18"),
+                            ConcurrencyStamp = "69c1ca40-c254-4c9b-a3bf-f8a5af4462f9",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
+                        },
+                        new
+                        {
+                            Id = new Guid("50ebe162-e83b-48ae-9e5d-005c15b875a3"),
+                            ConcurrencyStamp = "c130c845-5ab3-4304-b1f7-e475239419e1",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.AppUser", b =>
@@ -312,6 +342,27 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1a9e1698-7bef-4bed-9980-29359f19598a"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "62cd86cc-9736-459a-9e59-661a7d6eab86",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            ImageUrl = "bb.jpg",
+                            LockoutEnabled = false,
+                            Name = "Bill",
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOfKAaPOb/yTKOmqaQmYxGTeJXDUg6aIUqHd2U1wNYHTeXVPSwwlL+mmVttk6X34Gg==",
+                            PhoneNumber = "123456789",
+                            PhoneNumberConfirmed = false,
+                            Surname = "Gates",
+                            TwoFactorEnabled = false,
+                            UserName = "admin1"
+                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Category", b =>

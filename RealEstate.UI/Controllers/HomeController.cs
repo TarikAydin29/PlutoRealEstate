@@ -52,23 +52,24 @@ namespace RealEstate.UI.Controllers
             {
                 props = props.Where(x => x.District == vm.mahalle).ToList();
             }
+
             if (vm.category != null)
             {
-                props = props.Where(x => x.CategoryID == vm.category).ToList();
+                props = props.Where(x => x.CategoryID == new Guid(vm.category)).ToList();
             }
             if (vm.status != null)
             {
-                props = props.Where(x => x.PropertyStatusID == vm.status).ToList();
+                props = props.Where(x => x.PropertyStatusID == new Guid(vm.status)).ToList();
             }
             if (vm.minPrice != null)
             {
-                props = props.Where(p => p.Price >= vm.minPrice).ToList();
+                props = props.Where(p => p.Price >= Convert.ToDecimal(vm.minPrice)).ToList();
             }
             if (vm.maxPrice != null)
             {
-                props = props.Where(p => p.Price <= vm.maxPrice).ToList();
+                props = props.Where(p => p.Price <= Convert.ToDecimal(vm.maxPrice)).ToList();
             }
-            props = props.Where(p => p.BedroomCount >= vm.roomNumber).ToList();
+            props = props.Where(p => p.BedroomCount >= Convert.ToInt32(vm.roomNumber)).ToList();
 
             return Json(props);
         }
