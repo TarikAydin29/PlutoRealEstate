@@ -7,6 +7,7 @@ using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.CustomerArea.Models;
+using RealEstate.UI.Models;
 using System.Security.Claims;
 
 namespace RealEstate.UI.Areas.CustomerArea.Controllers
@@ -14,16 +15,20 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
     public class DefaultController : CustomerBaseController
     {
         private readonly Context _context;
+        private readonly ICategoryService _categoryService;
         private readonly IPropertyService _propertyService;
+        private readonly IPropertyStatusService _propertyStatusService;
         private readonly IMapper _mapper;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager)
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService)
         {
             _context = context;
             _propertyService = propertyService;
             _mapper = mapper;
             _signInManager = signInManager;
+            _categoryService = categoryService;
+            _propertyStatusService = propertyStatusService;
         }
 
 
@@ -33,40 +38,51 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             var cities = _context.sehir.ToList();
             ViewBag.sehir = new SelectList(cities, "sehir_key", "sehir_title");
+            var categories = await _categoryService.TGetAllAsync();
+            ViewBag.cats = new SelectList(categories, "Id", "Name");
+            var propStatuses = await _propertyStatusService.TGetAllAsync();
+            ViewBag.stats = new SelectList(propStatuses, "Id", "Status");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(CustomerListPropertyVM vm)
+        public async Task<IActionResult> SearchFilter([FromBody] CustomerListPropertyVM vm)
         {
-            var city = _context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
-            var county = _context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
-            var district = _context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
-            vm.City = city.sehir_title;
-            vm.County = county.ilce_title;
-            vm.District = district.mahalle_title;
-
-            var property = _mapper.Map<Property>(vm);
-            if (ModelState.IsValid)
+            var props = await _propertyService.TGetAllAsync();
+            if (!string.IsNullOrEmpty(vm.sehir))
             {
-                await _propertyService.TInsertAsync(property);
-                return RedirectToAction("Index");
+                props = props.Where(x => x.City == vm.sehir).ToList();
+            }
+            if (!string.IsNullOrEmpty(vm.ilce))
+            {
+                props = props.Where(x => x.County == vm.ilce).ToList();
             }
 
-            return View(property);
+            if (!string.IsNullOrEmpty(vm.mahalle))
+            {
+                props = props.Where(x => x.District == vm.mahalle).ToList();
+            }
+
+            if (vm.category != null)
+            {
+                props = props.Where(x => x.CategoryID == new Guid(vm.category)).ToList();
+            }
+            if (vm.status != null)
+            {
+                props = props.Where(x => x.PropertyStatusID == new Guid(vm.status)).ToList();
+            }
+            if (vm.minPrice != null)
+            {
+                props = props.Where(p => p.Price >= Convert.ToDecimal(vm.minPrice)).ToList();
+            }
+            if (vm.maxPrice != null)
+            {
+                props = props.Where(p => p.Price <= Convert.ToDecimal(vm.maxPrice)).ToList();
+            }
+            props = props.Where(p => p.BedroomCount >= Convert.ToInt32(vm.roomNumber)).ToList();
+
+            return Json(props);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> LogOut()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home", new { Area = "" });
-        }
-
-
-
-
-
         [HttpGet]
         public JsonResult GetIlce(int sehirKey)
         {
@@ -85,5 +101,13 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
                 .ToList();
             return Json(mahalle);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
+
     }
 }
