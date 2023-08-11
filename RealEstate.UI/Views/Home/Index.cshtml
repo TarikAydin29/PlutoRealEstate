@@ -5,8 +5,8 @@
 
 <style>
     select[disabled] {
-        color: #999; 
-        background-color: #fff; 
+        color: #999;
+        background-color: #fff;
         opacity: 0.5;
     }
 </style>
@@ -157,7 +157,7 @@
                 var minPrice = $('#minPrice').val();
                 var maxPrice = $('#maxPrice').val();
 
-                var data = {
+                var vm = {
                     sehir: sehir,
                     ilce: ilce,
                     mahalle: mahalle,
@@ -167,11 +167,14 @@
                     minPrice: minPrice,
                     maxPrice: maxPrice
                 };
-                console.log(data)
+                console.log(vm)
+                console.log(JSON.stringify({ vm: vm }));
                 $.ajax({
-                    url: '/Home/SearchFilter',
+                    url: '../Home/SearchFilter',
                     type: 'POST',
-                    data: data,
+                    dataType: 'json',
+                    data: JSON.stringify({ sehir: $('#sehir').val(), ilce: $('#ilce').val(), mahalle: $('#mahalle').val(), category: $('#category').val(), status: $('#status').val(), roomNumber: $('#roomNumber').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val() }),
+                    contentType: 'application/json',
                     success: function (response) {
                         // Handle the response from the server
                         console.log(response);
@@ -183,6 +186,7 @@
                 });
             });
         });
+        
     </script>
 
     }

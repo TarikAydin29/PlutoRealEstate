@@ -5,10 +5,10 @@
         public string sehir { get; set; }
         public string ilce { get; set; }
         public string mahalle { get; set; }
-        public Guid category { get; set; }
-        public Guid status { get; set; }
-        public int roomNumber { get; set; }
-        public decimal minPrice { get; set; }
-        public decimal maxPrice { get; set; }
+        public string category { get; set; }
+        public string status { get; set; }
+        public string roomNumber { get; set; }
+        public string minPrice { get; set; }
+        public string maxPrice { get; set; }
     }
 }
