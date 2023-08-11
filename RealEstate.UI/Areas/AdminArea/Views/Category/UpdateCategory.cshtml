@@ -1,0 +1,17 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
+@model UpdateCategoryStatusVM
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2> Category Güncelleme</h2>
+
+<form asp-controller="Category" asp-action="UpdateCategory" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>
+
