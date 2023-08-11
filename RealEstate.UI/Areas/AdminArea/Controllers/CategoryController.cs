@@ -36,7 +36,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
                 await _categoryService.TInsertAsync(category);
               
             }
-            return View(model);
+            return RedirectToAction("GetAllCategory");
         }
         [HttpGet]
         public async Task<IActionResult> GetAllCategory()

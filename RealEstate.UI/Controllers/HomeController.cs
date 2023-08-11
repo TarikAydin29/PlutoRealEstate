@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
+using RealEstate.Entities.Entities;
 using RealEstate.UI.Models;
 using System.Diagnostics;
 
@@ -41,37 +43,45 @@ namespace RealEstate.UI.Controllers
             var props = await propertyService.TGetAllAsync();
             if (!string.IsNullOrEmpty(vm.sehir))
             {
+                var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.sehir));
+                vm.sehir = city.sehir_title;
                 props = props.Where(x => x.City == vm.sehir).ToList();
             }
             if (!string.IsNullOrEmpty(vm.ilce))
             {
+                var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.ilce));
+                vm.ilce = county.ilce_title;
                 props = props.Where(x => x.County == vm.ilce).ToList();
             }
 
             if (!string.IsNullOrEmpty(vm.mahalle))
             {
+                var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.mahalle));
+                vm.mahalle = district.mahalle_title;
                 props = props.Where(x => x.District == vm.mahalle).ToList();
             }
 
-            if (vm.category != null)
+            if (!string.IsNullOrEmpty(vm.category))
             {
                 props = props.Where(x => x.CategoryID == new Guid(vm.category)).ToList();
             }
-            if (vm.status != null)
+            if (!string.IsNullOrEmpty(vm.status))
             {
                 props = props.Where(x => x.PropertyStatusID == new Guid(vm.status)).ToList();
             }
-            if (vm.minPrice != null)
+            if (!string.IsNullOrEmpty(vm.minPrice))
             {
                 props = props.Where(p => p.Price >= Convert.ToDecimal(vm.minPrice)).ToList();
             }
-            if (vm.maxPrice != null)
+            if (!string.IsNullOrEmpty(vm.maxPrice))
             {
                 props = props.Where(p => p.Price <= Convert.ToDecimal(vm.maxPrice)).ToList();
             }
             props = props.Where(p => p.BedroomCount >= Convert.ToInt32(vm.roomNumber)).ToList();
 
-            return Json(props);
+            var value = JsonConvert.SerializeObject(props);
+
+            return Json(value);
         }
 
 
