@@ -3,5 +3,6 @@
     public class CreatePropertyStatusVM
     {
         public string Status { get; set; }
+        public bool IsActive => true;
     }
 }
