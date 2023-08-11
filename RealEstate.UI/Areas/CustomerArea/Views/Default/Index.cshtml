@@ -163,7 +163,7 @@
                 console.log(vm)
                 console.log(JSON.stringify({ vm: vm }));
                 $.ajax({
-                    url: '/CustomerArea/Default/SearchFilter',
+                    url: '../CustomerArea/Default/SearchFilter',
                     type: 'POST',
                     dataType: 'json',
                     data: JSON.stringify({ sehir: $('#sehir').val(), ilce: $('#ilce').val(), mahalle: $('#mahalle').val(), category: $('#category').val(), status: $('#status').val(), roomNumber: $('#roomNumber').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val() }),
@@ -183,4 +183,3 @@
     </script>
 
     }
-    
