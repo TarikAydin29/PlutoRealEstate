@@ -3,123 +3,75 @@
     Layout = "~/Areas/CustomerArea/Views/Shared/_CustomerLayout.cshtml";
 }
 
+<style>
+    select[disabled] {
+        color: #999;
+        background-color: #fff;
+        opacity: 0.5;
+    }
+</style>
 
 <div class="content">
 
     <!--SearchBar-->
-    @*@await Component.InvokeAsync("_CustomerSearchBarPartial")*@
     <form asp-action="Index" enctype="multipart/form-data" method="post">
         <div class="place-section">
             <div class="container">
-                <h2>find your place</h2>
-                <div class="place-grids">             
-                       <div class="col-md-3 place-grid">
-                    <h5>Tüm Şehir Listesi</h5>
-                    <select  asp-items="ViewBag.sehir" class="sel" id="sehir">
-                    <option value="">Şehir Seçiniz</option>
-                    </select>
-                    </div>
-
+                <h2>Hayalinizdeki Mülkü Hemen Bulun</h2>
+                <div class="place-grids">
                     <div class="col-md-3 place-grid">
-                    <h5>İlçeler</h5>
-                    <select  id="ilce" class="sel">
-                    <option value="">İlçe Seçiniz</option>
-                    </select>
-                    </div>
-
-                    <div class="col-md-3 place-grid">
-                    <h5>Mahalleler</h5>
-                    <select  id="mahalle" class=" sel">
-                    <option value="">Mahalle Seçiniz</option>
-                    </select>
-                    </div>
-
-                    <div class="col-md-3 place-grid">
-                        <h5>Property Status</h5>
-                        <select class="sel">
-                            <option value="">All status</option>
-                            <option value="">none</option>
-                            <option value="">open house</option>
-                            <option value="">rent</option>
-                            <option value="">sale</option>
+                        <select asp-items="ViewBag.sehir" class="sel" id="sehir" autocomplete="off">
+                            <option value="">İl</option>
                         </select>
                     </div>
                     <div class="col-md-3 place-grid">
-                        <h5>Property Type</h5>
-                        <select class="sel">
-                            <option value="">All Type</option>
-                            <option value="">Commercial</option>
-                            <option value="">- Office</option>
-                            <option value="">- Buy</option>
-                            <option value="">Residential</option>
-                            <option value="">-Apartment</option>
+
+                        <select id="ilce" class="sel" disabled>
+                            <option value="">İlçe</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 place-grid">
+
+                        <select id="mahalle" class=" sel" disabled>
+                            <option value="">Mahalle</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 place-grid">
+                        <select asp-items="ViewBag.cats" class="sel" id="category">
+                            <option value="">Kategori Seçiniz</option>
                         </select>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="place-grids">
                     <div class="col-md-2 place-grid1">
-                        <h5>Min Beds</h5>
-                        <select class="sel">
-                            <option value="">any</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
-                            <option value="">4</option>
-                            <option value="">5</option>
+                        <select asp-items="ViewBag.stats" class="sel" id="status">
                         </select>
                     </div>
                     <div class="col-md-2 place-grid1">
-                        <h5>Min Baths</h5>
-                        <select class="sel">
-                            <option value="">any</option>
-                            <option value="">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
-                            <option value="">4</option>
-                            <option value="">5</option>
+                        <select class="sel" id="roomNumber" autocomplete="off">
+                            <option value="0" selected>Oda Sayısı</option>
+                            @for (int i = 1; i < 20; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-2 place-grid1">
-                        <h5>Min Price</h5>
-                        <select class="sel">
-                            <option value="">any</option>
-                            <option value="">$500</option>
-                            <option value="">$1000</option>
-                            <option value="">$2000</option>
-                            <option value="">$3000</option>
-                            <option value="">$4000</option>
-                            <option value="">$5000</option>
-                            <option value="">$75000</option>
-                            <option value="">$10000</option>
-                        </select>
+                        <input type="number" class="sel" id="minPrice" placeholder="Min TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
                     </div>
                     <div class="col-md-2 place-grid1">
-                        <h5>Max Price</h5>
-                        <select class="sel">
-                            <option value="">any</option>
-                            <option value="">$1000</option>
-                            <option value="">$2000</option>
-                            <option value="">$3000</option>
-                            <option value="">$4000</option>
-                            <option value="">$5000</option>
-                            <option value="">$75000</option>
-                            <option value="">$10000</option>
-                        </select>
+                        <input type="number" class="sel" id="maxPrice" placeholder="Max TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
                     </div>
-                    <div class="col-md-4 search">
+                    <div class="col-md-4 search" style="margin-top:12px">
                         <form action="forrent.html">
-                            <input type="submit" value="Search">
+                            <input type="submit" value="Ara" style="border-radius:10px">
                         </form>
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
     </form>
-   
-
-
     <!--SearchBar-->
     <!--Promotion-->
     @await Component.InvokeAsync("_PromotionPartial")
@@ -131,8 +83,7 @@
         $(document).ready(function () {
             $("#sehir").change(function () {
                 var sehirKey = $(this).val();
-                console.log("Deneme");
-                $.getJSON(`../CustomerArea/Default/GetIlce?sehirKey=${sehirKey}`, function (data) {
+                $.getJSON(`/CustomerArea/Default/GetIlce?sehirKey=${sehirKey}`, function (data) {
                     var items = "";
                     $.each(data, function (i, ilce) {
                         items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
@@ -143,7 +94,7 @@
 
             $("#ilce").change(function () {
                 var ilceKey = $(this).val();
-                $.getJSON(`../CustomerArea/Default/GetMahalle?ilceKey=${ilceKey}`, function (data) {
+                $.getJSON(`/CustomerArea/Default/GetMahalle?ilceKey=${ilceKey}`, function (data) {
                     var items = "";
                     $.each(data, function (i, mahalle) {
                         items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
@@ -153,4 +104,83 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#ilce').prop('disabled', true);
+            $('#mahalle').prop('disabled', true);
+
+
+            $('#sehir').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#ilce').prop('disabled', false);
+                } else {
+                    $('#ilce').prop('disabled', true);
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+
+            $('#ilce').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#mahalle').prop('disabled', false);
+                } else {
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Your existing JavaScript/jQuery code...
+
+            $('.search form').on('submit', function (e) {
+                e.preventDefault();
+
+                var sehir = $('#sehir').val();
+                var ilce = $('#ilce').val();
+                var mahalle = $('#mahalle').val();
+                var category = $('#category').val();
+                var status = $('#status').val();
+                var roomNumber = $('#roomNumber').val();
+                var minPrice = $('#minPrice').val();
+                var maxPrice = $('#maxPrice').val();
+
+                var vm = {
+                    sehir: sehir,
+                    ilce: ilce,
+                    mahalle: mahalle,
+                    category: category,
+                    status: status,
+                    roomNumber: roomNumber,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice
+                };
+                console.log(vm)
+                console.log(JSON.stringify({ vm: vm }));
+                $.ajax({
+                    url: '/CustomerArea/Default/SearchFilter',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ sehir: $('#sehir').val(), ilce: $('#ilce').val(), mahalle: $('#mahalle').val(), category: $('#category').val(), status: $('#status').val(), roomNumber: $('#roomNumber').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val() }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        // Handle the response from the server
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        // Handle errors
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+
     }
+    
