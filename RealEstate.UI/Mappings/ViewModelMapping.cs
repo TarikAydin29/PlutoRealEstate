@@ -21,7 +21,7 @@ namespace RealEstate.UI.Mappings
 
             CreateMap<CreateCategoryViewModel, Category>().ReverseMap();
             CreateMap<Category, GettAllCategoryViewModel>().ReverseMap();
-            CreateMap<UpdateCategoryStatusVM, Category>();
+            CreateMap<UpdateCategoryStatusVM, Category>().ReverseMap();
 
             CreateMap<PropertyStatus, GettAllPropertyStatusViewModel>().ReverseMap();
             CreateMap<PropertyStatus, CreatePropertyStatusVM>().ReverseMap();
