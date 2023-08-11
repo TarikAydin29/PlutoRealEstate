@@ -13,7 +13,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
 
         public CategoryController(IMapper mapper, ICategoryService categoryService)
         {
-           _mapper = mapper;
+            _mapper = mapper;
             _categoryService = categoryService;
         }
 
@@ -34,7 +34,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             {
                 var category = _mapper.Map<Category>(model);
                 await _categoryService.TInsertAsync(category);
-              
+
             }
             return View(model);
         }
@@ -46,16 +46,12 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             return View(categoryViewModels);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpGet]
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
-            var category = await _categoryService.TGetByIdAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            _categoryService.TDelete(category);
-            return RedirectToAction("Index");
+            var value = await _categoryService.TGetByIdAsync(id);
+            _categoryService.TDelete(value);
+            return RedirectToAction("GetAllCategory");
         }
         [HttpGet]
         public async Task<IActionResult> UpdateCategory(Guid id)
@@ -74,22 +70,25 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
         {
             if (id != viewModel.Id)
             {
-
                 return BadRequest();
             }
 
             if (ModelState.IsValid)
             {
                 var existingCategory = await _categoryService.TGetByIdAsync(id);
+
                 if (existingCategory == null)
                 {
                     return NotFound();
                 }
-                existingCategory.Id = viewModel.Id;
+
+                existingCategory.Name = viewModel.Name;
+
                 await _categoryService.TUpdateAsync(existingCategory);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("GetAllCategory");
             }
+
             return View(viewModel);
         }
     }
