@@ -10,16 +10,11 @@
     <!---header--->
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/HeaderPartial.cshtml")
     <!---header--->
-    <!---banner--->
-    @await Html.PartialAsync("/Views/_HomePageLayoutPartial/BannerPartial.cshtml")
-    <!---banner--->
     @RenderBody();
 
     <!---footer--->
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/FooterPartial.cshtml")
     <!---footer--->
-
-
     <!-- login -->
     @await Html.PartialAsync("/Views/_HomePageLayoutPartial/LoginPartial.cshtml")
     <!-- //login -->
