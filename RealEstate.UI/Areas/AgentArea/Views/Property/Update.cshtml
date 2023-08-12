@@ -74,7 +74,11 @@
         </p>
     </div>
 
+    <div class="form-group">
+        <label class="control-label">İlan Resimleri</label>
+        <input type="file" name="images" multiple class="form-control" />
 
+    </div>
     <div class="form-group row">
         @foreach (var item in Model.Photos)
         {
@@ -83,11 +87,11 @@
                     <input type="hidden" class="photoID" value="@item.Id" />
                     <img style="border-radius: 10%; height:150px;" src="~/Images/Uploads/@item.PhotoPath" />
                 </div>
-                <button class="form-control delete-photo btn btn-outline-danger">Delete</button>
+                <button class="form-control delete-photo btn btn-outline-danger">Resmi Kaldır</button>
             </div>
         }
     </div>
-
+      <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 50%; height:150px;width:150px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)">
 
 
     <div class="form-check">
@@ -129,6 +133,13 @@
 </script>
 
 @section Scripts {
+
+    <script>
+    var loadFile = function (event) {
+        var image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
 
     <script>
 

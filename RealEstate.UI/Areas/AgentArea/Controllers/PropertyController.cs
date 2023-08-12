@@ -24,8 +24,11 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         private readonly IPropertyStatusService propertyStatusService;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IPropertyPhotoService propertyPhotoService;
+        private readonly ISehirService sehirService;
+        private readonly IIlceService ılceService;
+        private readonly IMahalleService mahalleService;
 
-        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IWebHostEnvironment webHostEnvironment, IPropertyPhotoService propertyPhotoService)
+        public PropertyController(IPropertyService propertyService, UserManager<AppUser> userManager, IAgentService agentService, IMapper mapper, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IWebHostEnvironment webHostEnvironment, IPropertyPhotoService propertyPhotoService,ISehirService sehirService,IIlceService ılceService,IMahalleService mahalleService)
         {
             _propertyService = propertyService;
             this.userManager = userManager;
@@ -36,6 +39,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             this.propertyStatusService = propertyStatusService;
             this.webHostEnvironment = webHostEnvironment;
             this.propertyPhotoService = propertyPhotoService;
+            this.sehirService = sehirService;
+            this.ılceService = ılceService;
+            this.mahalleService = mahalleService;
         }
 
         public async Task<IActionResult> Index()
@@ -62,7 +68,8 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var cities = context.sehir.ToList();
+            //var cities = context.sehir.ToList();
+            var cities = sehirService.TGetSehirs();
             ViewBag.sehir = new SelectList(cities, "sehir_key", "sehir_title");
             var categories = await categoryService.TGetAllAsync();
             ViewBag.category = new SelectList(categories, "Id", "Name");
@@ -223,19 +230,19 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
         }
 
         private void TitleToKey(UpdatePropertyVM vm)
-        {
-            var city = context.sehir.FirstOrDefault(x => x.sehir_title == vm.City);
-            var county = context.ilce.FirstOrDefault(x => x.ilce_title == vm.County);
-            var district = context.mahalle.FirstOrDefault(x => x.mahalle_title == vm.District);
+        {          
+            var city = sehirService.TGetSehirByTitle(vm.City);    
+            var county = ılceService.TGetIlceByTitle(vm.County);        
+            var district = mahalleService.TGetMahalleByTitle(vm.District);
             vm.City = city.sehir_key.ToString();
             vm.County = county.ilce_key.ToString();
             vm.District = district.mahalle_key.ToString();
         }
         private void KeyToTitleUpdate(UpdatePropertyVM vm)
         {
-            var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
-            var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
-            var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
+            var city = sehirService.TGetSehirByKey(Convert.ToInt32(vm.City));
+            var county = ılceService.TGetIlceByKey(Convert.ToInt32(vm.County));
+            var district = mahalleService.TGetMahalleByKey(Convert.ToInt32(vm.District));
             vm.City = city.sehir_title;
             vm.County = county.ilce_title;
             vm.District = district.mahalle_title;
@@ -243,9 +250,9 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
 
         private void KeyToTitleCreate(CreatePropertyVM vm)
         {
-            var city = context.sehir.FirstOrDefault(x => x.sehir_key == Convert.ToInt32(vm.City));
-            var county = context.ilce.FirstOrDefault(x => x.ilce_key == Convert.ToInt32(vm.County));
-            var district = context.mahalle.FirstOrDefault(x => x.mahalle_key == Convert.ToInt32(vm.District));
+            var city = sehirService.TGetSehirByKey(Convert.ToInt32(vm.City));
+            var county = ılceService.TGetIlceByKey(Convert.ToInt32(vm.County));
+            var district = mahalleService.TGetMahalleByKey(Convert.ToInt32(vm.District));
             vm.City = city.sehir_title;
             vm.County = county.ilce_title;
             vm.District = district.mahalle_title;
