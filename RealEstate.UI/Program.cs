@@ -48,6 +48,16 @@ builder.Services.AddScoped<IPropertyStatusDal, EfPropertyStatusDal>();
 builder.Services.AddScoped<IPropertyPhotoService, PropertyPhotoManager>();
 builder.Services.AddScoped<IPropertyPhotoDAL, EFPropertyPhotoDAL>();
 
+
+builder.Services.AddScoped<ISehirService,SehirManager>();
+builder.Services.AddScoped<ISehirDAL, EFSehirDAL>();
+
+builder.Services.AddScoped<IIlceService, IlceManager>();
+builder.Services.AddScoped<IIlceDAL, EFIlceDAL>();
+
+builder.Services.AddScoped<IMahalleService, MahalleManager>();
+builder.Services.AddScoped<IMahalleDAL, EFMahalleDAL>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
