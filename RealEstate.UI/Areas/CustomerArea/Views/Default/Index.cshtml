@@ -12,70 +12,79 @@
 </style>
 
 <div class="content">
-
     <!--SearchBar-->
-    <form asp-action="Index" enctype="multipart/form-data" method="post">
-        <div class="place-section">
-            <div class="container">
-                <h2>Hayalinizdeki Mülkü Hemen Bulun</h2>
-                <div class="place-grids">
-                    <div class="col-md-3 place-grid">
-                        <select asp-items="ViewBag.sehir" class="sel" id="sehir" autocomplete="off">
-                            <option value="">İl</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 place-grid">
-
-                        <select id="ilce" class="sel" disabled>
-                            <option value="">İlçe</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 place-grid">
-
-                        <select id="mahalle" class=" sel" disabled>
-                            <option value="">Mahalle</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 place-grid">
-                        <select asp-items="ViewBag.cats" class="sel" id="category">
-                            <option value="">Kategori Seçiniz</option>
-                        </select>
-                    </div>
-                    <div class="clearfix"></div>
+    <div class="place-section">
+        <div class="container">
+            <h2>Hayalinizdeki Mülkü Hemen Bulun</h2>
+            <div class="place-grids">
+                <div class="col-md-3 place-grid">
+                    <select asp-items="ViewBag.sehir" class="sel" id="sehir" autocomplete="off">
+                        <option value="">İl</option>
+                    </select>
                 </div>
-                <div class="place-grids">
-                    <div class="col-md-2 place-grid1">
-                        <select asp-items="ViewBag.stats" class="sel" id="status">
-                        </select>
-                    </div>
-                    <div class="col-md-2 place-grid1">
-                        <select class="sel" id="roomNumber" autocomplete="off">
-                            <option value="0" selected>Oda Sayısı</option>
-                            @for (int i = 1; i < 20; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-2 place-grid1">
-                        <input type="number" class="sel" id="minPrice" placeholder="Min TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
-                    </div>
-                    <div class="col-md-2 place-grid1">
-                        <input type="number" class="sel" id="maxPrice" placeholder="Max TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
-                    </div>
-                    <div class="col-md-4 search" style="margin-top:12px">
-                        <form action="forrent.html">
-                            <input type="submit" value="Ara" style="border-radius:10px">
-                        </form>
-                    </div>
-                    <div class="clearfix"></div>
+                <div class="col-md-3 place-grid">
+
+                    <select id="ilce" class="sel" disabled>
+                        <option value="">İlçe</option>
+                    </select>
                 </div>
+                <div class="col-md-3 place-grid">
+
+                    <select id="mahalle" class=" sel" disabled>
+                        <option value="">Mahalle</option>
+                    </select>
+                </div>
+                <div class="col-md-3 place-grid">
+                    <select asp-items="ViewBag.cats" class="sel" id="category">
+                        <option value="">Kategori Seçiniz</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
             </div>
-    </form>
+            <div class="place-grids">
+                <div class="col-md-2 place-grid1">
+                    <select asp-items="ViewBag.stats" class="sel" id="status">
+                        <option value="">İşlem Durumu</option>
+
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <select class="sel" id="roomNumber" autocomplete="off">
+                        <option value="0" selected>Oda Sayısı</option>
+                        @for (int i = 1; i < 20; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <input type="number" class="sel" id="minPrice" placeholder="Min TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+                </div>
+                <div class="col-md-2 place-grid1">
+                    <input type="number" class="sel" id="maxPrice" placeholder="Max TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+                </div>
+                <div class="col-md-4 search" style="margin-top:12px">
+                    <form action="forrent.html">
+                        <input type="submit" value="Ara" style="border-radius:10px">
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin:10px">
+    </div>
+
     <!--SearchBar-->
     <!--Promotion-->
     @await Component.InvokeAsync("_PromotionPartial")
     <!--Promotion-->
+    <!--Offering-->
+    @await Component.InvokeAsync("_OfferingPartial")
+    <!--Offering-->
+    <!---testimonials--->
+    @await Component.InvokeAsync("_TestimonialPartial")
+    <!---testmonials--->
 </div>
 
 @section Scriptsss {
@@ -133,11 +142,8 @@
         });
     </script>
 
-
     <script>
         $(document).ready(function () {
-            // Your existing JavaScript/jQuery code...
-
             $('.search form').on('submit', function (e) {
                 e.preventDefault();
 
@@ -163,17 +169,65 @@
                 console.log(vm)
                 console.log(JSON.stringify({ vm: vm }));
                 $.ajax({
-                    url: '../CustomerArea/Default/SearchFilter',
+                    url: '../Default/SearchFilter',
                     type: 'POST',
                     dataType: 'json',
                     data: JSON.stringify({ sehir: $('#sehir').val(), ilce: $('#ilce').val(), mahalle: $('#mahalle').val(), category: $('#category').val(), status: $('#status').val(), roomNumber: $('#roomNumber').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val() }),
                     contentType: 'application/json',
                     success: function (response) {
-                        // Handle the response from the server
+                        let values = jQuery.parseJSON(response)
+
                         console.log(response);
+                        var htmlContent = "";
+
+                        $.each(values, function (index, item) {
+                            htmlContent += `
+
+
+
+                                                    <div class="col-md-4 offer-grid">
+                                                        <div class="offer-grid1">
+                                                             <div class="offer1">
+                                                                 <div class="offer-left">
+                                         <h4><a href="single.html">Villa In Hialeah, Dade County</a></h4><a href="single.html" class="mask">
+                                         <img src="images/p3.jpg" class="img-responsive zoom-img" alt=""></a>
+                                    </div>
+                                <div class="offer-right">
+                                    <h5><label>$</label> 7,500 Per Month - <span>Single Family Home</span></h5>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh…</p>
+                                    <a href="single.html" class="button1">more details</a>
+                                    </div>
+                                    <div class="clearfix"></div>
+                            </div>
+                            </div>
+                            </div>
+
+
+
+                                                <div class="col-md-4">
+                                                    <div class="offer-grid1">
+                                                      <h4><a href="single.html">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District} </a></h4>
+                                                        <div class="offer1">
+                                                            <div class="offer-left">
+                                                                <a href="single.html" class="mask"><img src="../Images/Uploads/${item.ImageUrl}" class="img-responsive zoom-img" alt="" /></a>
+                                                            </div>
+                                                            <div class="offer-right">
+                                                                                        <h5><label>TL</label> ${item.Price} - <span> ${item.Area} M²- ${item.BedroomCount} Oda</span></h5>
+                                                                                <p>${item.Description}</p>
+                                                                <a href="single.html" class="button1">Detaylı İncele</a>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>`;
+                        });
+
+                        $(".row").html(htmlContent);
                     },
+
                     error: function (error) {
-                        // Handle errors
+
                         console.error(error);
                     }
                 });
@@ -181,5 +235,6 @@
         });
 
     </script>
+
 
     }
