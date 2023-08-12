@@ -85,16 +85,11 @@ namespace RealEstate.UI.Controllers
         }
 
 
-
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> PropertyDetails(Guid id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var values = propertyService.TGetByIdAsync(id);
+            return View(values);
         }
-
-
-
 
 
 
@@ -118,5 +113,12 @@ namespace RealEstate.UI.Controllers
             return Json(mahalle);
         }
 
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
