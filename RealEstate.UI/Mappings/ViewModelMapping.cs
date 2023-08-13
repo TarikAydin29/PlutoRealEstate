@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
 using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
 using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
 using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
@@ -35,6 +36,8 @@ namespace RealEstate.UI.Mappings
 
             CreateMap<CreateTestimonialVM, Testimonial>().ReverseMap();
             CreateMap<UpdateTestimonialVM, Testimonial>().ReverseMap();
+
+            CreateMap<AppUser, UpdateAdminVM>().ReverseMap();
         }
     }
 }
