@@ -88,5 +88,6 @@ namespace RealEstate.DAL.Concrete
         public DbSet<sokak_cadde> sokak_cadde { get; set; }
         public DbSet<ilce> ilce { get; set; }
         public DbSet<PropertyPhoto> PropertyPhotos { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
     }
 }

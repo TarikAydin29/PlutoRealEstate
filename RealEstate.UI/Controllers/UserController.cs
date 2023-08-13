@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
+using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Models;
 
@@ -17,16 +18,18 @@ namespace RealEstate.UI.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly ILogger<Controller> _logger;
+        private readonly ICustomerService customerService;
         private readonly IMapper mapper;
 
         public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
-            IMapper mapper, ILogger<Controller> logger)
+            IMapper mapper, ILogger<Controller> logger,ICustomerService customerService)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
-            _logger= logger ;
+            _logger = logger;
+            this.customerService = customerService;
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
@@ -38,14 +41,12 @@ namespace RealEstate.UI.Controllers
             {
                 HttpContext.Session.SetString("email", user.Email);
                 return Json(new { redirectToUrl = Url.Action("Index", "Redirect") });
-
             }
             else if (result.Succeeded && user.EmailConfirmed == false)
             {
                 return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
-
             }
-            return View();
+            return Json(new { redirectToUrl = Url.Action("Login", "User") });
         }
 
         [HttpPost]
@@ -76,6 +77,8 @@ namespace RealEstate.UI.Controllers
                 {
                     SendMail(vm, x);
                     TempData["Username"] = user.UserName;
+                    Customer mappedCustomer = mapper.Map<Customer>(vm);
+                    await customerService.TInsertAsync(mappedCustomer);
                     await userManager.AddToRoleAsync(user, "Customer");
                     return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
@@ -89,7 +92,7 @@ namespace RealEstate.UI.Controllers
             }
             return View();
         }
-       
+
 
         [HttpGet]
         public IActionResult CreateRole()
