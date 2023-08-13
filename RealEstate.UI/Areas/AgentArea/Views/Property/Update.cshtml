@@ -65,9 +65,8 @@
         <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 10%; height:150px;width:150px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)" />
         <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;" asp-for="ImageUrl"></p>
         <p>
-            <label for="file" style="border-radius: 25px; margin-top: 5%" class="btn palette-Orange bg btn-lg w-100">
+            <label for="file" style="border-radius: 25px; margin-top: 1%" class="btn btn-outline-warning">
                 <a>
-                    <i class="zmdi zmdi-camera c-white"></i>
                     <span class="c-white">İlan Resmini Güncelle</span>
                 </a>
             </label>
@@ -76,9 +75,10 @@
 
     <div class="form-group">
         <label class="control-label">İlan Resimleri</label>
-        <input type="file" name="images" multiple class="form-control" />
-
+        <input type="file" id="imageUpload" name="images" class="form-control" multiple />
+        <div id="imageContainer" class="img-fluid m-3"></div>
     </div>
+
     <div class="form-group row">
         @foreach (var item in Model.Photos)
         {
@@ -91,7 +91,6 @@
             </div>
         }
     </div>
-      <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 50%; height:150px;width:150px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)">
 
 
     <div class="form-check">
@@ -122,7 +121,7 @@
             <option value="">İlan Türü Seçiniz</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-primary">İlanı Güncelle</button>
 </form>
 
 <script>
@@ -135,20 +134,35 @@
 @section Scripts {
 
     <script>
-    var loadFile = function (event) {
-        var image = document.getElementById('output');
-        image.src = URL.createObjectURL(event.target.files[0]);
-    };
-</script>
+        document.getElementById('imageUpload').addEventListener('change', function (event) {
+            var files = event.target.files;
+            var imageContainer = document.getElementById('imageContainer');
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Uploaded Image';
+                    img.width = 150;
+                    imageContainer.appendChild(img);
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 
     <script>
 
 
         $(document).ready(function () {
-         
+
             var preselectedCity = "@Model.City";
             if (preselectedCity) {
-                $("#sehir").val(preselectedCity);  
+                $("#sehir").val(preselectedCity);
                 loadCounties(preselectedCity, "@Model.County");
             }
 
@@ -173,7 +187,7 @@
                 $("#ilce").html(items);
 
                 if (preselectedCounty) {
-                 
+
                     loadDistricts(preselectedCounty, "@Model.District");
                 }
             });
@@ -198,7 +212,7 @@
 
 
 
-   @* <script>
+    @* <script>
         $(document).ready(function () {
             $("#sehir").change(function () {
                 var sehirKey = $(this).val();
@@ -243,27 +257,27 @@
         });
 
 
-                                //$(document).ready(function () {
-                                //    $('.delete-photo').click(function (e) {
-                                //        e.preventDefault();
+                                                        //$(document).ready(function () {
+                                                        //    $('.delete-photo').click(function (e) {
+                                                        //        e.preventDefault();
 
-                                //        var idVM = {
-                                //            id: $(this).closest('.col-3').find('.photoID').val()
-                                //        };
-                                //        console.log(idVM)
+                                                        //        var idVM = {
+                                                        //            id: $(this).closest('.col-3').find('.photoID').val()
+                                                        //        };
+                                                        //        console.log(idVM)
 
-                                //        $.ajax({
-                                //            url: '../DeletePhoto',
-                                //            type: 'POST',
-                                //            dataType: 'json',
-                                //            data: JSON.stringify(id: $(this).closest('.col-3').find('.photoID').val()),
-                                //            contentType: 'application/json',
-                                //            success: function (response) {
-                                //                //window.location.href = response.redirectToUrl;
-                                //            }
-                                //        });
-                                //    });
-                                //});
+                                                        //        $.ajax({
+                                                        //            url: '../DeletePhoto',
+                                                        //            type: 'POST',
+                                                        //            dataType: 'json',
+                                                        //            data: JSON.stringify(id: $(this).closest('.col-3').find('.photoID').val()),
+                                                        //            contentType: 'application/json',
+                                                        //            success: function (response) {
+                                                        //                //window.location.href = response.redirectToUrl;
+                                                        //            }
+                                                        //        });
+                                                        //    });
+                                                        //});
     </script>
     }
 
