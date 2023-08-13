@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using RealEstate.Entities.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealEstate.DAL.Concrete
 {
@@ -20,6 +14,7 @@ namespace RealEstate.DAL.Concrete
         {
             base.OnModelCreating(builder);
             builder.Entity<AppUser>().Property(user => user.Id).ValueGeneratedOnAdd();
+          
         }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Agent> Agents { get; set; }
@@ -33,5 +28,6 @@ namespace RealEstate.DAL.Concrete
         public DbSet<sokak_cadde> sokak_cadde { get; set; }
         public DbSet<ilce> ilce { get; set; }
         public DbSet<PropertyPhoto> PropertyPhotos { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
     }
 }
