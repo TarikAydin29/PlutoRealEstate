@@ -48,15 +48,11 @@ builder.Services.AddScoped<IPropertyStatusDal, EfPropertyStatusDal>();
 builder.Services.AddScoped<IPropertyPhotoService, PropertyPhotoManager>();
 builder.Services.AddScoped<IPropertyPhotoDAL, EFPropertyPhotoDAL>();
 
+builder.Services.AddScoped<IAdminService, AdminManager>();
+builder.Services.AddScoped<IAdminDal, EfAdminDal>();
 
-builder.Services.AddScoped<ISehirService,SehirManager>();
-builder.Services.AddScoped<ISehirDAL, EFSehirDAL>();
-
-builder.Services.AddScoped<IIlceService, IlceManager>();
-builder.Services.AddScoped<IIlceDAL, EFIlceDAL>();
-
-builder.Services.AddScoped<IMahalleService, MahalleManager>();
-builder.Services.AddScoped<IMahalleDAL, EFMahalleDAL>();
+builder.Services.AddScoped<ITestimonialService,TestimonialManager >();
+builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();
 
 var app = builder.Build();
 

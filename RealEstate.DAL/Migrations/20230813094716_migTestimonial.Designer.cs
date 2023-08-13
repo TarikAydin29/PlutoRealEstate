@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstate.DAL.Concrete;
 
@@ -11,9 +12,10 @@ using RealEstate.DAL.Concrete;
 namespace RealEstate.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230813094716_migTestimonial")]
+    partial class migTestimonial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,13 +106,6 @@ namespace RealEstate.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("fc084da3-0be9-467b-be60-074813040465"),
-                            RoleId = new Guid("e82f5db6-ce0d-4b54-823a-d3bd9503dbca")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -198,29 +193,6 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e82f5db6-ce0d-4b54-823a-d3bd9503dbca"),
-                            ConcurrencyStamp = "db7d72a4-7a6a-4675-9531-fb5cf619109c",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("2d7d6c95-6b61-4cac-8d5e-739b5a9c1a7c"),
-                            ConcurrencyStamp = "bdf2b491-5ed2-4eed-aa63-9c8ed8ba7948",
-                            Name = "Agent",
-                            NormalizedName = "AGENT"
-                        },
-                        new
-                        {
-                            Id = new Guid("ab596c2f-997c-406d-b2cb-daf9f2c1c428"),
-                            ConcurrencyStamp = "2525c5de-3e9f-4f1b-89d1-0b5490a0b692",
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
-                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.AppUser", b =>
@@ -302,27 +274,6 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("fc084da3-0be9-467b-be60-074813040465"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a8901137-5455-487b-b3e9-7c8fa9b4ed26",
-                            Email = "admin@example.com",
-                            EmailConfirmed = true,
-                            ImageUrl = "bb.jpg",
-                            LockoutEnabled = false,
-                            Name = "Bill",
-                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                            NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGP080dCiaGpEJL+lvQ/dEfZnb3yH6Z2E4fh5Vm10OGbFX7uSYzVjUpezFDi5Y4rpA==",
-                            PhoneNumber = "123456789",
-                            PhoneNumberConfirmed = false,
-                            Surname = "Gates",
-                            TwoFactorEnabled = false,
-                            UserName = "admin1"
-                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Category", b =>
