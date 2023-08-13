@@ -18,18 +18,18 @@ namespace RealEstate.UI.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly ILogger<Controller> _logger;
-        private readonly ICustomerService customerService;
+   
         private readonly IMapper mapper;
 
         public UserController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
-            IMapper mapper, ILogger<Controller> logger,ICustomerService customerService)
+            IMapper mapper, ILogger<Controller> logger)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.mapper = mapper;
             _logger = logger;
-            this.customerService = customerService;
+           
         }
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM vm)
@@ -76,9 +76,7 @@ namespace RealEstate.UI.Controllers
                 if (result.Succeeded)
                 {
                     SendMail(vm, x);
-                    TempData["Username"] = user.UserName;
-                    Customer mappedCustomer = mapper.Map<Customer>(vm);
-                    await customerService.TInsertAsync(mappedCustomer);
+                    TempData["Username"] = user.UserName;                    
                     await userManager.AddToRoleAsync(user, "Customer");
                     return Json(new { redirectToUrl = Url.Action("Index", "ConfirmMail") });
                 }
