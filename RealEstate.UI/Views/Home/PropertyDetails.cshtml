@@ -1,4 +1,6 @@
-﻿@{
+﻿@model RealEstate.UI.Models.PropListVM;
+
+@{
     ViewData["Title"] = "PropertyDetails";
     Layout = "~/Views/Shared/_HomePageLayout.cshtml";
 }
@@ -54,63 +56,63 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="col-md-9 properties-left">
                         <div class="flexslider">
                             <ul class="slides">
-                                <li data-thumb="~/web/images/d11.jpg">
-                                    <div class="thumb-image"> <img src="~/web/images/d1.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                                </li>
-                                <li data-thumb="~/web/images/d12.jpg">
-                                    <div class="thumb-image"> <img src="~/web/images/d2.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                                </li>
-                                <li data-thumb="~/web/images/d13.jpg">
-                                    <div class="thumb-image"> <img src="~/web/images/d3.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                                </li>
-                                <li data-thumb="~/web/images/d14.jpg">
-                                    <div class="thumb-image"> <img src="~/web/images/d4.jpg" data-imagezoom="true" class="img-responsive"> </div>
-                                </li>
+
+                                @foreach (var item in Model.Photos)
+                                {
+                                    <li data-thumb="@Model.ImageUrl">
+                                        <div class="thumb-image"> <img src="@item.PhotoPath" data-imagezoom="true" class="img-responsive"> </div>
+                                    </li>
+                                }
+
                             </ul>
                         </div>
                         <div class="clearfix"></div>
                         <div class="properties-details">
                             <div class="col-md-2 properties-detail">
-                                <h5><span>5000</span> area</h5>
+                                <h5> Alan <span>@Model.Area</span></h5>
                             </div>
                             <div class="col-md-2 properties-detail">
-                                <h5><span>3</span> baths</h5>
+                                <h5> Banyo Sayısı <span>@Model.BathCount</span></h5>
                             </div>
                             <div class="col-md-2 properties-detail">
-                                <h5><span>4</span> beds</h5>
+                                <h5> Oda Sayısı <span>@Model.BedroomCount</span></h5>
                             </div>
                             <div class="col-md-2 properties-detail">
-                                <h5><span>3</span> parking</h5>
+                                <h5> Şehir <span>@Model.City</span></h5>
                             </div>
                             <div class="col-md-2 properties-detail">
                                 <a href="#">Favorites</a>
                             </div>
                             <div class="col-md-2 properties-detail">
-                                <a href="javascript:window.print()"> print</a>
+                                <a href="javascript:window.print()"> Yazdır</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
                         <div class="additional-details">
-                            <h3>additional details</h3>
+                            <h3>İlan Detayları</h3>
                             <ul>
-                                <li><span>AC</span> : Ceiling Fan(s), Central</li>
-                                <li><span>ACRES</span> : 0.15</li>
-                                <li><span>ACRES SOURCE</span> : Assessor</li>
-                                <li><span>AP #</span> :  999-493-19</li>
-                                <li><span>APPLIANCES</span> :  Dishwasher, Freestanding Gas Range, Garbage Disposal, Microwave</li>
-                                <li><span>BATHROOM DESCRIPTION</span> :Stall Shower</li>
-                                <li><span>BEDROOM FEATURES</span> : Main Floor Master Bedroom</li>
-                                <li><span>CROSS STREETS</span> :  Lincoln and Anchor</li>
-                                <li><span>DINING AREA</span> :  Family Kitchen</li>
-                                <li><span>DISABILITY ACCESS</span> : 36 inch or more wide halls, Doors - Swing in, Entry Slope less than 1 foot, Grab Bars in Bathroom(s), Wheelchair Accessible, Wheelchair Adaptable, Wheelchair Modifications</li>
-                                <li><span>ENCLOSED YARD</span> : Wood</li>
-                                <li><span>ENTRY LOCATION</span> : Ground Level - no steps </li>
-                                <li><span>EXTERIOR CONSTRUCTION</span> : Stucco</li>
-                                <li><span>FLOORS</span> : Ceramic Tile, Wall-to-Wall Carpet</li>
-                                <li><span>HEAT</span> : Forced Air</li>
-                                <li><span>MISC INTERIOR</span> : Forced Air</li>
-                                <li><span>PARKING TYPE</span> :  Direct Garage Access, Driveway, Garage Door Opener</li>
+                                <li><span>Şehir</span> : @Model.City </li>
+                                <li><span>İlçe</span> : @Model.County </li>
+                                <li><span>Mahalle</span> : @Model.District </li>
+                                <li><span>Açıklama</span> :  @Model.Description </li>
+                                <li><span>Bulunduğu Kat</span> :  @Model.Floor </li>
+                                <li><span>Oda Sayısı</span> : @Model.BedroomCount </li>
+                                <li><span>Banyo Sayısı</span> : @Model.BathCount </li>
+                                <li><span>Balkon Sayısı</span> :  @Model.BalconyCount </li>
+                                <li>
+                                    <span>Site İçerisinde mi?</span>
+                                    @if (@Model.IsInSite)
+                                    {
+                                        <span>Evet</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Hayır</span>
+                                    }
+                                </li>
+                                <li><span>Aidat Fiyatı</span> : @Model.Dues </li>
+                                <li><span>İlan Fiyatı</span> :  @Model.Price </li>
                             </ul>
                         </div>
                         <div class="note">
@@ -141,12 +143,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </div>
                     <div class="col-md-3 properties-right">
                         <div class="properties-top">
-                            <h4>jack sparrow</h4>
-                            <img src="~/web/images/a.jpg" class="img-responsive" alt="" />
+                            <h4>@Model.Agent.Name @Model.Agent.Surname</h4>
+                            <img src="@Model.Agent.ImageUrl" class="img-responsive" alt="" />
                             <ul class="">
-                                <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i> Office : 0041-456-3692</li>
-                                <li><i class="glyphicon glyphicon-phone" aria-hidden="true"></i> Mobile : 0200-123-4567</li>
-                                <li><i class="glyphicon glyphicon-print" aria-hidden="true"></i> Fax : 0091-789-456100</li>
+                                <li><i class="glyphicon glyphicon-phone" aria-hidden="true"></i> Telefon : @Model.Agent.PhoneNumber
+                                <li>
+                                <li><i class="glyphicon glyphicon-mail" aria-hidden="true"></i> E-Mail : @Model.Agent.Email</li>
                             </ul>
                             <p>Lorem agent info ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet  magna…</p>
                             <a href="#" class="button2">know more</a>

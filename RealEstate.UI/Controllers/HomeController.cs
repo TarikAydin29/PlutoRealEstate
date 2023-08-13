@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Models;
 using System.Diagnostics;
 
@@ -16,14 +18,20 @@ namespace RealEstate.UI.Controllers
         private readonly ICategoryService categoryService;
         private readonly IPropertyStatusService propertyStatusService;
         private readonly IPropertyService propertyService;
+        private readonly IAgentService agentService;
+        private readonly IPropertyPhotoService propertyPhotoService;
+        private readonly IMapper mapper;
 
-        public HomeController(ILogger<HomeController> logger, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IPropertyService propertyService)
+        public HomeController(ILogger<HomeController> logger, Context context, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IPropertyService propertyService, IAgentService agentService, IMapper mapper, IPropertyPhotoService propertyPhotoService)
         {
             _logger = logger;
             this.context = context;
             this.categoryService = categoryService;
             this.propertyStatusService = propertyStatusService;
             this.propertyService = propertyService;
+            this.agentService = agentService;
+            this.mapper = mapper;
+            this.propertyPhotoService = propertyPhotoService;
         }
 
         public async Task<IActionResult> Index()
@@ -87,12 +95,19 @@ namespace RealEstate.UI.Controllers
 
         public async Task<IActionResult> PropertyDetails(Guid id)
         {
-            var values = propertyService.TGetByIdAsync(id);
-            return View(values);
+            var values = await propertyService.TGetByIdAsync(id);
+            var agent = await agentService.TGetByIdAsync(values.AgentID);
+
+            var mappedProps = mapper.Map<PropListVM>(values);
+            mappedProps.Agent = agent;
+
+            List<PropertyPhoto> imgs = propertyPhotoService.TGetByPropertyIdList(id).ToList();
+            foreach (var item in imgs)
+            {
+                mappedProps.Photos.Add(item);
+            }
+            return View(mappedProps);
         }
-
-
-
 
         [HttpGet]
         public JsonResult GetIlce(int sehirKey)
