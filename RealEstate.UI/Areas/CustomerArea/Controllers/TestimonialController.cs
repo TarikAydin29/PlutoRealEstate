@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.BLL.Abstract;
-using RealEstate.Entities.Entities; 
+using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AdminArea.Controllers;
 using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
 
-namespace RealEstate.UI.Areas.AdminArea.Controllers
+namespace RealEstate.UI.Areas.CustomerArea.Controllers
 {
-    public class TestimonialController : AdminBaseController
+    public class TestimonialController : CustomerBaseController
     {
         private readonly IMapper _mapper;
         private ITestimonialService _testimonialService;
@@ -18,13 +19,10 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             _testimonialService = testimonialService;
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
         }
-
-        // GET: /AdminArea/Testimonial/AddTestimonial
         public IActionResult CreateTestimonial()
         {
             return View();
@@ -41,32 +39,6 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
-        }
-        [HttpGet]
-        public async Task<IActionResult> DeleteTestimonial(Guid id)
-        {
-
-            var value = await _testimonialService.TGetByIdAsync(id);
-            _testimonialService.TDelete(value);
-            return RedirectToAction("Index");
-        }
-        //[HttpGet]
-        //public async Task<IActionResult> UpdateTestimonial(Guid id)
-        //{
-        //    var value = await _testimonialService.TGetByIdAsync(id);
-        //    if (value == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var viewModel = _mapper.Map<UpdateTestimonialVM>(value);
-        //    return View(viewModel);
-        //}
-        [HttpGet]
-        public async Task<IActionResult> GetAllTestimonial()
-        {
-            var value = await _testimonialService.TGetAllAsync();
-            var valusemap = _mapper.Map<List<GettAllTestimonialVM>>(value);
-            return View(valusemap);
         }
     }
 }

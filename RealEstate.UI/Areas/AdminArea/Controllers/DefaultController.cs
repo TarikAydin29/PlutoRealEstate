@@ -1,93 +1,86 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RealEstate.BLL.Abstract;
+using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
+using System.Security.Claims;
 
 namespace RealEstate.UI.Areas.AdminArea.Controllers
 {
     public class DefaultController : AdminBaseController
     {
         private readonly IMapper _mapper;
-        private readonly IAdminService _adminService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public DefaultController(IMapper mapper, IAdminService adminService)
+        public DefaultController(IMapper mapper, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _mapper = mapper;
-            _adminService = adminService; 
+            _userManager = userManager;
+            this.webHostEnvironment = webHostEnvironment;
         }
+
         public IActionResult Index()
         {
             return View();
         }
+
         [HttpGet]
-        public IActionResult AdminPhoto()
+        public async Task<IActionResult> AdminPhoto()
         {
-            return View();
-        }
-        [HttpGet]
-        public async Task<IActionResult> AdminPhoto(Guid id, IFormFile photo)
-        {
-            var adminEntity = await _adminService.TGetByIdAsync(id);
-            if (adminEntity == null)
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userMail);
+
+            var mappedAdmin = _mapper.Map<UpdateAdminVM>(user);
+
+            if (mappedAdmin.ImageUrl != null)
             {
-                return NotFound();
+                HttpContext.Session.SetString("image", mappedAdmin.ImageUrl);
             }
 
-            if (photo != null && photo.Length > 0)
-            {
-             
-                if (!string.IsNullOrEmpty(adminEntity.ImageUrl))
-                {
-                    var existingFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", Path.GetFileName(adminEntity.ImageUrl));
-                    if (System.IO.File.Exists(existingFilePath))
-                    {
-                        System.IO.File.Delete(existingFilePath);
-                    }
-                }
-
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
-                UploadPhoto(photo, uniqueFileName);
-
-           
-                adminEntity.ImageUrl = uniqueFileName;
-
-          
-                await _adminService.TUpdateAsync(adminEntity);
-            }
-
-            var viewModel = _mapper.Map<UpdateAdminVM>(adminEntity);
-
-
-            return RedirectToAction("AdminPhoto", "Default");
+            return View(mappedAdmin);
         }
 
 
 
-        private void UploadPhoto(IFormFile photo, string uniqueFileName)
+        [HttpPost]
+        public async Task<IActionResult> AdminPhoto(UpdateAdminVM vm, IFormFile image)
         {
-            if (photo != null && photo.Length > 0)
+            if (image == null)
             {
-                try
-                {
-                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/Uploads/");
-                    var filePath = Path.Combine(uploadPath, uniqueFileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        photo.CopyTo(stream);
-                    }
-                    ViewBag.Message = "Photo uploaded successfully.";
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "An error occurred: " + ex.Message;
-                }
+                vm.ImageUrl = HttpContext.Session.GetString("image");
             }
             else
             {
-                ViewBag.Message = "No photo selected.";
+                vm.ImageUrl = UploadPhoto(image, "user_avatar_" + Guid.NewGuid().ToString() + ".jpg");
             }
+            AppUser user = await UpdateIdentityUser(vm);
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index");
+        }
+        private async Task<AppUser> UpdateIdentityUser(UpdateAdminVM vm)
+        {
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userMail);
+
+            _mapper.Map(vm, user);
+
+            return user;
         }
 
-
+        private string UploadPhoto(IFormFile image, string uniqueFileName)
+        {
+            string ext = Path.GetExtension(image.FileName);
+            string resimAd = Guid.NewGuid() + ext;
+            string dosyaYolu = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Uploads", resimAd);
+            using (var stream = new FileStream(dosyaYolu, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+            return resimAd;
+        }
     }
 }
