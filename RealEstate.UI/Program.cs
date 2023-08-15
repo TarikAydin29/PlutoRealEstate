@@ -54,6 +54,15 @@ builder.Services.AddScoped<IAdminDal, EfAdminDal>();
 builder.Services.AddScoped<ITestimonialService,TestimonialManager >();
 builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();
 
+builder.Services.AddScoped<ISehirDAL, EFSehirDAL>();
+builder.Services.AddScoped<ISehirService, SehirManager>();
+
+builder.Services.AddScoped<IIlceDAL, EFIlceDAL>();
+builder.Services.AddScoped<IIlceService, IlceManager>();
+
+builder.Services.AddScoped<IMahalleDAL, EFMahalleDAL>();
+builder.Services.AddScoped<IMahalleService, MahalleManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
