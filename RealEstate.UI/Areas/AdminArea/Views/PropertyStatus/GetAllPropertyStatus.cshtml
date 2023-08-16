@@ -1,0 +1,24 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
+@model List<GettAllPropertyStatusViewModel>
+@{
+    ViewData["Title"] = "GetAllPropertyStatus";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Property Status Listesi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Status</td>
+                <td><a href="/AdminArea/PropertyStatus/Delete/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

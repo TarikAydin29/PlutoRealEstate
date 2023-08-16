@@ -1,0 +1,31 @@
+﻿@using RealEstate.UI.Areas.AgentArea.Models;
+@model List<GetAllPropertyVms>
+
+@{
+    ViewData["Title"] = "GetAllProperty";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Property listesi</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.PropertyNo</td>
+                <td>@category.PropertyTitle</td>
+
+               @* <td><a href="/AdminArea/Category/DeleteCategory/@category.PropertyNo" class="btn btn-outline-danger">Sil</a></td>
+                <td> <a href="/AdminArea/Category/UpdateCategory/@category.PropertyTitle" class="btn btn-outline-primary">kategori güncelleme </a> </td>
+            </tr>*@
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
+@model List<GettAllAgentViewModel>
+@{
+    ViewData["Title"] = "AgentGetAll";
+    Layout = "~/Areas/AgentArea/Views/Shared/_AgentLayout.cshtml";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Agent Listesi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var agent in Model)
+        {
+            <tr>
+                <td>@agent.Id</td>
+                <td>@agent.Name</td>
+                <td>@agent.Username</td>
+                <td>@agent.Email</td>
+                <td>@agent.ImageUrl</td>
+                
+
+                @*<td><a href="/AdminArea/Category/DeleteCategory/@agent.Id" class="btn btn-outline-danger">Sil</a></td>
+                <td> <a href="/AdminArea/Category/UpdateCategory/@agent.Id" class="btn btn-outline-primary">kategori güncelleme </a> </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

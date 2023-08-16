@@ -35,9 +35,12 @@ namespace RealEstate.UI.Mappings
             CreateMap<UpdatePropertyVM, Property>().ReverseMap();
 
             CreateMap<PropListVM, Property>().ReverseMap();
+            CreateMap<GetAllPropertyVms, Property>().ReverseMap();
 
             CreateMap<CreateTestimonialVM, Testimonial>().ReverseMap();
             CreateMap<UpdateTestimonialVM, Testimonial>().ReverseMap();
+            CreateMap<Testimonial, GettAllTestimonialVM>().ReverseMap();
+
 
             CreateMap<AppUser, UpdateAdminVM>().ReverseMap();
         }
