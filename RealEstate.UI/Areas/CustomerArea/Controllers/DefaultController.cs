@@ -20,9 +20,11 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly IPropertyService _propertyService;
         private readonly IPropertyStatusService _propertyStatusService;
         private readonly IMapper _mapper;
+        private readonly IAgentService _agentService;
+        private readonly IPropertyPhotoService _propertyPhotoService;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService)
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService)
         {
             _context = context;
             _propertyService = propertyService;
@@ -30,6 +32,8 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             _signInManager = signInManager;
             _categoryService = categoryService;
             _propertyStatusService = propertyStatusService;
+            _agentService = agentService;
+            _propertyPhotoService = propertyPhotoService;
         }
 
 
@@ -92,6 +96,23 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
 
             return Json(value);
         }
+
+        public async Task<IActionResult> PropertyDetails(Guid id)
+        {
+            var values = await _propertyService.TGetByIdAsync(id);
+            var agent = await _agentService.TGetByIdAsync(values.AgentID);
+
+            var mappedProps = _mapper.Map<PropListVM>(values);
+            mappedProps.Agent = agent;
+
+            List<PropertyPhoto> imgs = _propertyPhotoService.TGetByPropertyIdList(id).ToList();
+            foreach (var item in imgs)
+            {
+                mappedProps.Photos.Add(item);
+            }
+            return View(mappedProps);
+        }
+
         [HttpGet]
         public JsonResult GetIlce(int sehirKey)
         {
