@@ -42,7 +42,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             var propertyViewModels = _mapper.Map<List<GettAllPropertyStatusViewModel>>(property);
             return View(propertyViewModels);
         }
-        [HttpPost]
+       
         public async Task<IActionResult> Delete(Guid id)
         {
             var propertyStatus = await _propertyStatusService.TGetByIdAsync(id);
@@ -52,7 +52,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
                 return NotFound();
             }
             _propertyStatusService.TDelete(propertyStatus);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAllPropertyStatus");
         }
         [HttpGet]
         public async Task<IActionResult> UpdatePropetyStatus(Guid id)
