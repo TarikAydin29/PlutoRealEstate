@@ -13,12 +13,14 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public DefaultController(IMapper mapper, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment)
-        {
+        public DefaultController(IMapper mapper, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment,SignInManager<AppUser> signInManager)
+        { 
             _mapper = mapper;
             _userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
+            this.signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -83,11 +85,11 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             return resimAd;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> LogOut()
-        //{
-        //    await _userManager();
-        //    return RedirectToAction("Index", "Home", new { Area = "" });
-        //}
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await signInManager.SignOutAsync(); ;
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
     }
 }

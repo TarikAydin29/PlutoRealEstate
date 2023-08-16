@@ -11,7 +11,7 @@
         <div class="col-md-4 similar-grid">
             <img src="/Images/Uploads/@item.ImageUrl" class="img-responsive" alt="/">
             <h5>@item.PropertyTitle</h5>
-            <p>@item.Description <a href="#">Know More</a></p>
+            <p>@item.Description <a asp-controller="Home" asp-action="PropertyDetails" asp-route-id="@item.Id">Know More</a></p>
         </div>
     }
 
