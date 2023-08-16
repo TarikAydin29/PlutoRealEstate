@@ -44,7 +44,6 @@
     <Folder Include="Areas\AdminArea\Data\" />
     <Folder Include="Areas\AgentArea\Data\" />
     <Folder Include="Areas\CustomerArea\Data\" />
-    <Folder Include="Areas\CustomerArea\Models\" />
     <Folder Include="logs\" />
   </ItemGroup>
 
