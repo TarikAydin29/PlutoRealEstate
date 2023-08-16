@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -6,6 +7,7 @@ using Newtonsoft.Json;
 using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.CustomerArea.Models;
 using RealEstate.UI.Models;
@@ -23,8 +25,11 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly IAgentService _agentService;
         private readonly IPropertyPhotoService _propertyPhotoService;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService)
+
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _propertyService = propertyService;
@@ -34,6 +39,8 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             _propertyStatusService = propertyStatusService;
             _agentService = agentService;
             _propertyPhotoService = propertyPhotoService;
+            _userManager = userManager;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -111,6 +118,64 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
                 mappedProps.Photos.Add(item);
             }
             return View(mappedProps);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CustomerEditProfile()
+        {
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userMail);
+
+            var mappedCustomerPhoto = _mapper.Map<CustomerEditProfileEditVM>(user);
+
+            if (mappedCustomerPhoto.ImageUrl != null)
+            {
+                HttpContext.Session.SetString("image", mappedCustomerPhoto.ImageUrl);
+            }
+
+            return View(mappedCustomerPhoto);
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> CustomerEditProfile(CustomerEditProfileEditVM vm, IFormFile image)
+        {
+            if (image == null)
+            {
+                vm.ImageUrl = HttpContext.Session.GetString("image");
+            }
+            else
+            {
+                vm.ImageUrl = UploadPhoto(image, "user_avatar_" + Guid.NewGuid().ToString() + ".jpg");
+            }
+            AppUser user = await UpdateIdentityUser(vm);
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index");
+        }
+
+        private async Task<AppUser> UpdateIdentityUser(CustomerEditProfileEditVM vm)
+        {
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userMail);
+
+            _mapper.Map(vm, user);
+
+            return user;
+        }
+
+        private string UploadPhoto(IFormFile image, string uniqueFileName)
+        {
+            string ext = Path.GetExtension(image.FileName);
+            string resimAd = Guid.NewGuid() + ext;
+            string dosyaYolu = Path.Combine(webHostEnvironment.WebRootPath, "Images", "Uploads", resimAd);
+            using (var stream = new FileStream(dosyaYolu, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+            return resimAd;
         }
 
         [HttpGet]
