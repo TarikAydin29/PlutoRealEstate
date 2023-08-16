@@ -25,13 +25,11 @@
                     </select>
                 </div>
                 <div class="col-md-3 place-grid">
-
                     <select id="ilce" class="sel" disabled>
                         <option value="" selected>İlçe</option>
                     </select>
                 </div>
                 <div class="col-md-3 place-grid">
-
                     <select id="mahalle" class=" sel" disabled>
                         <option value="" selected>Mahalle</option>
                     </select>
@@ -95,7 +93,8 @@
                 var sehirKey = $(this).val();
                 console.log("Deneme");
                 $.getJSON(`/Home/GetIlce?sehirKey=${sehirKey}`, function (data) {
-                    var items = "";
+                    var items = "";              
+                    items += '<option value="" selected>İlçe</option>';
                     $.each(data, function (i, ilce) {
                         items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
                     });
@@ -107,6 +106,8 @@
                 var ilceKey = $(this).val();
                 $.getJSON(`/Home/GetMahalle?ilceKey=${ilceKey}`, function (data) {
                     var items = "";
+                    items += '<option value="" selected>Mahalle</option>';
+
                     $.each(data, function (i, mahalle) {
                         items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
                     });
@@ -190,11 +191,11 @@
                                                           <div class="offer-grid1">
                                                                 <div class="offer1">
                                                                      <div class="offer-left">
-                                                                        <h4><a href="single.html">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4><a href="single.html" class="mask">
+                                                                                        <h4><a href="/Home/PropertyDetails/${item.Id}">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4><a href="/Home/PropertyDetails/${item.Id}" class="mask">
                                                                  <img src="../Images/Uploads/${item.ImageUrl}" class="img-responsive zoom-img" alt=""></a>
                                                                           </div>
                                                                 <div class="offer-right">
-                                                                    <h5><label>$</label> ${item.Price}<br/><span>${item.Area} M²- ${item.BedroomCount} Oda</span></h5>
+                                                                    <h5><label>TL</label> ${item.Price}<br/><span>${item.Area} M²- ${item.BedroomCount} Oda</span></h5>
                                                             <p>${item.Description}</p>
                                                                     <a href="/Home/PropertyDetails/${item.Id}" class="button1">Detaylı İncele</a>
                                                                  </div>

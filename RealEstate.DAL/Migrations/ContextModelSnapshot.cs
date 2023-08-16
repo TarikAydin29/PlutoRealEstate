@@ -132,6 +132,46 @@ namespace RealEstate.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RealEstate.Entities.Entities.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins", (string)null);
+                });
+
             modelBuilder.Entity("RealEstate.Entities.Entities.Agent", b =>
                 {
                     b.Property<Guid>("Id")
@@ -169,7 +209,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Agents");
+                    b.ToTable("Agents", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.AppRole", b =>
@@ -346,7 +386,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Customer", b =>
@@ -382,7 +422,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Favorite", b =>
@@ -412,7 +452,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasIndex("PropertyID");
 
-                    b.ToTable("Favorites");
+                    b.ToTable("Favorites", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.ilce", b =>
@@ -435,7 +475,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("ilce_id");
 
-                    b.ToTable("ilce");
+                    b.ToTable("ilce", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.mahalle", b =>
@@ -458,7 +498,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("mahalle_id");
 
-                    b.ToTable("mahalle");
+                    b.ToTable("mahalle", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Property", b =>
@@ -544,7 +584,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasIndex("PropertyStatusID");
 
-                    b.ToTable("Properties");
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.PropertyPhoto", b =>
@@ -573,7 +613,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyPhotos");
+                    b.ToTable("PropertyPhotos", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.PropertyStatus", b =>
@@ -597,7 +637,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PropertyStatuses");
+                    b.ToTable("PropertyStatuses", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.sehir", b =>
@@ -617,7 +657,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("sehir_id");
 
-                    b.ToTable("sehir");
+                    b.ToTable("sehir", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.sokak_cadde", b =>
@@ -637,7 +677,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("sokak_cadde_id");
 
-                    b.ToTable("sokak_cadde");
+                    b.ToTable("sokak_cadde", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Testimonial", b =>
@@ -673,7 +713,7 @@ namespace RealEstate.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Testimonials");
+                    b.ToTable("Testimonials", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

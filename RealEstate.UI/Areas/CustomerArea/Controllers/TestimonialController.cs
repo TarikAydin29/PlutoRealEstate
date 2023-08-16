@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AdminArea.Controllers;
 using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
+using System.Security.Claims;
 
 namespace RealEstate.UI.Areas.CustomerArea.Controllers
 {
@@ -12,12 +14,14 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly IMapper _mapper;
         private ITestimonialService _testimonialService;
         private readonly ILogger<AdminBaseController> _logger;
+        private readonly UserManager<AppUser> userManager;
 
-        public TestimonialController(IMapper mapper, ITestimonialService testimonialService, ILogger<AdminBaseController> logger)
+        public TestimonialController(IMapper mapper, ITestimonialService testimonialService, ILogger<AdminBaseController> logger, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
             _testimonialService = testimonialService;
             _logger = logger;
+            this.userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -28,10 +32,15 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             return View();
         }
 
-        // POST: /AdminArea/Testimonial/AddTestimonial
+       
         [HttpPost]
         public async Task<IActionResult> CreateTestimonial(CreateTestimonialVM model)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userManager.FindByIdAsync(userId);
+            model.ImageUrl = user.ImageUrl;
+            model.CustomerName = user.Name + " " + user.Surname;
+
             if (ModelState.IsValid)
             {
                 Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);

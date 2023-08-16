@@ -52,7 +52,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             .main-image img {
                 width: 100%;
-                height: auto;
+                height: 500px;
                 display: block;
             }
 
@@ -64,7 +64,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         .thumb {
             flex-shrink: 0;
-            width: 80px; /* adjust as necessary */
+            width: 80px; 
             height: 80px;
             cursor: pointer;
         }
@@ -76,13 +76,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             }
 
     </style>
+    <style>
+        .star-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+            .star-btn:hover,
+            .star-btn.active {
+                color: gold;
+            }
+
+    </style>
+
     <!-- //FlexSlider-->
 </head>
 <body>
     <!---banner--->
     <div class="banner-section">
         <div class="container">
-            <h2>properties</h2>
+            <h2>İlanlar -> @Model.PropertyTitle</h2>
         </div>
     </div>
     <!---banner--->
@@ -91,9 +108,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="container">
                 <div class="properties-grids">
                     <div class="col-md-9 properties-left">
-
-
-
                         <div class="gallery">
                             <div class="main-image">
                                 <img id="primaryImage" src="/Images/Uploads/@Model.ImageUrl" class="img-responsive">
@@ -106,8 +120,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     </div>
                                 }
                             </div>
-                        </div>                     
-
+                        </div>
                         <div class="clearfix"></div>
                         <div class="properties-details">
                             <div class="col-md-2 properties-detail">
@@ -123,27 +136,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <h5> Şehir <span>@Model.City</span></h5>
                             </div>
                             <div class="col-md-2 properties-detail">
-                                <a href="#">Favorites</a>
-                            </div>
-                            <div class="col-md-2 properties-detail">
                                 <a href="javascript:window.print()"> Yazdır</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+
+                       
                         <div class="additional-details">
                             <h3>İlan Detayları</h3>
                             <ul>
                                 <li><span>Şehir</span> : @Model.City </li>
                                 <li><span>İlçe</span> : @Model.County </li>
                                 <li><span>Mahalle</span> : @Model.District </li>
-                                <li><span>Açıklama</span> :  @Model.Description </li>
                                 <li><span>Bulunduğu Kat</span> :  @Model.Floor </li>
                                 <li><span>Oda Sayısı</span> : @Model.BedroomCount </li>
                                 <li><span>Banyo Sayısı</span> : @Model.BathCount </li>
                                 <li><span>Balkon Sayısı</span> :  @Model.BalconyCount </li>
                                 <li>
-                                    <span>Site İçerisinde mi?</span>
+                                    <span>Site İçerisinde :</span>
                                     @if (@Model.IsInSite)
                                     {
                                         <span>Evet</span>
@@ -157,50 +167,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><span>İlan Fiyatı</span> :  @Model.Price </li>
                             </ul>
                         </div>
+                        <h3>İlan Açıklaması</h3>
+                        <p>@Model.Description</p>
                         <div class="note">
                             <h4>common note</h4>
                             <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam</p>
                         </div>
 
                         <!--fea-video-->
-                        <div class="similar-grids">
-                            <h4>similar Properties</h4>
-                            <div class="col-md-4 similar-grid">
-                                <img src="~/web/images/s1.jpg" class="img-responsive" alt="/">
-                                <h5>60 Merrick Way, Miami</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetuer  elit,… <a href="#">Know More</a></p>
-                            </div>
-                            <div class="col-md-4 similar-grid">
-                                <img src="~/web/images/s2.jpg" class="img-responsive" alt="/">
-                                <h5>Villa in Hialeah, Dade</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetuer  elit,… <a href="#">Know More</a></p>
-                            </div>
-                            <div class="col-md-4 similar-grid">
-                                <img src="~/web/images/s3.jpg" class="img-responsive" alt="/">
-                                <h5>Villa in Hialeah, Dade</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetuer  elit,… <a href="#">Know More</a></p>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
+                        @await Component.InvokeAsync("_PropertyDetailSimilarPropsPartial")
+
                     </div>
                     <div class="col-md-3 properties-right">
                         <div class="properties-top">
                             <h4>@Model.Agent.Name @Model.Agent.Surname</h4>
-                            <img src="@Model.Agent.ImageUrl" class="img-responsive" alt="" />
+                            <img src="/Images/Uploads/@Model.Agent.ImageUrl" class="img-responsive" alt="" />
                             <ul class="">
                                 <li><i class="glyphicon glyphicon-phone" aria-hidden="true"></i> Telefon : @Model.Agent.PhoneNumber
                                 <li>
                                 <li><i class="glyphicon glyphicon-mail" aria-hidden="true"></i> E-Mail : @Model.Agent.Email</li>
                             </ul>
-                            <p>Lorem agent info ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet  magna…</p>
-                            <a href="#" class="button2">know more</a>
+                            <p>Sizin için burdayız...</p>
+                            <br />
                             <div class="send-message">
-                                <h5>Send Message</h5>
+                                <h5>Mesaj Gönderin</h5>
                                 <form>
-                                    <input type="text" placeholder="Name">
+                                    <input type="text" placeholder="İsim">
                                     <input type="text" class="mail" placeholder="E-mail">
-                                    <textarea placeholder="Message"></textarea>
-                                    <input type="submit" value="Send Message">
+                                    <textarea placeholder="Mesaj"></textarea>
+                                    <input type="submit" value="Gönder">
                                 </form>
                             </div>
                         </div>
@@ -223,5 +218,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             $('#primaryImage').attr('src', largeImageURL);
         });
     });
-
 </script>

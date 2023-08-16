@@ -5,29 +5,27 @@
         <h3>Hayalinizdeki Mülkü Bizimle Bulun...</h3>
         <br />
         <div class="row">
-        @foreach (var item in Model)
-        {
-        
-                <div class="col-md-4">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-md-4 offer-grid">
                     <div class="offer-grid1">
-                        <h4><a href="single.html">@item.PropertyTitle</a></h4>
                         <div class="offer1">
                             <div class="offer-left">
-                                <a href="single.html" class="mask"><img src="/Images/Uploads/@item.ImageUrl" class="img-responsive zoom-img" alt="" /></a>
+                                <h4><a href="/Home/PropertyDetails/@item.Id">@item.PropertyTitle <span></span> @item.City/@item.County/@item.District</a></h4><a href="/Home/PropertyDetails/@item.Id" class="mask">
+                                    <img src="../Images/Uploads/@item.ImageUrl" class="img-responsive zoom-img" alt="">
+                                </a>
                             </div>
                             <div class="offer-right">
-                                <h5><label>$</label> 7,500 Per Month - <span>Single Family Home</span></h5>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh…</p>
-                                <a href="single.html" class="button1">more details</a>
+                                <h5><label>TL</label> @item.Price<br /><span>@item.Area M²- @item.BedroomCount Oda</span></h5>
+                                <p>@item.Description</p>
+                                <a href="/Home/PropertyDetails/@item.Id" class="button1">Detaylı İncele</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                     </div>
-            
-
-                <div class="clearfix"></div>
-            </div>
-        }
+                </div>
+            }
         </div>
     </div>
 </div>
