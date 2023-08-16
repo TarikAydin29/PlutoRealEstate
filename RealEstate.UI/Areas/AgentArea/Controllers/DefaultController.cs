@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AdminArea.Models.AgentVMs;
+using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
 using RealEstate.UI.Areas.AgentArea.Models.AgentVM;
 using System.Security.Claims;
 
@@ -28,6 +30,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             this.mapper = mapper;
             this.webHostEnvironment = webHostEnvironment;
         }
+
         public async Task<IActionResult> Index()
         {
             var userMail = User.FindFirstValue(ClaimTypes.Email);
@@ -53,6 +56,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
 
             return View(mappedAgent);
         }
+
         [HttpPost]
         public async Task<IActionResult> Profile(UpdateAgentVM vm, IFormFile image)
         {
@@ -73,17 +77,12 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             return RedirectToAction("Index");
         }
 
-
         [HttpGet]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home", new { Area = "" });
         }
-
-
-
-
 
         private async Task<AppUser> UpdateIdentityUser(UpdateAgentVM vm)
         {
@@ -128,6 +127,7 @@ namespace RealEstate.UI.Areas.AgentArea.Controllers
             {
                 ModelState.AddModelError("image", "Resim Zorunlu");
             }
+
         }
     }
 }

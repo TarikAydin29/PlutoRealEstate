@@ -1,0 +1,29 @@
+﻿@using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
+@model List<GettAllTestimonialVM>
+@{
+    ViewData["Title"] = "GetAllTestimonial";
+    Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Kullanıcı Yorumları</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var testimonial in Model)
+        {
+            <tr>
+                <td>@testimonial.CustomerName</td>
+                <td>@testimonial.Comment</td>
+                <td>@testimonial.CustomerTitle</td>
+
+                @*<td><a href="/AdminArea/Category/DeleteCategory/@category.Id" class="btn btn-outline-danger">Sil</a></td>
+                <td> <a href="/AdminArea/Category/UpdateCategory/@category.Id" class="btn btn-outline-primary">kategori güncelleme </a> </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

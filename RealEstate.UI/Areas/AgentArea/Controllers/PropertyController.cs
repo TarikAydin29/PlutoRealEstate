@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
+using RealEstate.UI.Areas.AdminArea.Models.CategoryVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using System.Security.Claims;
 

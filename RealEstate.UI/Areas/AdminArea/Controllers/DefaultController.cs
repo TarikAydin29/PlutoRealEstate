@@ -70,7 +70,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
 
             return user;
         }
-
+       
         private string UploadPhoto(IFormFile image, string uniqueFileName)
         {
             string ext = Path.GetExtension(image.FileName);
@@ -82,5 +82,12 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             }
             return resimAd;
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> LogOut()
+        //{
+        //    await _userManager();
+        //    return RedirectToAction("Index", "Home", new { Area = "" });
+        //}
     }
 }

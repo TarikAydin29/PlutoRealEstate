@@ -28,17 +28,17 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             return View();
         }
 
-        // POST: /AdminArea/Testimonial/AddTestimonial
-        [HttpPost]
-        public async Task<IActionResult> CreateTestimonial(CreateTestimonialVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
-                await _testimonialService.TInsertAsync(testimonial);
-                return RedirectToAction("Index");
-            }
-            return View(model);
-        }
+      
+        //[HttpPost]
+        //public async Task<IActionResult> CreateTestimonial(CreateTestimonialVM model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
+        //        await _testimonialService.TInsertAsync(testimonial);
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(model);
+        //}
     }
 }
