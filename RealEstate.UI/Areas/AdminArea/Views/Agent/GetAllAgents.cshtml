@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "GetAllAgents";
     Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
 }
 
 
@@ -16,8 +17,12 @@
     <tbody>
         @foreach (var agent in Model)
         {
+            count++;
             <tr>
-                <td>@agent.Id</td>
+                <td>
+                    @count
+                </td>
+                
                 <td>@agent.Name</td>
                 <td>@agent.Username</td>
                 <td>@agent.Email</td>

@@ -19,6 +19,5 @@
         public string District { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
     }
 }
