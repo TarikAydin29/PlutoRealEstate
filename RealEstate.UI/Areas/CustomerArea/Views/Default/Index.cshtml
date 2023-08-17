@@ -94,7 +94,6 @@
     </div>
    
 
-    @await Component.InvokeAsync("_PropertyDetailSimilarPropsCustomerPartial")
     <!---testmonials--->
 </div>
 
@@ -203,7 +202,7 @@
                                                                   <div class="offer-grid1">
                                                                         <div class="offer1">
                                                                              <div class="offer-left">
-                                                                                                        <h4><a href="/CustomerArea/Default/PropertyDetails/${item.Id}">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4><a href="/Home/PropertyDetails/${item.Id}" class="mask">
+                                                                                                                <h4><a href="/CustomerArea/Default/PropertyDetails/${item.Id}">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4><a href="/CustomerArea/Default/PropertyDetails/${item.Id}" class="mask">
                                                                          <img src="../Images/Uploads/${item.ImageUrl}" class="img-responsive zoom-img" alt=""></a>
                                                                                   </div>
                                                                         <div class="offer-right">
