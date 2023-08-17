@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RealEstate.BLL.Abstract;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
 using System.Security.Claims;
@@ -14,18 +15,25 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly SignInManager<AppUser> signInManager;
+        private readonly IPropertyService propertyService;
 
-        public DefaultController(IMapper mapper, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment,SignInManager<AppUser> signInManager)
+        public DefaultController(IMapper mapper, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment,SignInManager<AppUser> signInManager,IPropertyService propertyService)
         { 
             _mapper = mapper;
             _userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
             this.signInManager = signInManager;
+            this.propertyService = propertyService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var activePropsC = propertyService.TGetAllAsync().Result.ToList().Where(x => x.IsActive == true).Count();
+            int inactivePropsC = propertyService.TGetAllAsync().Result.ToList().Where(x => x.IsActive == false).Count();
+            ViewBag.activePropCount = activePropsC;
+            ViewBag.inactivePropCount = inactivePropsC;
+            var activeProps = propertyService.TGetAllAsync().Result.ToList().Where(x => x.IsActive == true).Take(5);
+            return View(activeProps);
         }
 
         [HttpGet]

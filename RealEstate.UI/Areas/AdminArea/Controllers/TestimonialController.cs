@@ -48,7 +48,7 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
 
             var value = await _testimonialService.TGetByIdAsync(id);
             _testimonialService.TDelete(value);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAllTestimonial");
         }
         //[HttpGet]
         //public async Task<IActionResult> UpdateTestimonial(Guid id)

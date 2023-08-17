@@ -8,6 +8,7 @@ using RealEstate.BLL.Abstract;
 using RealEstate.DAL.Concrete;
 using RealEstate.Entities.Entities;
 using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
+using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.CustomerArea.Models;
 using RealEstate.UI.Models;
@@ -27,9 +28,9 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ITestimonialService testimonialService;
 
-
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment)
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment, ITestimonialService testimonialService)
         {
             _context = context;
             _propertyService = propertyService;
@@ -41,6 +42,7 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             _propertyPhotoService = propertyPhotoService;
             _userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
+            this.testimonialService = testimonialService;
         }
 
 
@@ -161,13 +163,31 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             var userMail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userMail);
-           
 
-            
+
+
 
             _mapper.Map(vm, user);
 
             return user;
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTestimonial([FromBody] CreateTestimonialVM model)
+        {
+           
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+            model.ImageUrl = user.ImageUrl;
+            model.CustomerName = user.Name + " " + user.Surname;
+          
+         
+                Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
+                await testimonialService.TInsertAsync(testimonial);
+                return RedirectToAction("Index");
+    
         }
 
         private string UploadPhoto(IFormFile image, string uniqueFileName)

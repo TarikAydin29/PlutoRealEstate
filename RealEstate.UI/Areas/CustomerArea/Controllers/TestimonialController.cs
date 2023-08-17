@@ -27,27 +27,6 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             return View();
         }
-        public IActionResult CreateTestimonial()
-        {
-            return View();
-        }
 
-       
-        [HttpPost]
-        public async Task<IActionResult> CreateTestimonial(CreateTestimonialVM model)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await userManager.FindByIdAsync(userId);
-            model.ImageUrl = user.ImageUrl;
-            model.CustomerName = user.Name + " " + user.Surname;
-
-            if (ModelState.IsValid)
-            {
-                Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
-                await _testimonialService.TInsertAsync(testimonial);
-                return RedirectToAction("Index");
-            }
-            return View(model);
-        }
     }
 }
