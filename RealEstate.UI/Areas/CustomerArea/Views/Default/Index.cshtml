@@ -87,17 +87,45 @@
 
 
 
-
-    <div class="form-group">
-        <textarea class="form-control" placeholder="Yorum Yazın"></textarea>
-        <button type="submit" class="btn btn-primary">Gönder</button>
+    <div >
+        <textarea class="form-control" id="yorum" placeholder="Yorum Yazın"></textarea>
+        <button type="submit" class="btn btn-primary" id="submitcomment">Gönder</button>
     </div>
-   
+  
 
     <!---testmonials--->
 </div>
 
 @section Scriptsss {
+
+
+    <script>
+        $(document).ready(function () {
+            $('#submitcomment').click(function () {
+               
+
+                var yorumVM = {
+                    Comment: $('#yorum').val()                   
+                };
+                console.log(yorumVM)
+                $.ajax({
+                    url: '/CustomerArea/Default/CreateTestimonial',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ Comment: $('#yorum').val()}),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        window.location.href = response.redirectToUrl;
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+
+
     <script>
         $(document).ready(function () {
             $("#sehir").change(function () {
