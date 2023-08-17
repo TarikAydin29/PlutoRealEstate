@@ -27,5 +27,13 @@ namespace RealEstate.UI.Areas.AdminArea.Controllers
             var propertyViewModels = _mapper.Map<List<GetAllPropertyVms>>(property);
             return View(propertyViewModels);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteProperty(Guid id)
+        {
+            var value = await _propertyService.TGetByIdAsync(id);
+            _propertyService.TDelete(value);
+            return RedirectToAction("GetAllProperty");
+        }
     }
 }
