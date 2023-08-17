@@ -3,11 +3,11 @@ using RealEstate.BLL.Abstract;
 
 namespace RealEstate.UI.Areas.CustomerArea.ViewComponents.Default
 {
-    public class _PropertyDetailSimilarPropsPartial : ViewComponent
+    public class _PropertyDetailSimilarPropsCustomerPartial : ViewComponent
     {
         private readonly IPropertyService propertyService;
 
-        public _PropertyDetailSimilarPropsPartial(IPropertyService propertyService)
+        public _PropertyDetailSimilarPropsCustomerPartial(IPropertyService propertyService)
         {
             this.propertyService = propertyService;
         }
