@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "GetAllCategory";
     Layout = "~/Areas/AdminArea/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
 }
 
 
@@ -15,8 +16,11 @@
     <tbody>
         @foreach (var category in Model)
         {
+            count++;
             <tr>
-                <td>@category.Id</td>
+                <td>
+                    @count
+                </td>
                 <td>@category.Name</td>
 
                 <td><a href="/AdminArea/Category/DeleteCategory/@category.Id" class="btn btn-outline-danger">Sil</a></td>
