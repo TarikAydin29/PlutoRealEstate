@@ -151,6 +151,7 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             }
             AppUser user = await UpdateIdentityUser(vm);
 
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, vm.Password);
             await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Index");
@@ -160,6 +161,9 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             var userMail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userMail);
+           
+
+            
 
             _mapper.Map(vm, user);
 
