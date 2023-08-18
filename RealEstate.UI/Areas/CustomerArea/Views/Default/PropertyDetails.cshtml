@@ -7,7 +7,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Real Space a Real Estates and Builders Category Flat Bootstrap Responsive Website Template | Agent in Sidebar Variation :: w3layouts </title>
+    <title>İlan Detay Sayfası </title>
     <!---css--->
     <link href="~/web/css/bootstrap.css" rel='stylesheet' type='text/css' />
     <link href="~/web/css/style.css" rel='stylesheet' type='text/css' />
@@ -188,12 +188,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <br />
                             <div class="send-message">
                                 <h5>Mesaj Gönderin</h5>
-                                <form>
-                                    <input type="text" placeholder="İsim">
-                                    <input type="text" class="mail" placeholder="E-mail">
-                                    <textarea placeholder="Mesaj"></textarea>
-                                    <input type="submit" value="Gönder">
-                                </form>
+
+                                <input type="hidden" value="@Model.Id" id="propId" />
+                             
+                             
+                                <textarea placeholder="Mesaj" id="mesaj"></textarea>
+                                <input type="submit" value="Gönder" id="gonder">
+
+
                             </div>
                         </div>
                     </div>
@@ -207,7 +209,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 </body>
 </html>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.thumbnails .thumb img').on('click', function () {
@@ -217,3 +219,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     });
 </script>
 
+
+<script>
+    $(document).ready(function () {
+        $('#gonder').click(function (e) {
+            e.preventDefault();
+
+            var messageVM = {
+                UserMessage: $('#mesaj').val(),
+                PropertyId: $('#propId').val()
+            };
+            console.log(messageVM);
+
+            $.ajax({
+                url: '/CustomerArea/Default/SendMessage',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(messageVM),
+                contentType: 'application/json',
+                success: function (response) {
+                    swal("Başarılı!", "Mesajınız Gönderildi!", "success");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error:", textStatus, errorThrown);
+                    swal("Hata!", "Mesaj gönderilirken bir hata oluştu.", "error");
+                }
+            });
+        });
+    });
+
+</script>

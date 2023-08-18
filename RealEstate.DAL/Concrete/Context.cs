@@ -88,5 +88,6 @@ namespace RealEstate.DAL.Concrete
         public DbSet<ilce> ilce { get; set; }
         public DbSet<PropertyPhoto> PropertyPhotos { get; set; }
         public DbSet<Testimonial> Testimonials { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

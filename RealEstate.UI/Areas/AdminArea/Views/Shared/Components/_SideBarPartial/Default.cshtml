@@ -28,12 +28,13 @@
             </li>
             <li><a asp-area="AdminArea" asp-controller="Category" asp-action="GetAllCategory"><i class="fa fa-table purple_color2"></i> <span>Kategoriler</span></a></li>
             <li><a asp-area="AdminArea" asp-controller="Agent" asp-action="GetAllAgents"><i class="fa fa-clone yellow_color"></i> <span>Agent Listeleme</span></a></li>
+            <li><a asp-area="AdminArea" asp-controller="PropertyStatus" asp-action="Create"><i class="fa fa-briefcase blue1_color"></i> <span>Property Status Ekle</span></a></li>
             <li><a asp-area="AdminArea" asp-controller="PropertyStatus" asp-action="GetAllPropertyStatus"><i class="fa fa-briefcase blue1_color"></i> <span>Property Status Listeleme</span></a></li>
             <li><a asp-area="AdminArea" asp-controller="Testimonial" asp-action="GetAllTestimonial"><i class="fa fa-diamond purple_color"></"></i> <span>Kullanıcı Yorumları</span></a></li>
             <li><a asp-area="AdminArea" asp-controller="Property" asp-action="GetAllProperty"><i class="fa fa-map purple_color2"></i> <span>Proporty listeleme</span></a></li>
             
             
-            <li><a href="settings.html"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
+            <li><a asp-area="AdminArea" asp-controller="Default" asp-action="AdminPhoto"><i class="fa fa-cog yellow_color"></i> <span>Settings</span></a></li>
         </ul>
     </div>
 </nav>

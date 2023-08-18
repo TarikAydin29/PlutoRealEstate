@@ -12,8 +12,8 @@ using RealEstate.DAL.Concrete;
 namespace RealEstate.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230813094716_migTestimonial")]
-    partial class migTestimonial
+    [Migration("20230817175146_messagesAdded")]
+    partial class messagesAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,6 +106,13 @@ namespace RealEstate.DAL.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("0fbb3ea8-d7d3-44c4-ae74-6f2fab6648b6"),
+                            RoleId = new Guid("b9dac480-a1f2-4d33-8c36-3bf75f51cd9c")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -125,6 +132,46 @@ namespace RealEstate.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Agent", b =>
@@ -193,6 +240,29 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b9dac480-a1f2-4d33-8c36-3bf75f51cd9c"),
+                            ConcurrencyStamp = "720b36a9-4dea-4148-8279-524f587b40f5",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("660e13fb-51fd-4b28-8f34-cd583767831d"),
+                            ConcurrencyStamp = "8433efb9-0650-4314-920a-19a9bcd55b47",
+                            Name = "Agent",
+                            NormalizedName = "AGENT"
+                        },
+                        new
+                        {
+                            Id = new Guid("4a686170-2166-495c-b51a-27e637752d74"),
+                            ConcurrencyStamp = "07928c97-1953-405e-807a-f0115ad8fad0",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.AppUser", b =>
@@ -274,6 +344,27 @@ namespace RealEstate.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0fbb3ea8-d7d3-44c4-ae74-6f2fab6648b6"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dd6c856a-091b-4b48-a76b-1d98305eccbe",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            ImageUrl = "bb.jpg",
+                            LockoutEnabled = false,
+                            Name = "Bill",
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN1",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFtvGf1Q8WgTuFjujg2Ca2haq7uWijpAjeSZSwsyZ6w4XK3130X50U60D/1yG8kCGA==",
+                            PhoneNumber = "123456789",
+                            PhoneNumberConfirmed = false,
+                            Surname = "Gates",
+                            TwoFactorEnabled = false,
+                            UserName = "admin1"
+                        });
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Category", b =>
@@ -410,6 +501,48 @@ namespace RealEstate.DAL.Migrations
                     b.HasKey("mahalle_id");
 
                     b.ToTable("mahalle");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Property", b =>
@@ -608,10 +741,6 @@ namespace RealEstate.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CustomerTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -689,6 +818,25 @@ namespace RealEstate.DAL.Migrations
                     b.HasOne("RealEstate.Entities.Entities.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Message", b =>
+                {
+                    b.HasOne("RealEstate.Entities.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealEstate.Entities.Entities.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

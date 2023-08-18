@@ -11,6 +11,7 @@ using RealEstate.UI.Areas.AdminArea.Models.AdminVMs;
 using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.CustomerArea.Models;
+using RealEstate.UI.Areas.CustomerArea.Models.MessagesVMs;
 using RealEstate.UI.Models;
 using System.Security.Claims;
 
@@ -29,8 +30,9 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly ITestimonialService testimonialService;
+        private readonly IMessageService messageService;
 
-        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment, ITestimonialService testimonialService)
+        public DefaultController(Context context, IPropertyService propertyService, IMapper mapper, SignInManager<AppUser> signInManager, ICategoryService categoryService, IPropertyStatusService propertyStatusService, IAgentService agentService, IPropertyPhotoService propertyPhotoService, UserManager<AppUser> userManager, IWebHostEnvironment webHostEnvironment, ITestimonialService testimonialService, IMessageService messageService)
         {
             _context = context;
             _propertyService = propertyService;
@@ -43,6 +45,7 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             _userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
             this.testimonialService = testimonialService;
+            this.messageService = messageService;
         }
 
 
@@ -159,6 +162,26 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SendMessage([FromBody] CreateMessageVM vm)
+        {
+            var userMail = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(userMail);
+            var message = _mapper.Map<Message>(vm);
+            message.UserEmail = user.Email;
+            message.UserName = user.Name + " " + user.Surname;
+            message.CustomerId = user.Id;
+
+
+            await messageService.TInsertAsync(message);
+
+            return Json(Ok());
+
+
+        }
+
+
+
         private async Task<AppUser> UpdateIdentityUser(CustomerEditProfileEditVM vm)
         {
             var userMail = User.FindFirstValue(ClaimTypes.Email);
@@ -177,17 +200,17 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTestimonial([FromBody] CreateTestimonialVM model)
         {
-           
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
             model.ImageUrl = user.ImageUrl;
             model.CustomerName = user.Name + " " + user.Surname;
-          
-         
-                Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
-                await testimonialService.TInsertAsync(testimonial);
-                return RedirectToAction("Index");
-    
+
+
+            Testimonial testimonial = _mapper.Map<CreateTestimonialVM, Testimonial>(model);
+            await testimonialService.TInsertAsync(testimonial);
+            return RedirectToAction("Index");
+
         }
 
         private string UploadPhoto(IFormFile image, string uniqueFileName)

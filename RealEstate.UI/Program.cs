@@ -63,6 +63,9 @@ builder.Services.AddScoped<IIlceService, IlceManager>();
 builder.Services.AddScoped<IMahalleDAL, EFMahalleDAL>();
 builder.Services.AddScoped<IMahalleService, MahalleManager>();
 
+builder.Services.AddScoped<IMessageDAL, EFMessageDAL>();
+builder.Services.AddScoped<IMessageService, MessageManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
