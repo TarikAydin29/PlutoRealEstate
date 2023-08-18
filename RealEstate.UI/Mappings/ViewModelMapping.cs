@@ -7,6 +7,7 @@ using RealEstate.UI.Areas.AdminArea.Models.PropertyStatusVMs;
 using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.AgentArea.Models.AgentVM;
+using RealEstate.UI.Areas.AgentArea.Models.MessageVMs;
 using RealEstate.UI.Areas.CustomerArea.Models;
 using RealEstate.UI.Areas.CustomerArea.Models.MessagesVMs;
 using RealEstate.UI.Models;
@@ -50,6 +51,7 @@ namespace RealEstate.UI.Mappings
 
 
             CreateMap<Message, CreateMessageVM>().ReverseMap();
+            CreateMap<Message, ListMessageVM>().ReverseMap();
         }
     }
 }
