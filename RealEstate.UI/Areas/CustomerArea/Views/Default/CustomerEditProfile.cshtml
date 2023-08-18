@@ -6,16 +6,17 @@
 }
 
 <div class="container">
-    <div class="row">
+    <div class="row" style="display: flex; justify-content: center; align-items: center;>
         <div class="col-md-4">
             <form asp-action="CustomerEditProfile" method="post" enctype="multipart/form-data">
                 <input type="hidden" asp-for="Id" />
-
+                <br />
+                <br />
                 <div class="form-group">
                     <img id="output" class="img-responsive" title="@Html.DisplayFor(modelItem=>modelItem.ImageUrl)" style="border-radius: 50%; height:150px;width:150px" src="~/Images/uploads/@Html.DisplayFor(modelItem => modelItem.ImageUrl)">
 
                     <input type="file" accept="image/*" name="image" id="file" onchange="loadFile(event)" style="display: none;" />
-                    <label for="file" style="cursor: pointer;" class="btn btn-outline-warning mx-2">Profil Resmini Güncelle</label>
+                    <label for="file" style="cursor: pointer;" class="btn btnbtn-outline-warning m-xl-2">Profil Resmini Güncelle</label>
                 </div>
 
                 <div class="form-group">
