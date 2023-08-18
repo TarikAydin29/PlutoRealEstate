@@ -1,0 +1,64 @@
+﻿@using RealEstate.UI.Areas.AgentArea.Models.MessageVMs;
+@model IEnumerable<ListMessageVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/AgentArea/Views/Shared/_AgentLayout.cshtml";
+    int count = 0;
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Sıra
+            </th>
+            <th>
+                Kullanıcı Adı
+            </th>
+            <th>
+                Kullanıcı Email
+            </th>
+            <th>
+                Mesaj
+            </th>
+            <th>
+                İlan Başlığı
+            </th>
+            <th>
+                İlan Resmi
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserMessage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Property.PropertyTitle)
+                </td>
+                <td>
+                    <img title="@Html.DisplayFor(modelItem=>item.Property.PropertyTitle)" style="height:60px;width:60px;" src="~/Images/uploads/@Html.DisplayFor(modelItem => item.Property.ImageUrl)" alt="@Html.DisplayFor(modelItem=>item.Property.PropertyTitle)">
+                </td>
+                <td>                    
+                    @Html.ActionLink("Sil", "Delete", new { id=item.Id },new {@class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

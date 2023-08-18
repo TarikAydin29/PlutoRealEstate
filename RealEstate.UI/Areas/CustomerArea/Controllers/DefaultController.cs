@@ -167,11 +167,13 @@ namespace RealEstate.UI.Areas.CustomerArea.Controllers
         {
             var userMail = User.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(userMail);
+            var prop = await _propertyService.TGetByIdAsync(vm.PropertyId);
+          
             var message = _mapper.Map<Message>(vm);
             message.UserEmail = user.Email;
             message.UserName = user.Name + " " + user.Surname;
             message.CustomerId = user.Id;
-
+            message.AgentId = prop.AgentID;
 
             await messageService.TInsertAsync(message);
 

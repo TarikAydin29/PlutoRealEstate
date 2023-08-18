@@ -11,6 +11,7 @@ namespace RealEstate.Entities.Entities
     {
         public Guid CustomerId { get; set; }
         public Guid PropertyId { get; set; }
+        public Guid AgentId { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
         public string UserMessage { get; set; }

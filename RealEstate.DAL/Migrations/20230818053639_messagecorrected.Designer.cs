@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RealEstate.DAL.Concrete;
 
@@ -11,9 +12,10 @@ using RealEstate.DAL.Concrete;
 namespace RealEstate.DAL.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230818053639_messagecorrected")]
+    partial class messagecorrected
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +110,8 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("8abb1dfe-d48d-4c76-9446-620529ea2044"),
-                            RoleId = new Guid("7f25c865-28bf-4cbc-9d9e-cb2a379d3d10")
+                            UserId = new Guid("beb0af59-8c1a-422e-a7d0-960c53d3177f"),
+                            RoleId = new Guid("ee89bf04-1707-4acf-b13d-c9ef33dcf5a8")
                         });
                 });
 
@@ -242,22 +244,22 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7f25c865-28bf-4cbc-9d9e-cb2a379d3d10"),
-                            ConcurrencyStamp = "652cd98c-9505-4d6e-b35b-596711811737",
+                            Id = new Guid("ee89bf04-1707-4acf-b13d-c9ef33dcf5a8"),
+                            ConcurrencyStamp = "f584b65a-2822-4ae5-94db-f95c0d08f647",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c7cb80fe-233a-4689-836f-a43ba5bd7fd0"),
-                            ConcurrencyStamp = "74ab7e5d-3178-4452-8f9a-ce99645870c2",
+                            Id = new Guid("2cd8166c-4993-4eef-af6f-ba816b67d10b"),
+                            ConcurrencyStamp = "d79f2250-2e48-4457-8ff7-87c83d087ded",
                             Name = "Agent",
                             NormalizedName = "AGENT"
                         },
                         new
                         {
-                            Id = new Guid("7504a104-a72a-40d6-97b2-22113b305241"),
-                            ConcurrencyStamp = "cf38f3cd-82b2-4eb7-b01b-6a4534a6e1cc",
+                            Id = new Guid("3ade6ff9-9fe3-4f02-94dc-d45f91136a33"),
+                            ConcurrencyStamp = "48f7863d-a009-4675-9556-b07c35365786",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -346,9 +348,9 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8abb1dfe-d48d-4c76-9446-620529ea2044"),
+                            Id = new Guid("beb0af59-8c1a-422e-a7d0-960c53d3177f"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0393a34d-d8c5-4f46-91c1-4df6fb1c3d90",
+                            ConcurrencyStamp = "3899d85d-3269-403d-b284-db03f914e6c8",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             ImageUrl = "bb.jpg",
@@ -356,7 +358,7 @@ namespace RealEstate.DAL.Migrations
                             Name = "Bill",
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFIECnF8CTRDCJsCre7DbxKef79AyhL2mGQgmuy+4PQsm9pq8wEcOkDguh0eNx6n/Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFRaEsTRtbtwj1c/W76m8hQMcIHSved8OYZbem4Xe9pV3XGnNPaeDLtG34Jf146lCw==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
                             Surname = "Gates",
@@ -505,9 +507,6 @@ namespace RealEstate.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AgentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedDate")
