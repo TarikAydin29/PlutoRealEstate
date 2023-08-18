@@ -108,6 +108,12 @@ namespace RealEstate.UI.Controllers
             }
             return View(mappedProps);
         }
+        public async Task<IActionResult> PropertList()
+        {
+            var values = await propertyService.TGetAllAsync();
+            return View(values);
+        }
+
 
         [HttpGet]
         public JsonResult GetIlce(int sehirKey)
