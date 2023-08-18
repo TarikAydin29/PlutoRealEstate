@@ -108,8 +108,8 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("fc084da3-0be9-467b-be60-074813040465"),
-                            RoleId = new Guid("e82f5db6-ce0d-4b54-823a-d3bd9503dbca")
+                            UserId = new Guid("0fbb3ea8-d7d3-44c4-ae74-6f2fab6648b6"),
+                            RoleId = new Guid("b9dac480-a1f2-4d33-8c36-3bf75f51cd9c")
                         });
                 });
 
@@ -242,22 +242,22 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e82f5db6-ce0d-4b54-823a-d3bd9503dbca"),
-                            ConcurrencyStamp = "db7d72a4-7a6a-4675-9531-fb5cf619109c",
+                            Id = new Guid("b9dac480-a1f2-4d33-8c36-3bf75f51cd9c"),
+                            ConcurrencyStamp = "720b36a9-4dea-4148-8279-524f587b40f5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("2d7d6c95-6b61-4cac-8d5e-739b5a9c1a7c"),
-                            ConcurrencyStamp = "bdf2b491-5ed2-4eed-aa63-9c8ed8ba7948",
+                            Id = new Guid("660e13fb-51fd-4b28-8f34-cd583767831d"),
+                            ConcurrencyStamp = "8433efb9-0650-4314-920a-19a9bcd55b47",
                             Name = "Agent",
                             NormalizedName = "AGENT"
                         },
                         new
                         {
-                            Id = new Guid("ab596c2f-997c-406d-b2cb-daf9f2c1c428"),
-                            ConcurrencyStamp = "2525c5de-3e9f-4f1b-89d1-0b5490a0b692",
+                            Id = new Guid("4a686170-2166-495c-b51a-27e637752d74"),
+                            ConcurrencyStamp = "07928c97-1953-405e-807a-f0115ad8fad0",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -346,9 +346,9 @@ namespace RealEstate.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fc084da3-0be9-467b-be60-074813040465"),
+                            Id = new Guid("0fbb3ea8-d7d3-44c4-ae74-6f2fab6648b6"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a8901137-5455-487b-b3e9-7c8fa9b4ed26",
+                            ConcurrencyStamp = "dd6c856a-091b-4b48-a76b-1d98305eccbe",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             ImageUrl = "bb.jpg",
@@ -356,7 +356,7 @@ namespace RealEstate.DAL.Migrations
                             Name = "Bill",
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGP080dCiaGpEJL+lvQ/dEfZnb3yH6Z2E4fh5Vm10OGbFX7uSYzVjUpezFDi5Y4rpA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFtvGf1Q8WgTuFjujg2Ca2haq7uWijpAjeSZSwsyZ6w4XK3130X50U60D/1yG8kCGA==",
                             PhoneNumber = "123456789",
                             PhoneNumberConfirmed = false,
                             Surname = "Gates",
@@ -499,6 +499,48 @@ namespace RealEstate.DAL.Migrations
                     b.HasKey("mahalle_id");
 
                     b.ToTable("mahalle", (string)null);
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("PropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("PropertyId");
+
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("RealEstate.Entities.Entities.Property", b =>
@@ -697,10 +739,6 @@ namespace RealEstate.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CustomerTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -778,6 +816,25 @@ namespace RealEstate.DAL.Migrations
                     b.HasOne("RealEstate.Entities.Entities.Property", "Property")
                         .WithMany()
                         .HasForeignKey("PropertyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("RealEstate.Entities.Entities.Message", b =>
+                {
+                    b.HasOne("RealEstate.Entities.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealEstate.Entities.Entities.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

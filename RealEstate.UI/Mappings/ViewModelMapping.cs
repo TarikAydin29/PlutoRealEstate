@@ -8,6 +8,7 @@ using RealEstate.UI.Areas.AdminArea.Models.TestimonialVMs;
 using RealEstate.UI.Areas.AgentArea.Models;
 using RealEstate.UI.Areas.AgentArea.Models.AgentVM;
 using RealEstate.UI.Areas.CustomerArea.Models;
+using RealEstate.UI.Areas.CustomerArea.Models.MessagesVMs;
 using RealEstate.UI.Models;
 
 namespace RealEstate.UI.Mappings
@@ -46,6 +47,9 @@ namespace RealEstate.UI.Mappings
             CreateMap<AppUser, UpdateAdminVM>().ReverseMap();
 
             CreateMap<AppUser, CustomerEditProfileEditVM>().ReverseMap();
+
+
+            CreateMap<Message, CreateMessageVM>().ReverseMap();
         }
     }
 }
