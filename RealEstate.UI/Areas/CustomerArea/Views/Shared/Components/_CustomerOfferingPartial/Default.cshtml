@@ -1,0 +1,32 @@
+﻿@using RealEstate.Entities.Entities;
+@model IEnumerable<Property>
+
+<div class="offering">
+    <div class="container">
+        <h3>Hayalinizdeki Mülkü Bizimle Bulun...</h3>
+        <br />
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-md-4 offer-grid">
+                    <div class="offer-grid1">
+                        <div class="offer1">
+                            <div class="offer-left">
+                                <h4><a asp-area="CustomerArea" asp-controller="Default" asp-action="PropertyDetails" asp-route-id="@item.Id">@item.PropertyTitle <span></span> @item.City/@item.County/@item.District</a></h4><a asp-area="CustomerArea" asp-controller="Default" asp-action="PropertyDetails" asp-route-id="@item.Id" class="mask">
+                                    <img src="../Images/Uploads/@item.ImageUrl" class="img-responsive zoom-img" alt="">
+                                </a>
+                            </div>
+                            <div class="offer-right">
+                                <h5><label>TL</label> @item.Price<br /><span>@item.Area M²- @item.BedroomCount Oda</span></h5>
+                                <p>@item.Description</p>
+                                <a asp-area="CustomerArea" asp-controller="Default" asp-action="PropertyDetails" asp-route-id="@item.Id" class="button1">Detaylı İncele</a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

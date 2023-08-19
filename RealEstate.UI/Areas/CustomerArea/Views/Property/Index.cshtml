@@ -1,0 +1,252 @@
+﻿@{
+    ViewData["Title"] = "İlanlar";
+    Layout = "~/Areas/CustomerArea/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="place-section">
+    <div class="container">
+        <h2>Hayalinizdeki Mülkü Hemen Bulun</h2>
+        <div class="place-grids">
+            <div class="col-md-3 place-grid">
+                <select asp-items="ViewBag.sehir" class="sel" id="sehir" autocomplete="off">
+                    <option value="">İl</option>
+                </select>
+            </div>
+            <div class="col-md-3 place-grid">
+
+                <select id="ilce" class="sel" disabled>
+                    <option value="">İlçe</option>
+                </select>
+            </div>
+            <div class="col-md-3 place-grid">
+
+                <select id="mahalle" class=" sel" disabled>
+                    <option value="">Mahalle</option>
+                </select>
+            </div>
+            <div class="col-md-3 place-grid">
+                <select asp-items="ViewBag.cats" class="sel" id="category">
+                    <option value="">Kategori Seçiniz</option>
+                </select>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="place-grids">
+            <div class="col-md-2 place-grid1">
+                <select asp-items="ViewBag.stats" class="sel" id="status">
+                    <option value="">İşlem Durumu</option>
+
+                </select>
+            </div>
+            <div class="col-md-2 place-grid1">
+                <select class="sel" id="roomNumber" autocomplete="off">
+                    <option value="0" selected>Oda Sayısı</option>
+                    @for (int i = 1; i < 20; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2 place-grid1">
+                <input type="number" class="sel" id="minPrice" placeholder="Min TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+            </div>
+            <div class="col-md-2 place-grid1">
+                <input type="number" class="sel" id="maxPrice" placeholder="Max TL" style="-webkit-appearance: none; -moz-appearance: textfield;" autocomplete="off">
+            </div>
+            <div class="col-md-4 search" style="margin-top:12px">
+                <form action="forrent.html">
+                    <input type="submit" value="Ara" style="border-radius:10px">
+                </form>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<div class="row" style="margin:10px">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section Scriptsss {
+
+
+
+    <script>
+
+        $(document).ready(function () {
+            $.getJSON(`/CustomerArea/Property/GetAllProperties`, function (response) {
+                let values = jQuery.parseJSON(response)
+                console.log(response);
+                var htmlContent = "";
+                $.each(values, function (index, item) {
+                    htmlContent += `
+                                                            <div class="col-md-4 offer-grid">
+                                                                <div class="offer-grid1">
+                                                                    <div class="offer1">
+                                                                        <div class="offer-left">
+                                                                            <h4><a href="/CustomerArea/Default/PropertyDetails/${item.Id}">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4>
+                                                                            <a href="/CustomerArea/Default/PropertyDetails/${item.Id}" class="mask">
+                                                                                <img src="../Images/Uploads/${item.ImageUrl}" class="img-responsive zoom-img" alt="">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="offer-right">
+                                                                            <h5><label>TL</label> ${item.Price}<br/><span>${item.Area} M²- ${item.BedroomCount} Oda</span></h5>
+                                                                            <p>${item.Description}</p>
+                                                                            <a href="/CustomerArea/Default/PropertyDetails/${item.Id}" class="button1">Detaylı İncele</a>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>`;
+                });
+                $(".row").html(htmlContent);
+            });
+        })
+
+
+
+        $(document).ready(function () {
+            $("#sehir").change(function () {
+                var sehirKey = $(this).val();
+                console.log("Deneme");
+                $.getJSON(`/CustomerArea/Property/GetIlce?sehirKey=${sehirKey}`, function (data) {
+                    var items = "";
+                    items += '<option value="" selected>İlçe</option>';
+                    $.each(data, function (i, ilce) {
+                        items += `<option value="${ilce.ilce_key}">${ilce.ilce_title}</option>`;
+                    });
+                    $("#ilce").html(items);
+                });
+            });
+
+            $("#ilce").change(function () {
+                var ilceKey = $(this).val();
+                $.getJSON(`/CustomerArea/Property/GetMahalle?ilceKey=${ilceKey}`, function (data) {
+                    var items = "";
+                    items += '<option value="" selected>Mahalle</option>';
+
+                    $.each(data, function (i, mahalle) {
+                        items += `<option value="${mahalle.mahalle_key}">${mahalle.mahalle_title}</option>`;
+                    });
+                    $("#mahalle").html(items);
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#ilce').prop('disabled', true);
+            $('#mahalle').prop('disabled', true);
+
+
+            $('#sehir').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#ilce').prop('disabled', false);
+                } else {
+                    $('#ilce').prop('disabled', true);
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+
+            $('#ilce').on('change', function () {
+                var selected = $(this).val();
+                if (selected && selected != '') {
+                    $('#mahalle').prop('disabled', false);
+                } else {
+                    $('#mahalle').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.search form').on('submit', function (e) {
+                e.preventDefault();
+
+                var sehir = $('#sehir').val();
+                var ilce = $('#ilce').val();
+                var mahalle = $('#mahalle').val();
+                var category = $('#category').val();
+                var status = $('#status').val();
+                var roomNumber = $('#roomNumber').val();
+                var minPrice = $('#minPrice').val();
+                var maxPrice = $('#maxPrice').val();
+
+                var vm = {
+                    sehir: sehir,
+                    ilce: ilce,
+                    mahalle: mahalle,
+                    category: category,
+                    status: status,
+                    roomNumber: roomNumber,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice
+                };
+                console.log(vm)
+                console.log(JSON.stringify({ vm: vm }));
+                $.ajax({
+                    url: '/CustomerArea/Default/SearchFilter',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ sehir: $('#sehir').val(), ilce: $('#ilce').val(), mahalle: $('#mahalle').val(), category: $('#category').val(), status: $('#status').val(), roomNumber: $('#roomNumber').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val() }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        let values = jQuery.parseJSON(response)
+
+                        console.log(response);
+                        var htmlContent = "";
+
+                        if (values && values.length > 0) {
+                            $.each(values, function (index, item) {
+                                htmlContent += `
+                                                <div class="col-md-4 offer-grid">
+                                                    <div class="offer-grid1">
+                                                        <div class="offer1">
+                                                            <div class="offer-left">
+                                                                <h4><a href="/CustomerArea/Default/PropertyDetails/${item.Id}">${item.PropertyTitle} - ${item.City}/${item.County}/${item.District}</a></h4>
+                                                                <a href="/CustomerArea/Default/PropertyDetails/${item.Id}" class="mask">
+                                                                    <img src="../Images/Uploads/${item.ImageUrl}" class="img-responsive zoom-img" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="offer-right">
+                                                                <h5><label>TL</label> ${item.Price}<br/><span>${item.Area} M²- ${item.BedroomCount} Oda</span></h5>
+                                                                <p>${item.Description}</p>
+                                                                <a href="/CustomerArea/Default/PropertyDetails/${item.Id}" class="button1">Detaylı İncele</a>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>`;
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'İlan Bulunamadı',
+                                text: "Belirtilen Şartlara Uygun İlan Bulunamadı",
+                                icon: 'warning',
+                                showConfirmButton: true,
+                                confirmButtonText: 'Tamam'
+                            })
+
+                        }
+
+
+                        $(".row").html(htmlContent);
+                    },
+
+                    error: function (error) {
+
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
+    </script>
+
+
+    }
